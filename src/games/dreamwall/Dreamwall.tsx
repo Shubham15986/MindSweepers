@@ -358,6 +358,7 @@ function Game({ level, saved, onBack, onMenu, onRules, onSettings, onSave, onSol
   const [paused, setPaused] = useState(false);
   const [stats, setStats] = useState({ undos: 0, errors: 0, hints: 0 });
   const [won, setWon] = useState(false);
+  const [revealed, setRevealed] = useState(false);
   const [hintCell, setHintCell] = useState<number | null>(null);
   const drag = useRef<{ value: Cell; snapshot: Cell[] } | null>(null);
 
@@ -399,6 +400,7 @@ function Game({ level, saved, onBack, onMenu, onRules, onSettings, onSave, onSol
   const reveal = () => {
     setCells(level.solution);
     setStats((s) => ({ ...s, hints: s.hints + 1 }));
+    setRevealed(true);
     onSolve(time, 0);
   };
 
@@ -478,7 +480,7 @@ function Game({ level, saved, onBack, onMenu, onRules, onSettings, onSave, onSol
         </div>
       )}
 
-      {won && (
+      {won && !revealed && (
         <div className="fixed inset-0 z-40 grid place-items-end sm:place-items-center bg-ink/30 fade" style={{ animationDelay: "500ms" }}>
           <div className="rise w-full sm:max-w-sm rounded-t-3xl sm:rounded-3xl bg-[var(--surface)] p-7 shadow-2xl" style={{ animationDelay: "600ms" }}>
             <div className="w-12 h-12 rounded-2xl bg-mint grid place-items-center mb-5"><Check className="text-ink" strokeWidth={2.5} /></div>
