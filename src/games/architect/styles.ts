@@ -13,12 +13,14 @@ export const ARCH_CSS = baseCss(".architect-root") + `
 .architect-root .ar-cell.is-peer { background: color-mix(in srgb, var(--accent) 9%, var(--surface)); }
 .architect-root .ar-cell.is-given.is-peer { background: var(--muted); }
 .architect-root .ar-cell.is-sel { box-shadow: inset 0 0 0 3px var(--accent); }
-.architect-root .ar-cell.is-dup, .architect-root .ar-cell.is-wrong { box-shadow: inset 0 0 0 3px var(--bad); }
+.architect-root .ar-cell.is-dup, .architect-root .ar-cell.is-wrong { /* red glow on floor */ box-shadow: inset 0 0 20px color-mix(in srgb, var(--bad) 30%, transparent); }
 .architect-root .ar-board-scene { perspective: 1400px; width: 100%; min-width: 0; overflow: visible; display: flex; justify-content: center; align-items: center; }
 .architect-root .ar-board-container { transform-style: preserve-3d; transition: transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1); }
 .architect-root .ar-tower-3d { position: absolute; inset: 12%; transform-style: preserve-3d; transition: opacity 0.3s; pointer-events: none; }
 .architect-root .ar-face { position: absolute; background: color-mix(in srgb, var(--accent) 90%, black); border: 1px solid color-mix(in srgb, var(--bg) 20%, transparent); transition: transform 0.4s cubic-bezier(0.34, 1.2, 0.64, 1), height 0.4s, width 0.4s; }
+.architect-root .ar-cell.is-dup .ar-face, .architect-root .ar-cell.is-wrong .ar-face { background: color-mix(in srgb, var(--bad) 80%, black); }
 .architect-root .ar-face.top { inset: 0; background: color-mix(in srgb, var(--accent) 70%, white); display: grid; place-items: center; }
+.architect-root .ar-cell.is-dup .ar-face.top, .architect-root .ar-cell.is-wrong .ar-face.top { background: color-mix(in srgb, var(--bad) 70%, white); }
 .architect-root .ar-face.front { bottom: 0; left: 0; width: 100%; transform-origin: bottom; }
 .architect-root .ar-face.right { bottom: 0; right: 0; height: 100%; transform-origin: right; }
 .architect-root .ar-face.back { top: 0; left: 0; width: 100%; transform-origin: top; }

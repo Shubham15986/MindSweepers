@@ -89,6 +89,14 @@ export default function DemoOverlay({ onClose, onStart }: { onClose: () => void;
             </div>
           </div>
         </div>
+        <div className="text-sm text-(--dim) space-y-1.5 px-1 pb-2">
+          <p className="font-semibold text-(--fg)">How to play:</p>
+          <ul className="list-disc pl-5 space-y-1">
+            <li>Fill the grid so every row and column has towers of height 1 to {N} exactly once.</li>
+            <li>The clues on the edges tell you how many towers are visible looking down that line.</li>
+            <li>Taller towers block the view of shorter towers behind them.</li>
+          </ul>
+        </div>
         <div className="flex gap-3">
           <button type="button" onClick={onClose} className="g-btn-ghost flex-1">Skip demo</button>
           <button type="button" onClick={onStart} className="g-btn-primary flex-1">Start game</button>
