@@ -204,7 +204,7 @@ export default function Dreamwall({ onGameOver }: GameProps) {
             <Logo small />
             <div className="flex items-center gap-1">
               <button onClick={() => setDemo(true)} className="group mr-1 h-10 pl-3 pr-4 rounded-full border border-[var(--fg)] flex items-center gap-2 text-sm font-medium hover:bg-[var(--fg)] hover:text-[var(--bg)] transition">
-                <Spinner /> Inception <span className="hidden sm:inline font-mono text-[10px] tracking-widest opacity-60">DEMO</span>
+                <Spinner /> <span className="font-bold tracking-widest uppercase">Demo</span>
               </button>
               {([["stats", BarChart3, "Statistics"], ["rules", Info, "How to play"], ["settings", Settings, "Settings"]] as const).map(([k, I, l]) => (
                 <button key={k} onClick={() => setModal(k)} aria-label={l} className="w-11 h-11 grid place-items-center rounded-full hover:bg-[var(--muted)]"><I size={19} strokeWidth={1.6} /></button>
@@ -542,7 +542,7 @@ function Demo({ onClose, onPlay }: { onClose: () => void; onPlay: () => void }) 
         </div>
         <div className="p-7 sm:p-8 flex flex-col">
           <div className="flex items-center justify-between mb-6">
-            <span className="font-mono text-[10px] tracking-[0.3em] text-[var(--dim)]">INCEPTION · GUIDED DEMO</span>
+            <span className="font-mono font-bold text-[10px] tracking-[0.3em] text-[var(--dim)]">GUIDED DEMO</span>
             <button onClick={onClose} aria-label="Close" className="w-9 h-9 grid place-items-center rounded-full hover:bg-[var(--muted)]"><X size={17} /></button>
           </div>
           <div key={step} className="rise flex-1">

@@ -574,7 +574,7 @@ export default function Polarity({ user, onGameOver, onExit }) {
           <TopNavCrest />
 
           <div className="totem-nav-right">
-            <button className="totem-nav-link" onClick={() => { setTutStep(0); setShowInitialGuide(true); }}>DEMO</button>
+            <button className="totem-nav-link" style={{ fontWeight: "bold" }} onClick={() => { setTutStep(0); setShowInitialGuide(true); }}>DEMO</button>
             <button className="totem-nav-link" onClick={() => setActiveModal('about')}>ABOUT</button>
           </div>
         </header>
@@ -818,7 +818,7 @@ export default function Polarity({ user, onGameOver, onExit }) {
               <input type="checkbox" defaultChecked /> Atmospheric Folding City Background & Animations
             </label>
             <label style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <input type="checkbox" defaultChecked /> High Resolution Inception Skyscrapers
+              <input type="checkbox" defaultChecked /> High Resolution Skyscrapers
             </label>
             <button className="totem-btn-secondary" onClick={() => setTapMode(m => m === "charge" ? "inert" : "charge")}>
               Tap Intent Mode: {tapMode.toUpperCase()}

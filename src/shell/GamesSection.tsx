@@ -11,9 +11,9 @@ const GAMES: Record<GameId, React.LazyExoticComponent<(p: GameProps) => React.Re
   architect: lazy(() => import("../games/architect")),
 };
 
-const TABS: { id: GameId; label: string; locked: boolean; title: string; desc: string; tag: string }[] = [
+const TABS: { id: GameId; label: string; locked: boolean; title: string; desc: React.ReactNode; tag: string }[] = [
   { id: "dreamwall", label: "Dreamwall", locked: false, title: "Dreamwall", tag: "Easy → Hard",
-    desc: "A logic puzzle built in three dream layers. Shade the sea, leave the islands, and never let the water pool. Includes a guided Inception demo." },
+    desc: <>A logic puzzle built in three dream layers. Shade the sea, leave the islands, and never let the water pool. Includes a guided <b>DEMO</b>.</> },
   { id: "polarity", label: "Polarity", locked: false, title: "Polarity", tag: "Medium", desc: "Place magnets and blanks. Match the pole counts. Like poles must never touch." },
   { id: "architect", label: "Architect", locked: false, title: "Architect", tag: "Medium", desc: "Logic puzzle: place the towers, read the clues, build the city before it folds" },
 ];
