@@ -381,7 +381,7 @@ function Game({ level, saved, onBack, onMenu, onRules, onSettings, onSave, onSol
     onSolve(time, 0);
   };
 
-  const cellPx = "min(" + (n === 4 ? 76 : n === 6 ? 60 : 50) + "px, calc((100vw - 48px)/" + n + "))";
+  const cellPx = "min(" + (n === 4 ? 76 : n === 6 ? 60 : 50) + "px, calc((100vw - 24px - " + ((n-1)*2) + "px)/" + n + "))";
   const tools = [
     { v: 1 as Tool, label: "Sea", icon: <Square size={18} fill="currentColor" /> },
     { v: 2 as Tool, label: "Island", icon: <Circle size={9} fill="currentColor" /> },
