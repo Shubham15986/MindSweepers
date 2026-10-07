@@ -12,17 +12,19 @@ type Props = {
   peer: boolean;
   dup: boolean;
   wrong: boolean;
+  dimmed?: boolean;
   onSelect: (idx: number) => void;
 };
 
 // Memoized on primitives so only cells whose props change re-render.
-function CellImpl({ idx, n, value, notes, given, selected, peer, dup, wrong, onSelect }: Props) {
+function CellImpl({ idx, n, value, notes, given, selected, peer, dup, wrong, dimmed, onSelect }: Props) {
   const r = Math.floor(idx / n) + 1, c = (idx % n) + 1;
   const frac = (value / n) * BOARD.towerMax;
   const label = "Row " + r + ", column " + c + ", " + (value ? "height " + value : "empty") + (given ? ", locked" : "") + (dup ? ", duplicate" : "") + (wrong ? ", incorrect" : "");
   return (
     <button
       type="button"
+      style={{ opacity: dimmed ? 0.3 : 1 }}
       data-idx={idx}
       role="gridcell"
       aria-label={label}

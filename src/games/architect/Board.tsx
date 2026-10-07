@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { Puzzle } from "./generator";
 import { SIDES, visible, type Side } from "./solver";
 import { BOARD } from "./config";
@@ -25,6 +25,22 @@ export default function Board({ puzzle, cells, notes, selected, wrong, dim, inte
   const selRef = useRef(onSelect);
   selRef.current = onSelect;
   const handleSelect = useCallback((i: number) => { if (interactive) selRef.current(i); }, [interactive]);
+  
+  const [viewEye, setViewEye] = useState<{side: Side, i: number} | null>(null);
+  
+  const viewState = useMemo(() => {
+    if (!viewEye) return null;
+    const line = new Set<number>();
+    const vis = new Set<number>();
+    let max = 0;
+    for (let k = 0; k < n; k++) {
+      const idx = lineIndex(n, viewEye.side, viewEye.i, k);
+      line.add(idx);
+      const h = cells[idx];
+      if (h > max) { max = h; vis.add(idx); }
+    }
+    return { line, vis };
+  }, [viewEye, cells, n]);
 
   // Duplicate warning: a height repeated in the same row or column.
   const dups = useMemo(() => {
@@ -70,7 +86,10 @@ export default function Board({ puzzle, cells, notes, selected, wrong, dim, inte
   const { box, cell } = useFitCell(units, units, chrome, chrome, BOARD.minCell, BOARD.maxCell);
   const tpl = Math.round(cell * BOARD.clueRatio) + "px repeat(" + n + ", " + cell + "px) " + Math.round(cell * BOARD.clueRatio) + "px";
   const fs = Math.round(cell * 0.46) + "px";
-  const clue = (side: Side, i: number) => <ClueCell key={side + i} side={side} i={i} value={puzzle.clues[side][i]} status={status[side][i]} dim={dim} />;
+  const clue = (side: Side, i: number) => {
+    const isEyeActive = viewEye?.side === side && viewEye?.i === i;
+    return <ClueCell key={side + i} side={side} i={i} value={puzzle.clues[side][i]} status={status[side][i]} dim={dim} eyeActive={isEyeActive} onToggleEye={() => setViewEye(isEyeActive ? null : {side, i})} />;
+  };
   const corner = (k: string) => <div key={k} aria-hidden />;
 
   const items: React.ReactNode[] = [corner("c0")];
@@ -80,10 +99,11 @@ export default function Board({ puzzle, cells, notes, selected, wrong, dim, inte
     items.push(clue("left", r));
     for (let c = 0; c < n; c++) {
       const i = r * n + c;
+      const dimmed = viewState ? (viewState.line.has(i) ? !viewState.vis.has(i) : true) : false;
       items.push(
         <Cell key={i} idx={i} n={n} value={cells[i]} notes={notes[i]} given={!!puzzle.givens[i]}
           selected={interactive && i === selected} peer={interactive && (r === sr || c === sc)}
-          dup={dups.has(i)} wrong={wrongSet.has(i)} onSelect={handleSelect} />,
+          dup={dups.has(i)} wrong={wrongSet.has(i)} dimmed={dimmed} onSelect={handleSelect} />,
       );
     }
     items.push(clue("right", r));

@@ -14,9 +14,9 @@ export const ARCH_CSS = baseCss(".architect-root") + `
 .architect-root .ar-cell.is-given.is-peer { background: var(--muted); }
 .architect-root .ar-cell.is-sel { box-shadow: inset 0 0 0 3px var(--accent); }
 .architect-root .ar-cell.is-dup, .architect-root .ar-cell.is-wrong { box-shadow: inset 0 0 0 3px var(--bad); }
-.architect-root .ar-tower, .architect-root .ar-cap { position: absolute; left: 16%; right: 16%; top: 0; bottom: 0; pointer-events: none; transition: transform 260ms cubic-bezier(.2,.8,.2,1), opacity 200ms; }
-.architect-root .ar-tower { transform-origin: bottom; background: color-mix(in srgb, var(--fg) 9%, transparent); }
-.architect-root .ar-cap { border-top: 3px solid var(--accent); }
+.architect-root .ar-tower, .architect-root .ar-cap { position: absolute; left: 15%; right: 15%; top: 0; bottom: 0; pointer-events: none; transition: transform 260ms cubic-bezier(.2,.8,.2,1), opacity 200ms; }
+.architect-root .ar-tower { transform-origin: bottom; background: linear-gradient(to right, color-mix(in srgb, var(--accent) 70%, transparent), color-mix(in srgb, var(--accent) 40%, transparent)); box-shadow: inset -3px 0 5px rgba(0,0,0,0.15), inset 2px 0 4px rgba(255,255,255,0.2); border-radius: 2px 2px 0 0; }
+.architect-root .ar-cap { border-top: none; background: color-mix(in srgb, var(--accent) 90%, white); height: 5px; border-radius: 2px; box-shadow: 0 1px 3px rgba(0,0,0,0.3); }
 .architect-root .ar-num { position: relative; color: var(--fg); font-weight: 600; font-size: var(--ar-fs); line-height: 1; font-variant-numeric: tabular-nums; }
 .architect-root .ar-notes { position: absolute; inset: 8%; display: grid; grid-template-columns: repeat(3, 1fr); font-family: "JetBrains Mono", monospace; font-size: calc(var(--ar-fs) * .36); color: var(--dim); line-height: 1; text-align: center; align-items: center; }
 .architect-root .ar-mark { position: absolute; top: 3px; right: 3px; color: var(--bad); }
