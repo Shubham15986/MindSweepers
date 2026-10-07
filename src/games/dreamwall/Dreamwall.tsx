@@ -125,7 +125,7 @@ function analyze(cells: Cell[], lv: { n: number, clues: (number | null)[] }) {
 type Progress = Record<string, { status: "progress" | "solved"; cells?: Cell[]; best?: number; score?: number }>;
 const load = <T,>(k: string, d: T): T => { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch { return d; } };
 const fmt = (s: number) => Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0");
-const isUnlocked = (lv: Level, p: Progress) => lv.index === 0 || p[LEVELS[lv.index - 1].id]?.status === "solved" || !!p[lv.id];
+const isUnlocked = (lv: Level, p: Progress) => true;
 
 function Logo({ small }: { small?: boolean }) {
   return (
