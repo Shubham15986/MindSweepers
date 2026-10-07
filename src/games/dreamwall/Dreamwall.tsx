@@ -48,7 +48,7 @@ const LEVELS: Level[] = TIERS.map((tier, index) => ({
   tier,
   index,
   n: tier.size,
-  seed: today() + "-" + tier.size,
+  seed: Math.random().toString(36).slice(2),
 }));
 
 function neighbors(i: number, n: number) {
@@ -285,6 +285,7 @@ export default function Dreamwall({ onGameOver }: GameProps) {
             onSave={(cells) => setProgress((p) => (p[level.id]?.status === "solved" ? p : { ...p, [level.id]: { status: "progress", cells } }))}
             onSolve={(time, score) => { onGameOver({ score, level: level.tier.dream }); setProgress((p) => ({ ...p, [level.id]: { status: "solved", best: Math.min(time, p[level.id]?.best ?? 1e9), score: Math.max(score, p[level.id]?.score ?? 0) } })); }}
             onNext={() => { if (level.index === LEVELS.length - 1) setScreen("menu"); else open(LEVELS[level.index + 1]); }}
+            onReplay={() => { const nl = { ...level, seed: Math.random().toString(36).slice(2) }; setLevel(nl); setProgress(p => { const np = {...p}; delete np[level.id]; return np; }); generate(nl.n, nl.seed, setPuzzleData); }}
           />
         )
       )}
@@ -323,9 +324,9 @@ export default function Dreamwall({ onGameOver }: GameProps) {
 }
 
 type Tool = 1 | 2 | 0;
-function Game({ level, saved, onBack, onMenu, onRules, onSettings, onSave, onSolve, onNext }: {
+function Game({ level, saved, onBack, onMenu, onRules, onSettings, onSave, onSolve, onNext, onReplay }: {
   level: Level & { clues: (number | null)[]; solution: Cell[] }; saved?: Progress[string]; onBack: () => void; onMenu: () => void; onRules: () => void; onSettings: () => void;
-  onSave: (c: Cell[]) => void; onSolve: (t: number, s: number) => void; onNext: () => void;
+  onSave: (c: Cell[]) => void; onSolve: (t: number, s: number) => void; onNext: () => void; onReplay: () => void;
 }) {
   const n = level.n;
   const init = saved?.status === "progress" && saved.cells ? saved.cells : (Array(n * n).fill(0) as Cell[]);
@@ -478,7 +479,7 @@ function Game({ level, saved, onBack, onMenu, onRules, onSettings, onSave, onSol
             </dl>
             <button onClick={onNext} className="w-full h-14 rounded-2xl bg-[var(--fg)] text-[var(--bg)] font-medium flex items-center justify-center gap-2">{level.index === 2 ? "Wake up" : "Go deeper"} <ChevronRight size={18} /></button>
             <div className="grid grid-cols-2 gap-2 mt-2">
-              <button onClick={() => { setCells(Array(n * n).fill(0) as Cell[]); setPast([]); setFuture([]); setTime(0); setStats({ undos: 0, errors: 0, hints: 0 }); setWon(false); }} className="h-12 rounded-2xl border border-[var(--line)]">Replay</button>
+              <button onClick={onReplay} className="h-12 rounded-2xl border border-[var(--line)]">Replay / New Grid</button>
               <button onClick={onMenu} className="h-12 rounded-2xl border border-[var(--line)]">Menu</button>
             </div>
           </div>

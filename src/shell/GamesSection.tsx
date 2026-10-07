@@ -123,7 +123,11 @@ export default function GamesSection({ user, playing, setPlaying, onRequireAuth,
                 <p className={eyebrow + " mt-4"}>Dream complete</p>
                 <p className="font-display text-fog text-6xl font-light mt-2 tabular-nums">{result.score.toLocaleString()}</p>
                 <p className="text-mist mt-1">Level · <span className="text-fog">{result.level}</span></p>
-                <button onClick={submit} disabled={submitting} className={btnPrimary + " w-full mt-8 disabled:opacity-70"}>{submitting ? "Submitting…" : "Submit to leaderboard"}</button>
+                {result.score > 0 ? (
+                  <button onClick={submit} disabled={submitting} className={btnPrimary + " w-full mt-8 disabled:opacity-70"}>{submitting ? "Submitting…" : "Submit to leaderboard"}</button>
+                ) : (
+                  <p className="mt-8 text-sm text-coral/80 font-medium tracking-wide">Score is 0. Cannot submit.</p>
+                )}
                 <button onClick={() => setResult(null)} className="mt-3 h-10 text-sm text-mist hover:text-fog transition-colors">Keep playing</button>
               </div>
             </div>
