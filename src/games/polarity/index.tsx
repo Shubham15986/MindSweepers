@@ -199,7 +199,7 @@ export default function Polarity({ onGameOver, onExit, seed }: GameProps & { see
                 {s.phase === "revealed" ? "The solution, revealed. No score this time." : s.message ?? "Decide every domino: magnet or blank."}
               </p>
               <ToolPalette tool={s.tool} hintsLeft={MAX_HINTS - s.hints} canUndo={s.past.length > 0} canRedo={s.future.length > 0} disabled={!playing}
-                onTool={g.setTool} onUndo={g.undo} onRedo={g.redo} onHint={g.hint} onCheck={g.check} />
+                onTool={g.setTool} onUndo={g.undo} onRedo={g.redo} onHint={g.hint} onCheck={g.check} onReveal={() => setConfirm({ kind: "giveup" })} />
               <div className="flex gap-2 max-w-[440px] w-full mx-auto">
                 {s.phase === "revealed" ? (
                   <>
