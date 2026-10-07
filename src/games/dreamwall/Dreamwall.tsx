@@ -6,11 +6,31 @@ import {
 import type { GameProps } from "../../shared/types";
 import "./dreamwall.css";
 
-const RAW: Record<string, string[]> = {
-  "4": [".###", "2#.#", "##2#", "2.##"],
-  "6": ["######", "#.#.2#", "#.3##1", "####.#", "4.#3.#", "..####"],
-  "8": ["2.####..", "###.2#4.", "#2.##.##", "####6..#", "#.2##..#", "###.2###", ".3####1#", ".##.3.##"],
-};
+
+
+function useDreamwallWorker() {
+  const [generating, setGenerating] = useState(false);
+  const workerRef = useRef<Worker | null>(null);
+
+  useEffect(() => {
+    workerRef.current = new Worker(new URL('./generator.worker.ts', import.meta.url), { type: 'module' });
+    return () => workerRef.current?.terminate();
+  }, []);
+
+  const generate = (n: number, seed: string, onDone: (puzzle: any) => void) => {
+    setGenerating(true);
+    if (!workerRef.current) return;
+    workerRef.current.onmessage = (e) => {
+      if (e.data.type === "done") {
+        setGenerating(false);
+        onDone(e.data.puzzle);
+      }
+    };
+    workerRef.current.postMessage({ n, seed });
+  };
+
+  return { generating, generate };
+}
 
 type Cell = 0 | 1 | 2; // empty, sea, island
 type Tier = { key: string; name: string; size: number; blurb: string; dream: string; points: number };
@@ -19,18 +39,17 @@ const TIERS: Tier[] = [
   { key: "6", name: "Medium", size: 6, dream: "The Hotel", blurb: "Second layer. Corridors bend.", points: 30 },
   { key: "8", name: "Hard", size: 8, dream: "Limbo", blurb: "Raw subconscious. Don't get lost.", points: 50 },
 ];
-type Level = { id: string; tier: Tier; index: number; clues: (number | null)[]; solution: Cell[]; n: number };
-const LEVELS: Level[] = TIERS.flatMap((tier) =>
-  [RAW[tier.key]].map((rows) => {
-    const flat = rows.join("").split("");
-    const index = TIERS.indexOf(tier);
-    return {
-      id: "L" + (index + 1), tier, index, n: tier.size,
-      clues: flat.map((c) => (c === "#" || c === "." ? null : parseInt(c, 36))),
-      solution: flat.map((c) => (c === "#" ? 1 : 2)) as Cell[],
-    };
-  }),
-);
+type Level = { id: string; tier: Tier; index: number; n: number; seed: string };
+const randomSeed = () => Math.random().toString(36).slice(2, 10);
+const today = () => new Date().toISOString().slice(0, 10);
+
+const LEVELS: Level[] = TIERS.map((tier, index) => ({
+  id: "L" + (index + 1),
+  tier,
+  index,
+  n: tier.size,
+  seed: today() + "-" + tier.size,
+}));
 
 function neighbors(i: number, n: number) {
   const x = i % n, y = Math.floor(i / n), o: number[] = [];
@@ -39,7 +58,7 @@ function neighbors(i: number, n: number) {
   return o;
 }
 
-function analyze(cells: Cell[], lv: Level) {
+function analyze(cells: Cell[], lv: { n: number, clues: (number | null)[] }) {
   const n = lv.n, err = new Set<number>(), good = new Set<number>();
   // 2x2 pools
   for (let y = 0; y < n - 1; y++) for (let x = 0; x < n - 1; x++) {
@@ -154,6 +173,8 @@ export default function Dreamwall({ onGameOver }: GameProps) {
   const [progress, setProgress] = useState<Progress>(() => load("nk-progress", {}));
   const [screen, setScreen] = useState<"menu" | "levels" | "game">("menu");
   const [level, setLevel] = useState<Level>(LEVELS[0]);
+  const [puzzleData, setPuzzleData] = useState<{ clues: (number | null)[], solution: Cell[] } | null>(null);
+  const { generating, generate } = useDreamwallWorker();
   const [modal, setModal] = useState<null | "rules" | "settings" | "stats">(null);
   const [demo, setDemo] = useState(false);
   const [lastId, setLastId] = useState<string>(() => load("nk-last", LEVELS[0].id));
@@ -162,7 +183,13 @@ export default function Dreamwall({ onGameOver }: GameProps) {
   useEffect(() => localStorage.setItem("nk-progress", JSON.stringify(progress)), [progress]);
   useEffect(() => localStorage.setItem("nk-last", JSON.stringify(lastId)), [lastId]);
 
-  const open = (lv: Level) => { setLevel(lv); setLastId(lv.id); setScreen("game"); };
+  const open = (lv: Level) => { 
+    setLevel(lv); 
+    setLastId(lv.id); 
+    setScreen("game"); 
+    setPuzzleData(null);
+    generate(lv.n, lv.seed, (data) => setPuzzleData(data));
+  };
   const vars = dark
     ? { "--bg": "#17181c", "--surface": "#202227", "--fg": "#ece8de", "--dim": "#8d8a83", "--line": "#33353c", "--muted": "#2a2c32" }
     : { "--bg": "#f2eee4", "--surface": "#fbf9f4", "--fg": "#13151b", "--dim": "#77746c", "--line": "#dcd6c8", "--muted": "#e9e4d8" };
@@ -227,9 +254,8 @@ export default function Dreamwall({ onGameOver }: GameProps) {
                       : <span className="w-5 h-5 rounded-full border-2 border-[var(--line)]" />}
                   </div>
                   <div className="grid gap-[2px] mb-5 aspect-square bg-ink p-[2px] rounded-lg" style={{ gridTemplateColumns: "repeat(" + l.n + ",1fr)", transform: "scale(" + (1 - l.index * 0.08) + ")" }}>
-                    {l.clues.map((c, i) => {
-                      const v = p?.status === "solved" ? l.solution[i] : p?.cells?.[i] ?? 0;
-                      return <span key={i} className={"grid place-items-center text-sm font-semibold rounded-[2px] " + (v === 1 ? "bg-ink" : "bg-paper text-ink")}>{c || ""}</span>;
+                    {Array.from({ length: l.n * l.n }).map((_, i) => {
+                      return <span key={i} className={"grid place-items-center text-sm font-semibold rounded-[2px] bg-paper text-ink"}></span>;
                     })}
                   </div>
                   <h2 className="text-2xl font-semibold tracking-tight">{l.tier.dream}</h2>
@@ -246,13 +272,21 @@ export default function Dreamwall({ onGameOver }: GameProps) {
       )}
 
       {screen === "game" && (
-        <Game key={level.id} level={level} saved={progress[level.id]}
-          onBack={() => setScreen("levels")} onMenu={() => setScreen("menu")}
-          onRules={() => setModal("rules")} onSettings={() => setModal("settings")}
-          onSave={(cells) => setProgress((p) => (p[level.id]?.status === "solved" ? p : { ...p, [level.id]: { status: "progress", cells } }))}
-          onSolve={(time, score) => { onGameOver({ score, level: level.tier.dream }); setProgress((p) => ({ ...p, [level.id]: { status: "solved", best: Math.min(time, p[level.id]?.best ?? 1e9), score: Math.max(score, p[level.id]?.score ?? 0) } })); }}
-          onNext={() => { if (level.index === LEVELS.length - 1) setScreen("menu"); else open(LEVELS[level.index + 1]); }}
-        />
+        generating || !puzzleData ? (
+          <div className="h-full min-h-dvh flex flex-col items-center justify-center text-[var(--dim)] gap-4 font-mono text-sm">
+            <Spinner />
+            <p>Generating {level.n}x{level.n} dreamscape...</p>
+            {level.n >= 8 && <p className="text-[10px] opacity-60">(Complex layers may take up to 30s to stabilize)</p>}
+          </div>
+        ) : (
+          <Game key={level.id} level={{ ...level, clues: puzzleData.clues, solution: puzzleData.solution }} saved={progress[level.id]}
+            onBack={() => setScreen("levels")} onMenu={() => setScreen("menu")}
+            onRules={() => setModal("rules")} onSettings={() => setModal("settings")}
+            onSave={(cells) => setProgress((p) => (p[level.id]?.status === "solved" ? p : { ...p, [level.id]: { status: "progress", cells } }))}
+            onSolve={(time, score) => { onGameOver({ score, level: level.tier.dream }); setProgress((p) => ({ ...p, [level.id]: { status: "solved", best: Math.min(time, p[level.id]?.best ?? 1e9), score: Math.max(score, p[level.id]?.score ?? 0) } })); }}
+            onNext={() => { if (level.index === LEVELS.length - 1) setScreen("menu"); else open(LEVELS[level.index + 1]); }}
+          />
+        )
       )}
 
       {demo && <Demo onClose={() => setDemo(false)} onPlay={() => { setDemo(false); open(LEVELS[0]); }} />}
@@ -290,7 +324,7 @@ export default function Dreamwall({ onGameOver }: GameProps) {
 
 type Tool = 1 | 2 | 0;
 function Game({ level, saved, onBack, onMenu, onRules, onSettings, onSave, onSolve, onNext }: {
-  level: Level; saved?: Progress[string]; onBack: () => void; onMenu: () => void; onRules: () => void; onSettings: () => void;
+  level: Level & { clues: (number | null)[]; solution: Cell[] }; saved?: Progress[string]; onBack: () => void; onMenu: () => void; onRules: () => void; onSettings: () => void;
   onSave: (c: Cell[]) => void; onSolve: (t: number, s: number) => void; onNext: () => void;
 }) {
   const n = level.n;
