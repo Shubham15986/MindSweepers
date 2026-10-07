@@ -75,7 +75,7 @@ export default function DemoOverlay({ onClose, onStart }: { onClose: () => void;
 
   return (
     <div className="g-overlay ar-fade" role="dialog" aria-modal="true" aria-label="ARCHITECT demo">
-      <div className="g-card w-full max-w-sm p-6 flex flex-col gap-5">
+      <div className="g-card w-full max-w-sm p-6 flex flex-col gap-5 max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between">
           <span className="g-eyebrow">Demo</span>
           <div className="flex gap-1.5">{CAPTIONS.map((_, k) => <span key={k} className={"ar-dot" + (k === scene ? " is-on" : "")} />)}</div>
@@ -96,10 +96,11 @@ export default function DemoOverlay({ onClose, onStart }: { onClose: () => void;
             <li>The clues on the edges tell you how many towers are visible looking down that line.</li>
             <li>Taller towers block the view of shorter towers behind them.</li>
           </ul>
-          <p className="font-semibold text-(--fg) mt-2">Example:</p>
-          <p className="pl-1 leading-relaxed">
-            A clue of <strong>1</strong> means the tallest tower ({N}) must be right next to it, hiding all the others behind it. A clue of <strong>{N}</strong> means you must be able to see all {N} towers, so they must be placed in ascending order (1, 2, 3, {N}).
-          </p>
+          <p className="font-semibold text-(--fg) mt-2">Example from the animated grid above:</p>
+          <ul className="list-disc pl-5 space-y-1">
+            <li><strong>Bottom Row (1, 2, 3, 4):</strong> Looking from the left, the clue is <strong>4</strong> because all towers are visible in ascending order. From the right, the clue is <strong>1</strong> because the tallest tower (4) blocks everything behind it.</li>
+            <li><strong>Top Row (2, 1, 4, 3):</strong> Looking from the left, the clue is <strong>2</strong>. You see the 2-tower (which hides the 1-tower behind it), and you see the 4-tower (which hides the 3-tower).</li>
+          </ul>
         </div>
         <div className="flex gap-3">
           <button type="button" onClick={onClose} className="g-btn-ghost flex-1">Skip demo</button>
