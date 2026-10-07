@@ -12,10 +12,10 @@ type Props = {
   onPencil: () => void;
   onUndo: () => void;
   onRedo: () => void;
-  onHint: () => void;
+  onReveal: () => void;
 };
 
-export default function NumberPad({ n, pencil, hintsLeft, canUndo, canRedo, disabled, onNumber, onErase, onPencil, onUndo, onRedo, onHint }: Props) {
+export default function NumberPad({ n, pencil, hintsLeft, canUndo, canRedo, disabled, onNumber, onErase, onPencil, onUndo, onRedo, onReveal }: Props) {
   return (
     <div className="w-full max-w-[420px] mx-auto" aria-label="Number pad">
       <div className="grid gap-2" style={{ gridTemplateColumns: "repeat(" + n + ", minmax(0, 1fr))" }}>
@@ -29,7 +29,7 @@ export default function NumberPad({ n, pencil, hintsLeft, canUndo, canRedo, disa
         <button type="button" className="ar-tool" onClick={onPencil} disabled={disabled} aria-pressed={pencil}><Pencil size={18} strokeWidth={1.6} /><span>Pencil</span></button>
         <button type="button" className="ar-tool" onClick={onUndo} disabled={disabled || !canUndo}><Undo2 size={18} strokeWidth={1.6} /><span>Undo</span></button>
         <button type="button" className="ar-tool" onClick={onRedo} disabled={disabled || !canRedo}><Redo2 size={18} strokeWidth={1.6} /><span>Redo</span></button>
-        <button type="button" className="ar-tool" onClick={onHint} disabled={disabled || hintsLeft <= 0}><Lightbulb size={18} strokeWidth={1.6} /><span className="tabular">Hint {hintsLeft}</span></button>
+        <button type="button" className="ar-tool" onClick={onReveal} disabled={disabled}><Lightbulb size={18} strokeWidth={1.6} /><span className="tabular">Reveal</span></button>
       </div>
     </div>
   );
