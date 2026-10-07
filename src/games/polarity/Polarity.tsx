@@ -574,7 +574,7 @@ export default function Polarity({ user, onGameOver, onExit }) {
           <TopNavCrest />
 
           <div className="totem-nav-right">
-            <button className="totem-nav-link" style={{ fontWeight: "bold" }} onClick={() => { setTutStep(0); setShowInitialGuide(true); }}>DEMO</button>
+            <button className="totem-demo-btn" onClick={() => { setTutStep(0); setShowInitialGuide(true); }}>DEMO</button>
             <button className="totem-nav-link" onClick={() => setActiveModal('about')}>ABOUT</button>
           </div>
         </header>

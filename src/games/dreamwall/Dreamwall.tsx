@@ -169,7 +169,7 @@ function HeroGrid() {
 }
 
 export default function Dreamwall({ onGameOver }: GameProps) {
-  const [dark, setDark] = useState(() => load("nk-dark", false));
+  const dark = false;
   const [progress, setProgress] = useState<Progress>(() => load("nk-progress", {}));
   const [screen, setScreen] = useState<"menu" | "levels" | "game">("menu");
   const [level, setLevel] = useState<Level>(LEVELS[0]);
@@ -179,8 +179,7 @@ export default function Dreamwall({ onGameOver }: GameProps) {
   const [demo, setDemo] = useState(false);
   const [lastId, setLastId] = useState<string>(() => load("nk-last", LEVELS[0].id));
 
-  useEffect(() => localStorage.setItem("nk-dark", JSON.stringify(dark)), [dark]);
-  useEffect(() => localStorage.setItem("nk-progress", JSON.stringify(progress)), [progress]);
+    useEffect(() => localStorage.setItem("nk-progress", JSON.stringify(progress)), [progress]);
   useEffect(() => localStorage.setItem("nk-last", JSON.stringify(lastId)), [lastId]);
 
   const open = (lv: Level) => { 
@@ -203,7 +202,7 @@ export default function Dreamwall({ onGameOver }: GameProps) {
           <header className="flex items-center justify-between">
             <Logo small />
             <div className="flex items-center gap-1">
-              <button onClick={() => setDemo(true)} className="group mr-1 h-10 pl-3 pr-4 rounded-full border border-[var(--fg)] flex items-center gap-2 text-sm font-medium hover:bg-[var(--fg)] hover:text-[var(--bg)] transition">
+              <button onClick={() => setDemo(true)} className="group mr-1 h-10 pl-3 pr-4 rounded-full bg-amber text-night flex items-center gap-2 text-sm font-medium hover:bg-amber/90 transition shadow-md">
                 <Spinner /> <span className="font-bold tracking-widest uppercase">Demo</span>
               </button>
               {([["stats", BarChart3, "Statistics"], ["rules", Info, "How to play"], ["settings", Settings, "Settings"]] as const).map(([k, I, l]) => (
@@ -294,11 +293,7 @@ export default function Dreamwall({ onGameOver }: GameProps) {
       {modal === "rules" && <Modal title="How to play" onClose={() => setModal(null)}><Rules /></Modal>}
       {modal === "settings" && (
         <Modal title="Settings" onClose={() => setModal(null)}>
-          <button onClick={() => setDark(!dark)} className="w-full flex items-center justify-between py-4 border-b border-[var(--line)]">
-            <span className="flex items-center gap-3">{dark ? <Moon size={18} /> : <Sun size={18} />}Dark mode</span>
-            <span className={"w-12 h-7 rounded-full p-1 transition " + (dark ? "bg-mint" : "bg-[var(--line)]")}><span className={"block w-5 h-5 rounded-full bg-white transition " + (dark ? "translate-x-5" : "")} /></span>
-          </button>
-          <button onClick={() => { if (confirm("Erase all progress?")) { setProgress({}); setModal(null); } }} className="w-full text-left py-4 text-coral">Reset all progress</button>
+                    <button onClick={() => { if (confirm("Erase all progress?")) { setProgress({}); setModal(null); } }} className="w-full text-left py-4 text-coral">Reset all progress</button>
         </Modal>
       )}
       {modal === "stats" && (

@@ -18,12 +18,9 @@ const KEY = "nk-dark";
 function readDark() { try { return JSON.parse(localStorage.getItem(KEY) ?? "false") === true; } catch { return false; } }
 
 export function useDreamTheme() {
-  const [dark, setDark] = useState(readDark);
-  const toggle = useCallback(() => setDark((d) => {
-    try { localStorage.setItem(KEY, JSON.stringify(!d)); } catch { /* private mode */ }
-    return !d;
-  }), []);
-  const vars = { ...(dark ? PALETTE.dark : PALETTE.light), ...POLES } as React.CSSProperties;
+  const dark = false;
+  const toggle = () => {};
+  const vars = { ...PALETTE.light, ...POLES } as React.CSSProperties;
   return { dark, toggle, vars };
 }
 
@@ -42,8 +39,8 @@ ${root} .g-btn-ghost:hover { background: var(--muted); }
 ${root} .g-btn-ghost:disabled { opacity: .4; }
 ${root} .g-icon { width: 40px; height: 40px; border-radius: 999px; display: grid; place-items: center; transition: background-color 150ms; }
 ${root} .g-icon:hover { background: var(--muted); }
-${root} .g-demo { height: 38px; padding: 0 14px 0 11px; border-radius: 999px; border: 1px solid var(--fg); display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; transition: background-color 150ms, color 150ms; }
-${root} .g-demo:hover { background: var(--fg); color: var(--bg); }
+${root} .g-demo { height: 38px; padding: 0 14px 0 11px; border-radius: 999px; background: #E8A24A; color: #080A0F; display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 700; transition: transform 150ms, filter 150ms; box-shadow: 0 2px 8px rgba(232, 162, 74, 0.4); }
+${root} .g-demo:hover { filter: brightness(1.1); transform: translateY(-1px); }
 ${root} .g-seg { display: inline-flex; padding: 4px; border-radius: 999px; background: var(--muted); }
 ${root} .g-seg button { min-height: 38px; padding: 0 16px; border-radius: 999px; font-size: 14px; font-weight: 500; color: var(--dim); }
 ${root} .g-seg button[aria-checked="true"] { background: var(--surface); color: var(--fg); box-shadow: 0 1px 2px rgba(19,21,27,.12); }

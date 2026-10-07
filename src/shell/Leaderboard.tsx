@@ -68,15 +68,7 @@ export default function Leaderboard({ refreshKey, initialFilter = "dreamwall" }:
             })}
           </ol>
         )}
-        <div className="sticky bottom-0 grid grid-cols-[40px_1fr_auto] gap-3 items-center h-14 px-4 md:px-5 bg-card border-t border-amber/40">
-          <span className="text-sm font-semibold text-amber tabular-nums">{me.rank ?? "–"}</span>
-          <span className="flex items-center gap-3 min-w-0">
-            <span className="w-8 h-8 shrink-0 rounded-full grid place-items-center text-[11px] font-semibold bg-amber text-night">YOU</span>
-            <span className="truncate text-sm text-fog">Your rank{me.rank ? "" : " · play to enter"}</span>
-          </span>
-          <span className="text-right text-sm font-medium text-fog tabular-nums">{me.score?.toLocaleString() ?? "—"}</span>
-          <span className="text-right text-xs text-mist">{me.level ?? "—"}</span>
-        </div>
+        
       </div>
     </div>
   );

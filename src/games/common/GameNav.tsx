@@ -26,9 +26,7 @@ export default function GameNav({ name, glyph, dark, onToggleDark, onDemo, onHel
           <span className="g-spinner" aria-hidden /> <span className="font-bold tracking-widest">DEMO</span>
         </button>
         <button type="button" onClick={onHelp} aria-label="How to play" className="g-icon"><Info size={19} strokeWidth={1.6} /></button>
-        <button type="button" onClick={onToggleDark} aria-label={dark ? "Switch to light mode" : "Switch to dark mode"} aria-pressed={dark} className="g-icon">
-          {dark ? <Sun size={19} strokeWidth={1.6} /> : <Moon size={19} strokeWidth={1.6} />}
-        </button>
+        
       </div>
     </header>
   );
