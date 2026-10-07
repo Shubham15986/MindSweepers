@@ -80,12 +80,10 @@ function LockedPreview() {
 export default function GamesSection({ user, playing, setPlaying, onRequireAuth, onSubmitted }: {
   user: User | null; playing: GameId | null; setPlaying: (g: GameId | null) => void; onRequireAuth: () => void; onSubmitted: (g: GameId) => void;
 }) {
-  const [tab, setTab] = useState<GameId>("dreamwall");
   const [result, setResult] = useState<GameResult | null>(null);
-    const timer = useRef<number>(0);
+  const timer = useRef<number>(0);
   useEffect(() => () => clearTimeout(timer.current), []);
 
-  const t = TABS.find((x) => x.id === tab)!;
   const Game = playing ? GAMES[playing] : null;
 
   // Let the game's own victory beat land before the shell overlay appears.
@@ -140,30 +138,25 @@ export default function GamesSection({ user, playing, setPlaying, onRequireAuth,
   }
 
   return (
-    <div>
-      <div role="tablist" className="flex gap-8 border-b border-fog/12 overflow-x-auto [scrollbar-width:none]">
-        {TABS.map((x) => (
-          <button key={x.id} role="tab" aria-selected={tab === x.id} onClick={() => setTab(x.id)}
-            className={"relative shrink-0 h-12 flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.08em] transition-colors " + (tab === x.id ? "text-fog" : "text-mist hover:text-fog")}>
-            {x.label}{x.locked && <Lock size={12} strokeWidth={2} className="opacity-60" />}
-            <span className={"absolute left-0 right-0 -bottom-px h-[2px] bg-amber origin-left transition-transform duration-200 " + (tab === x.id ? "scale-x-100" : "scale-x-0")} />
-          </button>
-        ))}
-      </div>
-      <div key={tab} role="tabpanel" className={card + " ll-tab mt-6 p-4 md:p-6 grid md:grid-cols-[1.15fr_1fr] gap-6 items-center"}>
-        {t.locked ? <LockedPreview /> : t.id === "polarity" ? <PolarityPreview /> : t.id === "architect" ? <ArchitectPreview /> : <DreamwallPreview />}
-        <div className="px-2 pb-2 md:p-0">
-          <div className="flex items-center gap-3">
-            <span className="h-7 px-3 rounded-full bg-slate text-fog text-[11px] font-semibold uppercase tracking-[0.12em] inline-flex items-center">{t.tag}</span>
-            {t.locked && <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-mist">Locked</span>}
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-7xl mx-auto">
+      {TABS.map((t) => (
+        <div key={t.id} className={card + " flex flex-col p-4 md:p-6"}>
+          <div className="w-full mb-6 relative">
+            {t.locked ? <LockedPreview /> : t.id === "polarity" ? <PolarityPreview /> : t.id === "architect" ? <ArchitectPreview /> : <DreamwallPreview />}
           </div>
-          <h3 className="font-display text-fog text-4xl md:text-5xl font-light mt-4">{t.title}</h3>
-          <p className="text-mist mt-3 leading-relaxed">{t.desc}</p>
-          {t.locked
-            ? <div className="mt-6 inline-flex items-center gap-2 h-12 px-6 rounded-full border border-fog/12 text-mist text-sm font-semibold uppercase tracking-[0.08em]"><SpinningTop size={16} className="" /> Coming soon</div>
-            : <button onClick={() => { if (!user) onRequireAuth(); else setPlaying(t.id); }} className={btnPrimary + " mt-6"}><Play size={15} fill="currentColor" /> Play</button>}
+          <div className="flex-1 flex flex-col">
+            <div className="flex items-center gap-3">
+              <span className="h-7 px-3 rounded-full bg-slate text-fog text-[11px] font-semibold uppercase tracking-[0.12em] inline-flex items-center">{t.tag}</span>
+              {t.locked && <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-mist">Locked</span>}
+            </div>
+            <h3 className="font-display text-fog text-3xl font-light mt-4">{t.title}</h3>
+            <p className="text-mist mt-3 text-sm leading-relaxed flex-1">{t.desc}</p>
+            {t.locked
+              ? <div className="mt-6 inline-flex items-center justify-center gap-2 h-12 px-6 rounded-full border border-fog/12 text-mist text-sm font-semibold uppercase tracking-[0.08em] w-full"><SpinningTop size={16} /> Coming soon</div>
+              : <button onClick={() => { if (!user) onRequireAuth(); else setPlaying(t.id); }} className={btnPrimary + " mt-6 w-full"}><Play size={15} fill="currentColor" /> Play</button>}
+          </div>
         </div>
-      </div>
+      ))}
     </div>
   );
 }
