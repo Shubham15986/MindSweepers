@@ -54,8 +54,8 @@ export default function DemoOverlay({ onClose, onStart }: { onClose: () => void;
           <div className="flex gap-2">
             <button onClick={() => setStep((s) => Math.max(0, s - 1))} disabled={step === 0} className="h-12 w-12 grid place-items-center rounded-2xl border border-(--line) disabled:opacity-30"><ArrowLeft size={18} /></button>
             {done
-              ? <button onClick={onStart} className="flex-1 h-12 rounded-2xl bg-(--plus) text-[#16262c] font-semibold flex items-center justify-center gap-2">Start Puzzle <ChevronRight size={18} /></button>
-              : <button onClick={() => setStep((s) => s + 1)} className="flex-1 h-12 rounded-2xl bg-(--fg) text-[#16262c] font-medium flex items-center justify-center gap-2">Next <ChevronRight size={18} /></button>}
+              ? <button onClick={onStart} className="flex-1 h-12 rounded-2xl bg-(--plus) text-(--bg) font-semibold flex items-center justify-center gap-2">Start Puzzle <ChevronRight size={18} /></button>
+              : <button onClick={() => setStep((s) => s + 1)} className="flex-1 h-12 rounded-2xl bg-(--fg) text-(--bg) font-medium flex items-center justify-center gap-2">Next <ChevronRight size={18} /></button>}
           </div>
         </div>
       </div>

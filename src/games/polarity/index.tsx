@@ -149,14 +149,6 @@ export default function Polarity({ onGameOver, onExit, seed }: GameProps & { see
                 ))}
               </div>
               <p className="text-(--dim) text-lg -mt-1">{lv.flavor}</p>
-              <div className="g-seg" role="radiogroup" aria-label="Mode">
-                {(["daily", "free"] as const).map((m) => (
-                  <button key={m} type="button" role="radio" aria-checked={s.mode === m} onClick={() => g.setMode(m)}>{m === "daily" ? "Daily" : "Free play"}</button>
-                ))}
-              </div>
-              <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-(--dim) h-4">
-                {ranked ? "Ranked · one puzzle per level each day" : "Free play: scores are not ranked"}
-              </p>
             </div>
             <button type="button" className="g-btn-primary mt-8 min-w-[200px]" onClick={() => begin()}>Begin</button>
             <div className="mt-4 flex justify-center gap-2">
@@ -187,7 +179,7 @@ export default function Polarity({ onGameOver, onExit, seed }: GameProps & { see
               <div className="text-center mb-2 shrink-0">
                 <span className="text-xl font-semibold tracking-tight">{s.level}</span>
                 <span className="g-mono text-[10px] tracking-[0.25em] uppercase text-(--dim) ml-2">{lv.flavor}</span>
-                {!ranked && <p className="g-mono text-[10px] tracking-[0.18em] uppercase text-(--dim)">Free play: scores are not ranked</p>}
+                
               </div>
               <Board layout={s.puzzle} states={s.states} wrong={s.wrong} done={s.done} cursor={s.cursor} interactive={playing}
                 minCell={lv.minCellSizePx} onAct={onAct} onToggleDone={g.toggleDone} className="md:flex-1 md:min-h-0" />
@@ -222,7 +214,7 @@ export default function Polarity({ onGameOver, onExit, seed }: GameProps & { see
               <div className="g-card py-3"><p className="g-eyebrow !text-[10px]">Time</p><p className="text-(--fg) mt-1 tabular">{fmt(s.timeMs)}</p></div>
               <div className="g-card py-3"><p className="g-eyebrow !text-[10px]">Score</p><p className="text-(--accent-ink) mt-1 tabular font-semibold">{s.score?.toLocaleString()}</p></div>
             </div>
-            {!ranked && <p className="mt-4 text-[11px] font-semibold uppercase tracking-[0.2em] text-(--dim)">Free play: scores are not ranked</p>}
+            
             <div className="mt-7 flex flex-col gap-3">
               {ranked && <button type="button" className="g-btn-primary" onClick={submit} disabled={submitted}>{submitted ? "Submitted" : "Submit to leaderboard"}</button>}
               <div className="flex gap-3">
