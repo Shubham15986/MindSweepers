@@ -1,4 +1,5 @@
 import { lazy, Suspense, useEffect, useRef, useState } from "react";
+import { User as UserIcon, LogOut } from "lucide-react";
 import type { BoardFilter, GameId, User } from "../shared/types";
 import { BRAND } from "../shared/theme";
 import Hero from "./Hero";
@@ -29,6 +30,7 @@ export default function Shell() {
     return uid && uname ? { id: uid, name: uname } : null;
   });
   const [showAuth, setShowAuth] = useState(false);
+  const [showProfile, setShowProfile] = useState(false);
   const [playing, setPlayingState] = useState<GameId | null>(null);
   const setPlaying = (g: GameId | null) => { window.location.hash = g ? "#/game/" + g : "#/"; };
   useEffect(() => {
@@ -94,9 +96,19 @@ export default function Shell() {
             <a href="#games" className="hidden sm:inline hover:text-fog transition-colors">Games</a>
             <a href="#leaderboard" className="hidden sm:inline hover:text-fog transition-colors">Leaderboard</a>
             {user ? (
-              <div className="flex items-center gap-3">
-                <span className="text-amber truncate max-w-[100px] sm:max-w-none">Hello, {user.name}</span>
-                <button onClick={() => { localStorage.clear(); setUser(null); }} className="text-xs text-mist hover:text-coral transition-colors">Logout</button>
+              <div className="flex items-center gap-2 relative">
+                <button onClick={() => setShowProfile(!showProfile)} className="w-8 h-8 rounded-full border border-fog/15 text-fog grid place-items-center hover:border-amber hover:text-amber transition-colors" aria-label="Profile">
+                  <UserIcon size={16} />
+                </button>
+                <button onClick={() => { localStorage.clear(); setUser(null); }} className="w-8 h-8 rounded-full border border-fog/15 text-fog grid place-items-center hover:border-coral hover:text-coral transition-colors" aria-label="Logout" title="Logout">
+                  <LogOut size={16} />
+                </button>
+                {showProfile && (
+                  <div className="absolute top-full right-0 mt-2 p-3 rounded-xl bg-night border border-fog/10 shadow-xl flex flex-col min-w-[140px] z-50">
+                    <p className="text-fog font-medium text-sm capitalize">{user.name}</p>
+                    <p className="text-mist text-xs normal-case mt-0.5">Player</p>
+                  </div>
+                )}
               </div>
             ) : (
               <button onClick={() => setShowAuth(true)} className="h-9 px-4 rounded-full border border-fog/15 text-fog inline-flex items-center hover:border-amber hover:text-amber transition-colors">Login</button>
