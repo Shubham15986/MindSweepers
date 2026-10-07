@@ -18,17 +18,6 @@
   box-sizing: border-box;
 }
 
-body {
-  margin: 0;
-  padding: 0;
-  background-color: #06080d;
-  color: #e2c468;
-  font-family: 'Cinzel', serif;
-  user-select: none;
-  -webkit-font-smoothing: antialiased;
-  overflow: hidden;
-}
-
 /* Outer Stage Wrapper (Single-Page Viewport Lock) */
 .totem-stage-wrapper {
   position: relative;
