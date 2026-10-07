@@ -104,14 +104,14 @@ export default function GamesSection({ user, playing, setPlaying, onRequireAuth,
 
   if (Game) {
     return (
-      <div className="ll-fade">
+      <div className="ll-fade flex flex-col h-full flex-1">
         <div className="flex items-center justify-between mb-4">
           <button onClick={exit} className={btnGhost}><ArrowLeft size={16} /> Back</button>
-          <span className={eyebrow}>Now dreaming · {TABS.find((x) => x.id === playing)!.label}</span>
+          <span className="text-lg md:text-xl font-display text-amber tracking-[0.2em] uppercase font-semibold">{TABS.find((x) => x.id === playing)!.label}</span>
         </div>
         {/* translateZ creates a containing block so the game's fixed overlays stay inside the stage */}
-        <div className="relative w-full mx-auto max-w-[1120px] h-[85dvh] md:h-[720px] rounded-2xl border border-fog/12 overflow-hidden bg-night [transform:translateZ(0)]">
-          <div className="absolute inset-0 overflow-auto overscroll-contain">
+        <div className="relative w-full mx-auto max-w-[1120px] flex-1 min-h-[75dvh] rounded-2xl border border-fog/12 overflow-hidden bg-night [transform:translateZ(0)] flex flex-col">
+          <div className="absolute inset-0 overflow-auto overscroll-contain flex flex-col">
             <Suspense fallback={<div className="h-full grid place-items-center"><SpinningTop size={28} className="text-amber" /></div>}>
               <Game user={user} onGameOver={handleGameOver} onExit={exit} />
             </Suspense>
