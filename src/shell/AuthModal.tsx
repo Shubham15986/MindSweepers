@@ -13,6 +13,7 @@ export default function AuthModal({ onClose, onAuthSuccess }: { onClose: () => v
   const [phone, setPhone] = useState("");
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -21,10 +22,10 @@ export default function AuthModal({ onClose, onAuthSuccess }: { onClose: () => v
     
     try {
       if (mode === "login") {
-        const u = await login({ email });
+        const u = await login({ email, password });
         onAuthSuccess({ id: u.userId, name: u.username });
       } else {
-        const u = await register({ email, phoneNumber: phone, name, username });
+        const u = await register({ email, phoneNumber: phone, name, username, password });
         onAuthSuccess({ id: u.userId, name: u.username });
       }
     } catch (err: any) {
@@ -69,6 +70,10 @@ export default function AuthModal({ onClose, onAuthSuccess }: { onClose: () => v
           <div>
             <label className="block text-xs font-semibold text-mist uppercase tracking-wider mb-1.5">Email</label>
             <input required type="email" value={email} onChange={e => setEmail(e.target.value)} className={inputClass} placeholder="cobb@mindsweepers.com" />
+          </div>
+          <div>
+            <label className="block text-xs font-semibold text-mist uppercase tracking-wider mb-1.5">Password</label>
+            <input required type="password" value={password} onChange={e => setPassword(e.target.value)} className={inputClass} placeholder="••••••••" />
           </div>
 
           <button type="submit" disabled={loading} className={btnPrimary + " w-full mt-4 h-12"}>

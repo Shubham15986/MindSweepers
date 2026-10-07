@@ -30,19 +30,19 @@ if (!MONGO_URI) {
 
 app.post('/api/auth/register', async (req, res) => {
   try {
-    const { name, email, phoneNumber, username } = req.body;
+    const { name, email, phoneNumber, username, password } = req.body;
     
-    // TODO: Add Username abusive word and college club filter logic here
+    if (!password) return res.status(400).json({ error: 'Password is required' });
 
     const existingUser = await User.findOne({ $or: [{ email }, { username }, { phoneNumber }] });
     if (existingUser) {
       return res.status(400).json({ error: 'Email, username, or phone number already in use' });
     }
 
-    const user = new User({ name, email, phoneNumber, username });
+    const user = new User({ name, email, phoneNumber, username, password });
     await user.save();
     
-    res.status(201).json({ message: 'User registered successfully', userId: user._id });
+    res.status(201).json({ message: 'User registered successfully', userId: user._id, username: user.username });
   } catch (error) {
     console.error('Registration Error:', error);
     res.status(500).json({ error: 'Internal server error' });
@@ -51,12 +51,12 @@ app.post('/api/auth/register', async (req, res) => {
 
 app.post('/api/auth/login', async (req, res) => {
   try {
-    const { email } = req.body;
+    const { email, password } = req.body;
     const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(401).json({ error: 'User not found' });
+    if (!user || user.password !== password) {
+      return res.status(401).json({ error: 'Invalid email or password' });
     }
-    // Simple login: return userId (In production, use JWT)
+    // Simple login: return userId
     res.json({ message: 'Login successful', userId: user._id, username: user.username });
   } catch (error) {
     console.error('Login Error:', error);
@@ -68,17 +68,11 @@ app.post('/api/auth/login', async (req, res) => {
 // SCORE ENDPOINTS
 // ------------------------------------------------------------------
 
-const POINTS_MAP = {
-  easy: 20,
-  medium: 30,
-  hard: 50
-};
-
 app.post('/api/scores/submit', async (req, res) => {
   try {
-    const { userId, gameId, difficulty } = req.body;
+    const { userId, gameId, difficulty, score: rawScore } = req.body;
 
-    if (!userId || !gameId || !difficulty) {
+    if (!userId || !gameId || rawScore === undefined) {
       return res.status(400).json({ error: 'Missing required fields' });
     }
 
@@ -86,16 +80,12 @@ app.post('/api/scores/submit', async (req, res) => {
       return res.status(400).json({ error: 'Invalid gameId' });
     }
 
-    if (!['easy', 'medium', 'hard'].includes(difficulty)) {
-      return res.status(400).json({ error: 'Invalid difficulty' });
-    }
-
-    const points = POINTS_MAP[difficulty];
+    const points = Number(rawScore);
 
     const score = new Score({
       userId,
       gameId,
-      difficulty,
+      difficulty: difficulty || 'hard',
       points
     });
 

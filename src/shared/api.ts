@@ -15,11 +15,11 @@ function mapLevelToDifficulty(level: string) {
   return "medium";
 }
 
-export async function login({ email }: { email: string }) {
+export async function login({ email, password }: { email: string; password?: string }) {
   const res = await fetch(`${API_BASE}/auth/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email })
+    body: JSON.stringify({ email, password })
   });
   if (!res.ok) {
     const err = await res.json();
@@ -30,7 +30,7 @@ export async function login({ email }: { email: string }) {
   return data;
 }
 
-export async function register(payload: { email: string; phoneNumber: string; name: string; username: string }) {
+export async function register(payload: { email: string; phoneNumber: string; name: string; username: string; password?: string }) {
   const res = await fetch(`${API_BASE}/auth/register`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -41,7 +41,7 @@ export async function register(payload: { email: string; phoneNumber: string; na
     throw new Error(err.error || "Registration failed");
   }
   const data = await res.json();
-  setAuth(data.userId, payload.username);
+  setAuth(data.userId, data.username);
   return data;
 }
 
@@ -57,7 +57,7 @@ export async function submitScore({ game, score, level }: { game: GameId; score:
   const res = await fetch(`${API_BASE}/scores/submit`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ userId: myUserId, gameId: game, difficulty })
+    body: JSON.stringify({ userId: myUserId, gameId: game, difficulty, score })
   });
 
   if (!res.ok) throw new Error("Failed to submit score");
