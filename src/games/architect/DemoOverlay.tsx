@@ -44,7 +44,7 @@ export default function DemoOverlay({ onClose, onStart }: { onClose: () => void;
       <div key={key + idx} className="ar-cell" style={{ opacity: scene < 2 && !inRow ? 0.35 : 1, cursor: "default" }}>
         {shown && (
           <div className={"absolute inset-0 grid place-items-center" + (scene === 2 ? " ar-demo-pop" : "") + (scene === 1 && inRow && !VISIBLE.has(idx) ? " ar-demo-dim" : "")}
-            style={{ animationDelay: scene === 2 ? order * 200 + "ms" : scene === 1 ? "500ms" : undefined }}>
+            style={{ transformStyle: 'preserve-3d', animationDelay: scene === 2 ? order * 200 + "ms" : scene === 1 ? "500ms" : undefined }}>
             <div className="ar-tower-3d" style={{ opacity: 1 }}>
               <div className="ar-face top" style={{ transform: `translateZ(${frac * 45 * 1.5}px)` }}>
                 <span className="ar-num-3d">{v}</span>

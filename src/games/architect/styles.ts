@@ -7,8 +7,8 @@ export const ARCH_CSS = baseCss(".architect-root") + `
 
 /* Board: sized in px by useFitCell; scrolls rather than shrinking below the minimum */
 .architect-root .ar-boardwrap { width: 100%; min-width: 0; overflow: auto; overscroll-behavior: contain; display: grid; }
-.architect-root .ar-board { display: grid; margin: auto; padding: 6px; border-radius: 10px; background: var(--frame); }
-.architect-root .ar-cell { position: relative; min-width: 0; min-height: 0; border-radius: 3px; background: var(--surface); overflow: hidden; display: grid; place-items: center; cursor: pointer; }
+.architect-root .ar-board { display: grid; margin: auto; padding: 6px; border-radius: 10px; background: var(--frame); transform-style: preserve-3d; }
+.architect-root .ar-cell { position: relative; min-width: 0; min-height: 0; border-radius: 3px; background: var(--surface); display: grid; place-items: center; cursor: pointer; transform-style: preserve-3d; }
 .architect-root .ar-cell.is-given { background: var(--muted); cursor: default; }
 .architect-root .ar-cell.is-peer { background: color-mix(in srgb, var(--accent) 9%, var(--surface)); }
 .architect-root .ar-cell.is-given.is-peer { background: var(--muted); }
