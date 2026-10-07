@@ -296,7 +296,7 @@ export default function Polarity({ user, onGameOver, onExit }) {
   const [future, setFuture] = useState([]);
   const [doneClues, setDoneClues] = useState(() => new Set());
   const [activeModal, setActiveModal] = useState(null); 
-  const [showInitialGuide, setShowInitialGuide] = useState(true);
+  const [showInitialGuide, setShowInitialGuide] = useState(false);
   const [tutStep, setTutStep] = useState(0);
   const [tapMode, setTapMode] = useState("charge");
   const [cursor, setCursor] = useState({ r: 0, c: 0 });
@@ -558,7 +558,6 @@ export default function Polarity({ user, onGameOver, onExit }) {
 
   return (
     <div className="totem-stage-wrapper">
-      <DreamBackground />
 
       <div className="totem-app-card">
         {/* ================= HEADER NAV BAR ================= */}
@@ -571,6 +570,7 @@ export default function Polarity({ user, onGameOver, onExit }) {
           <TopNavCrest />
 
           <div className="totem-nav-right">
+            <button className="totem-nav-link" onClick={() => { setTutStep(0); setShowInitialGuide(true); }}>DEMO</button>
             <button className="totem-nav-link" onClick={() => setActiveModal('about')}>ABOUT</button>
           </div>
         </header>
