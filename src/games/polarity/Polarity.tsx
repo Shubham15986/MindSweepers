@@ -370,6 +370,15 @@ export default function Polarity({ user, onGameOver, onExit }) {
     setHasScored(false);
   }, [levelIdx]);
 
+  useEffect(() => {
+    if (solved && onGameOver && !hasScored) {
+      setHasScored(true);
+      const scores = [20, 30, 50];
+      const earned = scores[levelIdx] || 50;
+      onGameOver({ score: earned, level: "Polarity L" + (levelIdx + 1) });
+    }
+  }, [solved, hasScored, levelIdx, onGameOver]);
+
   const commit = useCallback((next) => {
     setPast((p) => [...p, board]);
     setFuture([]);
@@ -538,15 +547,7 @@ export default function Polarity({ user, onGameOver, onExit }) {
     const textColor = isDone ? "#555d6e" : isErr ? "#ff3344" : "#ffeeaa";
 
     return (
-      <g key={key} onClick={() => {
-              if (solved && onGameOver && !hasScored) {
-                setHasScored(true);
-                onGameOver({ score: (levelIdx + 1) * 50, level: "Polarity L" + (levelIdx + 1) });
-              } else if (!solved) {
-                setCheckState("wrong");
-                setTimeout(() => setCheckState("idle"), 1500);
-              }
-            }}>
+      <g key={key} onClick={() => toggleClue(key)} className="totem-clue-badge" style={{ cursor: "pointer" }}>
         {/* Brass Bevel Ring */}
         <circle cx={x} cy={y} r="16" fill="#141824" stroke="#d4af37" strokeWidth="1.5" filter="drop-shadow(0 2px 4px rgba(0,0,0,0.8))" />
         <circle cx={x} cy={y} r="13" fill="none" stroke="#775511" strokeWidth="1" />
@@ -758,9 +759,16 @@ export default function Polarity({ user, onGameOver, onExit }) {
 
           {/* Primary Save / Check Action Pill Button */}
           <div className="totem-save-btn-wrapper">
-            <button className={`totem-save-btn ${solved ? "solved-glow" : ""}`} onClick={() => { if (solved && onGameOver && !hasScored) { setHasScored(true); onGameOver({ score: (levelIdx + 1) * 50, level: "Polarity L" + (levelIdx + 1) }); } }}>
+            <button className={`totem-save-btn ${solved ? "solved-glow" : ""}`} onClick={() => {
+              if (solved) {
+                newGame();
+              } else {
+                setCheckState("wrong");
+                setTimeout(() => setCheckState("idle"), 1500);
+              }
+            }}>
               <span className="totem-gem-left" />
-              <span className="totem-save-text">{solved ? "STABILIZED!" : checkState === "wrong" ? "INCORRECT" : "CHECK"}</span>
+              <span className="totem-save-text">{solved ? "STABILIZED! NEXT DREAM" : checkState === "wrong" ? "INCORRECT" : "CHECK"}</span>
               <span className="totem-gem-right" />
             </button>
           </div>
