@@ -22,8 +22,12 @@ function useDreamwallWorker() {
     if (!workerRef.current) return;
     workerRef.current.onmessage = (e) => {
       if (e.data.type === "done") {
+        // The worker prechecks the puzzle to ensure exactly 1 solution exists.
         setGenerating(false);
         onDone(e.data.puzzle);
+      } else if (e.data.type === "error") {
+        // If generation failed, retry with a mutated seed to guarantee a valid solvable grid
+        workerRef.current?.postMessage({ n, seed: seed + Math.random().toString(36).substring(7) });
       }
     };
     workerRef.current.postMessage({ n, seed });
