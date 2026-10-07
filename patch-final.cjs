@@ -2,19 +2,8 @@ const fs = require('fs');
 let content = fs.readFileSync('src/shell/Final.tsx', 'utf8');
 
 content = content.replace(
-  /<form[\s\S]*?<\/form>/,
+  /<div className="max-w-\[1200px\] mx-auto px-6 py-32 md:py-40 text-center">[\s\S]*?<\/div>/,
   ''
-);
-
-content = content.replace(
-  /\{joined \? \([\s\S]*?\) : \(/,
-  ''
-);
-
-// We need to also remove the trailing )} that matched the ternary
-content = content.replace(
-  /\n\s*\)\}\n\s*<\/div>/,
-  '\n      </div>'
 );
 
 fs.writeFileSync('src/shell/Final.tsx', content);

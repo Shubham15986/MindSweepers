@@ -439,13 +439,7 @@ function Game({ level, saved, onBack, onMenu, onRules, onSettings, onSave, onSol
         </div>
       </div>
 
-      <div className="mt-4 p-1.5 rounded-2xl bg-[var(--muted)] grid grid-cols-3 gap-1">
-        {tools.map((t) => (
-          <button key={t.label} onClick={() => setTool(t.v)} className={"h-12 rounded-xl flex items-center justify-center gap-2 text-sm font-medium transition " + (tool === t.v ? "bg-[var(--fg)] text-[var(--bg)] shadow" : "text-[var(--dim)] hover:text-[var(--fg)]")}>
-            {t.icon}{t.label}
-          </button>
-        ))}
-      </div>
+      
       <div className="grid grid-cols-4 mt-3 mb-2">
         {([[Undo2, "Undo", undo, !past.length], [Redo2, "Redo", redo, !future.length], [RotateCcw, "Reset", reset, false], [Lightbulb, "Reveal", reveal, false]] as const).map(([I, l, fn, dis]) => (
           <button key={l} onClick={fn} disabled={dis || won} className="h-14 flex flex-col items-center justify-center gap-1 rounded-xl hover:bg-[var(--muted)] disabled:opacity-30 transition">
