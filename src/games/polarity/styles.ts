@@ -8,12 +8,12 @@ export const POL_CSS = baseCss(".polarity-root") + `
 /* Board: sized in px by useFitCell; scrolls sideways rather than shrinking below the minimum */
 .polarity-root .pl-box { width: 100%; min-width: 0; overflow: auto; overscroll-behavior: contain; display: grid; }
 .polarity-root .pl-grid { display: grid; margin: auto; padding: var(--pad); gap: var(--gap); border-radius: 10px; background: var(--frame); }
-.polarity-root .pl-dom { position: relative; display: flex; border-radius: 4px; background: var(--surface); overflow: hidden; }
+.polarity-root .pl-dom { position: relative; display: flex; border-radius: 8px; background: var(--surface); border: 2px solid var(--line); overflow: hidden; }
 .polarity-root .pl-dom.is-v { flex-direction: column; }
 .polarity-root .pl-fill { position: absolute; inset: 0; background: var(--muted); opacity: 0; transition: opacity 200ms; pointer-events: none; }
 .polarity-root .pl-fill::after { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(135deg, transparent 0 6px, color-mix(in srgb, var(--fg) 7%, transparent) 6px 7px); }
 .polarity-root .pl-dom.is-blank .pl-fill { opacity: 1; }
-.polarity-root .pl-dom.is-wrong { box-shadow: inset 0 0 0 2px var(--bad); }
+.polarity-root .pl-dom.is-wrong { border-color: var(--bad); box-shadow: inset 0 0 0 1px var(--bad); }
 .polarity-root .pl-half { position: relative; flex: 1; min-width: 0; min-height: 0; display: grid; place-items: center; cursor: pointer; touch-action: manipulation; -webkit-user-select: none; user-select: none; }
 .polarity-root .pl-half + .pl-half { border-left: 1px dashed var(--line); }
 .polarity-root .pl-dom.is-v .pl-half + .pl-half { border-left: 0; border-top: 1px dashed var(--line); }

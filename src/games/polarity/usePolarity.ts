@@ -41,12 +41,12 @@ export function nextState(t: number, action: Action, plusHere: number): number {
   const other = 3 - plusHere;
   switch (action) {
     case "magnet": return t === plusHere ? other : t === other ? UNDECIDED : plusHere;
-    case "blank": return t === 0 ? QMARK : t === QMARK ? UNDECIDED : 0;
-    case "q": return t === QMARK ? UNDECIDED : QMARK;
+    case "blank": return t === 0 ? UNDECIDED : 0;
+    case "q": return UNDECIDED;
     case "erase": return UNDECIDED;
     case "long": return t === 0 ? UNDECIDED : 0;
-    default: // + here, + there, blank, ?, empty
-      return t === plusHere ? other : t === other ? 0 : t === 0 ? QMARK : t === QMARK ? UNDECIDED : plusHere;
+    default: // + here, + there, blank, empty
+      return t === plusHere ? other : t === other ? 0 : t === 0 ? UNDECIDED : plusHere;
   }
 }
 
