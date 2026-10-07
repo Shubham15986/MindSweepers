@@ -75,7 +75,7 @@ export default function DemoOverlay({ onClose, onStart }: { onClose: () => void;
 
   return (
     <div className="g-overlay ar-fade" role="dialog" aria-modal="true" aria-label="ARCHITECT demo">
-      <div className="g-card w-full max-w-sm p-6 flex flex-col gap-5 max-h-[90vh] overflow-y-auto">
+      <div className="g-card w-full max-w-sm p-6 flex flex-col gap-5 max-h-[90vh] overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
         <div className="flex items-center justify-between">
           <span className="g-eyebrow">Demo</span>
           <div className="flex gap-1.5">{CAPTIONS.map((_, k) => <span key={k} className={"ar-dot" + (k === scene ? " is-on" : "")} />)}</div>
@@ -96,10 +96,10 @@ export default function DemoOverlay({ onClose, onStart }: { onClose: () => void;
             <li>The clues on the edges tell you how many towers are visible looking down that line.</li>
             <li>Taller towers block the view of shorter towers behind them.</li>
           </ul>
-          <p className="font-semibold text-(--fg) mt-2">Example from the animated grid above:</p>
-          <ul className="list-disc pl-5 space-y-1">
-            <li><strong>Bottom Row (1, 2, 3, 4):</strong> Looking from the left, the clue is <strong>4</strong> because all towers are visible in ascending order. From the right, the clue is <strong>1</strong> because the tallest tower (4) blocks everything behind it.</li>
-            <li><strong>Top Row (2, 1, 4, 3):</strong> Looking from the left, the clue is <strong>2</strong>. You see the 2-tower (which hides the 1-tower behind it), and you see the 4-tower (which hides the 3-tower).</li>
+          <p className="font-semibold text-(--fg) mt-3">Example: Look at the top row (2, 1, 4, 3)</p>
+          <ul className="list-disc pl-5 space-y-2 mt-1">
+            <li><strong>From the left side (Clue is 2):</strong> You can see the <strong>2</strong>-tower. It completely hides the shorter 1-tower behind it. Then you see the giant <strong>4</strong>-tower, which completely hides the 3-tower. Total towers you can see = 2.</li>
+            <li><strong>From the right side (Clue is 2):</strong> You can see the <strong>3</strong>-tower, and the taller <strong>4</strong>-tower behind it. The giant 4-tower blocks everything else. Total towers you can see = 2.</li>
           </ul>
         </div>
         <div className="flex gap-3">
