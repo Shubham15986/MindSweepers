@@ -197,7 +197,7 @@ export default function Dreamwall({ onGameOver }: GameProps) {
   const solvedLevels = LEVELS.filter((l) => progress[l.id]?.status === "solved");
   
   return (
-    <div style={vars as React.CSSProperties} className="dreamwall-root min-h-full bg-[var(--bg)] text-[var(--fg)] transition-colors duration-300">
+    <div style={vars as React.CSSProperties} className="dreamwall-root min-h-full flex-1 flex flex-col bg-[var(--bg)] text-[var(--fg)] transition-colors duration-300">
       {screen === "menu" && (
         <main className="relative mx-auto max-w-5xl min-h-dvh px-6 py-8 flex flex-col">
           <header className="flex items-center justify-between">
@@ -382,7 +382,7 @@ function Game({ level, saved, onBack, onMenu, onRules, onSettings, onSave, onSol
     onSolve(time, 0);
   };
 
-  const cellPx = "min(" + (n === 4 ? 76 : n === 6 ? 60 : 50) + "px, calc((100vw - 24px - " + ((n-1)*2) + "px)/" + n + "))";
+  const cellPx = "min(" + Math.floor(400 / n) + "px, calc((100vw - 32px - " + ((n-1)*2) + "px)/" + n + "))";
   const tools = [
     { v: 1 as Tool, label: "Sea", icon: <Square size={18} fill="currentColor" /> },
     { v: 2 as Tool, label: "Island", icon: <Circle size={9} fill="currentColor" /> },

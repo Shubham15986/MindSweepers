@@ -36,8 +36,8 @@ export default function Leaderboard({ refreshKey, initialFilter = "dreamwall" }:
         </div>
       </div>
 
-      <div className="grid grid-cols-[40px_1fr_auto_64px] gap-3 px-4 md:px-5 h-10 items-center text-[10px] font-semibold uppercase tracking-[0.2em] text-mist/70 border-b border-fog/8">
-        <span>Rank</span><span>Dreamer</span><span className="text-right">Score</span><span className="text-right">Level</span>
+      <div className="grid grid-cols-[40px_1fr_auto] gap-3 px-4 md:px-5 h-10 items-center text-[10px] font-semibold uppercase tracking-[0.2em] text-mist/70 border-b border-fog/8">
+        <span>Rank</span><span>Dreamer</span><span className="text-right">Score</span>
       </div>
 
       <div className="relative max-h-[560px] overflow-y-auto">
@@ -52,7 +52,7 @@ export default function Leaderboard({ refreshKey, initialFilter = "dreamwall" }:
             {rows.map((r, i) => {
               const podium = i < 3 ? theme.podium[i] : null;
               return (
-                <li key={r.id} className={"ll-stagger grid grid-cols-[40px_1fr_auto_64px] gap-3 items-center h-14 px-4 md:px-5 border-b border-fog/6 " + (r.isYou ? "bg-amber/8" : "")} style={{ animationDelay: i * 50 + "ms" }}>
+                <li key={r.id} className={"ll-stagger grid grid-cols-[40px_1fr_auto] gap-3 items-center h-14 px-4 md:px-5 border-b border-fog/6 " + (r.isYou ? "bg-amber/8" : "")} style={{ animationDelay: i * 50 + "ms" }}>
                   <span className="flex items-center gap-1 text-sm font-semibold tabular-nums" style={{ color: podium ?? undefined }}>
                     {podium ? <SpinningTop size={13} still /> : null}{i + 1}
                   </span>
@@ -62,13 +62,13 @@ export default function Leaderboard({ refreshKey, initialFilter = "dreamwall" }:
                     <span className={"truncate text-sm " + (r.isYou ? "text-amber font-semibold" : "text-fog")}>{r.name.split("@")[0].split(" ")[0]}</span>
                   </span>
                   <span className="text-right text-sm font-medium text-fog tabular-nums">{r.score.toLocaleString()}</span>
-                  <span className="text-right text-xs text-mist">{r.level}</span>
+                  
                 </li>
               );
             })}
           </ol>
         )}
-        <div className="sticky bottom-0 grid grid-cols-[40px_1fr_auto_64px] gap-3 items-center h-14 px-4 md:px-5 bg-card border-t border-amber/40">
+        <div className="sticky bottom-0 grid grid-cols-[40px_1fr_auto] gap-3 items-center h-14 px-4 md:px-5 bg-card border-t border-amber/40">
           <span className="text-sm font-semibold text-amber tabular-nums">{me.rank ?? "–"}</span>
           <span className="flex items-center gap-3 min-w-0">
             <span className="w-8 h-8 shrink-0 rounded-full grid place-items-center text-[11px] font-semibold bg-amber text-night">YOU</span>
