@@ -41,9 +41,9 @@ app.post('/api/auth/register', async (req, res) => {
     
     if (!password) return res.status(400).json({ error: 'Password is required' });
 
-    const existingUser = await User.findOne({ $or: [{ email }, { username }, { phoneNumber }] });
+    const existingUser = await User.findOne({ $or: [{ email }, { username }] });
     if (existingUser) {
-      return res.status(400).json({ error: 'Email, username, or phone number already in use' });
+      return res.status(400).json({ error: 'Email or username already in use' });
     }
 
     const user = new User({ name, email, phoneNumber, username, password });
