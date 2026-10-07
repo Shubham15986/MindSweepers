@@ -199,7 +199,7 @@ export default function Dreamwall({ onGameOver }: GameProps) {
   return (
     <div style={vars as React.CSSProperties} className="dreamwall-root min-h-full flex-1 flex flex-col bg-[var(--bg)] text-[var(--fg)] transition-colors duration-300">
       {screen === "menu" && (
-        <main className="relative mx-auto max-w-5xl min-h-dvh px-6 py-8 flex flex-col">
+        <main className="relative mx-auto max-w-5xl flex-1 min-h-0 px-6 py-8 flex flex-col">
           <header className="flex items-center justify-between">
             <Logo small />
             <div className="flex items-center gap-1">
@@ -273,7 +273,7 @@ export default function Dreamwall({ onGameOver }: GameProps) {
 
       {screen === "game" && (
         generating || !puzzleData ? (
-          <div className="h-full min-h-dvh flex flex-col items-center justify-center text-[var(--dim)] gap-4 font-mono text-sm">
+          <div className="h-full flex-1 min-h-0 flex flex-col items-center justify-center text-[var(--dim)] gap-4 font-mono text-sm">
             <Spinner />
             <p>Generating {level.n}x{level.n} dreamscape...</p>
             {level.n >= 8 && <p className="text-[10px] opacity-60">(Complex layers may take up to 30s to stabilize)</p>}
@@ -382,15 +382,14 @@ function Game({ level, saved, onBack, onMenu, onRules, onSettings, onSave, onSol
     onSolve(time, 0);
   };
 
-  const cellPx = "min(" + Math.floor(400 / n) + "px, calc((100vw - 32px - " + ((n-1)*2) + "px)/" + n + "))";
-  const tools = [
+    const tools = [
     { v: 1 as Tool, label: "Sea", icon: <Square size={18} fill="currentColor" /> },
     { v: 2 as Tool, label: "Island", icon: <Circle size={9} fill="currentColor" /> },
     { v: 0 as Tool, label: "Erase", icon: <Eraser size={18} strokeWidth={1.6} /> },
   ];
 
   return (
-    <main className="mx-auto max-w-xl min-h-dvh flex flex-col px-4 py-4 select-none">
+    <main className="mx-auto max-w-xl flex-1 min-h-0 flex flex-col px-4 py-4 select-none">
       <nav className="flex items-center justify-between">
         <button onClick={onBack} aria-label="Back" className="w-11 h-11 grid place-items-center rounded-full hover:bg-[var(--muted)]"><ArrowLeft size={20} strokeWidth={1.6} /></button>
         <div className="text-center">
@@ -418,7 +417,7 @@ function Game({ level, saved, onBack, onMenu, onRules, onSettings, onSave, onSol
 
       <div className="flex-1 grid place-items-center py-2">
         <div className={"relative rounded-lg p-[3px] bg-ink shadow-[0_24px_50px_-24px_rgba(19,21,27,.6)] transition " + (won ? "blur-[2px] scale-[.98]" : "")}
-          style={{ display: "grid", gridTemplateColumns: "repeat(" + n + "," + cellPx + ")", gap: "2px", touchAction: "none" }}
+          style={{ display: "grid", gridTemplateColumns: "repeat(" + n + ", minmax(0, 1fr))", gap: "2px", touchAction: "none", width: "100%", maxWidth: "440px", aspectRatio: "1" }}
           onPointerLeave={() => {}}>
           {cells.map((c, i) => {
             const clue = level.clues[i];
