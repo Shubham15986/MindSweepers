@@ -22,15 +22,15 @@ export type LevelConfig = {
 
 export const LEVELS: Record<LevelKey, LevelConfig> = {
   Easy: {
-    key: "Easy", flavor: "Dream", difficulty: "Easy", cols: 5, rows: 4, stripClues: false, clueKeepRatio: 1,
+    key: "Easy", flavor: "Dream", difficulty: "Easy", cols: 4, rows: 3, stripClues: false, clueKeepRatio: 1,
     targetUniqueSolution: true, minCellSizePx: 44, lookahead: false, baseScore: 1000, graceSec: 60,
   },
   Medium: {
-    key: "Medium", flavor: "Deeper", difficulty: "Medium", cols: 7, rows: 6, stripClues: false, clueKeepRatio: 1,
+    key: "Medium", flavor: "Deeper", difficulty: "Medium", cols: 4, rows: 5, stripClues: false, clueKeepRatio: 1,
     targetUniqueSolution: true, minCellSizePx: 44, lookahead: false, baseScore: 2500, graceSec: 150,
   },
   Hard: {
-    key: "Hard", flavor: "Limbo's edge", difficulty: "Hard", cols: 8, rows: 7, stripClues: true, clueKeepRatio: 0.6,
+    key: "Hard", flavor: "Limbo's edge", difficulty: "Hard", cols: 6, rows: 5, stripClues: true, clueKeepRatio: 0.6,
     targetUniqueSolution: true, minCellSizePx: 36, lookahead: true, baseScore: 5000, graceSec: 300,
   },
 };

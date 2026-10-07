@@ -129,7 +129,6 @@ export default function Polarity({ onGameOver, onExit, seed }: GameProps & { see
             </select>
             <span className="flex items-center gap-1.5 text-(--dim)"><TimerIcon size={14} aria-hidden />
               <Timer startedAt={s.startedAt} running={playing} frozen={s.phase === "loading" ? 0 : s.timeMs} /></span>
-            <span className="g-mono text-xs text-(--dim) tabular whitespace-nowrap" aria-label={MAX_HINTS - s.hints + " hints left"}>HINTS <span className="text-(--fg) font-bold">{MAX_HINTS - s.hints}</span>/{MAX_HINTS}</span>
           </>
         )}
       </GameNav>
@@ -198,16 +197,14 @@ export default function Polarity({ onGameOver, onExit, seed }: GameProps & { see
               <p className="text-center md:text-left text-sm text-(--fg) min-h-10" aria-live="polite">
                 {s.phase === "revealed" ? "The solution, revealed. No score this time." : s.message ?? "Decide every domino: magnet or blank."}
               </p>
-              <ToolPalette tool={s.tool} hintsLeft={MAX_HINTS - s.hints} canUndo={s.past.length > 0} canRedo={s.future.length > 0} disabled={!playing}
-                onTool={g.setTool} onUndo={g.undo} onRedo={g.redo} onHint={g.hint} onCheck={g.check} onReveal={() => setConfirm({ kind: "giveup" })} />
+              <ToolPalette tool={s.tool} canUndo={s.past.length > 0} canRedo={s.future.length > 0} disabled={!playing}
+                onTool={g.setTool} onUndo={g.undo} onRedo={g.redo} onCheck={g.check} onReveal={() => setConfirm({ kind: "giveup" })} />
               <div className="flex gap-2 max-w-[440px] w-full mx-auto">
-                {s.phase === "revealed" ? (
+                {s.phase === "revealed" && (
                   <>
                     <button type="button" className="g-btn-ghost flex-1" onClick={g.toStart}>Back</button>
                     <button type="button" className="g-btn-primary flex-1" onClick={() => begin(s.level, "free")}>New puzzle</button>
                   </>
-                ) : (
-                  <button type="button" className="g-btn-ghost mx-auto !px-4 inline-flex items-center gap-2 !text-(--bad)" onClick={() => setConfirm({ kind: "giveup" })} disabled={!playing}><Flag size={15} />View Ans</button>
                 )}
               </div>
             </div>
@@ -221,9 +218,8 @@ export default function Polarity({ onGameOver, onExit, seed }: GameProps & { see
           <div className="relative text-center w-full max-w-sm pl-rise">
             <p className="g-eyebrow">{s.level} · {lv.flavor}</p>
             <h2 className="text-(--fg) font-light text-7xl mt-2">Solved.</h2>
-            <div className="mt-6 grid grid-cols-3 gap-2">
+            <div className="mt-6 grid grid-cols-2 gap-2">
               <div className="g-card py-3"><p className="g-eyebrow !text-[10px]">Time</p><p className="text-(--fg) mt-1 tabular">{fmt(s.timeMs)}</p></div>
-              <div className="g-card py-3"><p className="g-eyebrow !text-[10px]">Hints</p><p className="text-(--fg) mt-1 tabular">{s.hints}</p></div>
               <div className="g-card py-3"><p className="g-eyebrow !text-[10px]">Score</p><p className="text-(--accent-ink) mt-1 tabular font-semibold">{s.score?.toLocaleString()}</p></div>
             </div>
             {!ranked && <p className="mt-4 text-[11px] font-semibold uppercase tracking-[0.2em] text-(--dim)">Free play: scores are not ranked</p>}

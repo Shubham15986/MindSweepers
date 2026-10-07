@@ -46,7 +46,7 @@ function PolarityPreview() {
           </div>
         ))}
       </div>
-      <span className="absolute bottom-3 left-4 text-[10px] font-semibold uppercase tracking-[0.24em] text-mist">5×4 · 7×6 · 8×7</span>
+      <span className="absolute bottom-3 left-4 text-[10px] font-semibold uppercase tracking-[0.24em] text-mist">4×3 · 4×5 · 6×5</span>
     </div>
   );
 }
