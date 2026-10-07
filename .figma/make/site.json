@@ -1,0 +1,10 @@
+{
+  "description": "Engage in a single-player spatial logic puzzle with a minimalist design, offering a calming experience as you solve challenging Nurikabe grids.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}

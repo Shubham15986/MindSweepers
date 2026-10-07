@@ -1,0 +1,58 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@400;500;600;700&display=swap');
+@import 'tailwindcss';
+
+@theme {
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Cormorant Garamond', ui-serif, Georgia, serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  /* Limbo Labs shell */
+  --color-night: #0e1a1f;
+  --color-abyss: #050809;
+  --color-amber: #e8a24a;
+  --color-slate: #2b3e45;
+  --color-fog: #d9e2e3;
+  --color-mist: #9fb2b6;
+  --color-card: #16262c;
+  --color-silver: #c9d3d5;
+  --color-bronze: #b5733a;
+
+  /* Dreamwall game palette (used inside src/games/dreamwall) */
+  --color-paper: #f2eee4;
+  --color-ink: #13151b;
+  --color-mint: #2fd3a6;
+  --color-coral: #ef6a5b;
+}
+
+html { scroll-behavior: smooth; }
+body { font-family: var(--font-sans); background: #0e1a1f; color: #9fb2b6; -webkit-font-smoothing: antialiased; }
+
+@keyframes ll-spin { to { transform: rotate(360deg); } }
+.ll-spin { animation: ll-spin 1.6s linear infinite; }
+.ll-spin-slow { animation: ll-spin 6s linear infinite; }
+
+@keyframes ll-fadeup { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+@media (min-width: 768px) { .ll-stagger { opacity: 0; animation: ll-fadeup 520ms cubic-bezier(.2,.8,.2,1) forwards; } }
+
+@keyframes ll-tab { from { opacity: 0; transform: translateX(16px); } to { opacity: 1; transform: none; } }
+.ll-tab { animation: ll-tab 150ms ease-out both; }
+@keyframes ll-fade { from { opacity: 0; } to { opacity: 1; } }
+.ll-fade { animation: ll-fade 200ms ease-out both; }
+
+@keyframes ll-wobble { 0%, 100% { transform: rotate(-4deg); } 50% { transform: rotate(4deg); } }
+.ll-wobble { animation: ll-wobble 3.2s ease-in-out infinite; transform-origin: 50% 100%; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .ll-spin, .ll-spin-slow, .ll-wobble { animation: none; }
+  .ll-stagger { animation: ll-fade 200ms ease forwards; }
+  .ll-tab { animation: ll-fade 150ms ease both; }
+}
+
+/* Hero text reveal: groups toggle data-on, lines stagger via inline transition-delay */
+.hero-group { pointer-events: none; }
+.hero-group[data-on="1"] { pointer-events: auto; }
+.hero-line { opacity: 0; transform: translateY(24px); transition: opacity 600ms ease, transform 700ms cubic-bezier(.2,.8,.2,1); }
+.hero-group[data-on="1"] .hero-line { opacity: 1; transform: none; }
+.hero-group[data-on="0"] .hero-line { transition-delay: 0ms !important; transition-duration: 300ms; }
+@media (prefers-reduced-motion: reduce) { .hero-line { transform: none !important; } }

@@ -1,0 +1,70 @@
+import { lazy, Suspense, useEffect, useRef, useState } from "react";
+import type { BoardFilter, GameId, User } from "../shared/types";
+import { BRAND } from "../shared/theme";
+import Hero from "./Hero";
+import GamesSection from "./GamesSection";
+import SpinningTop from "./SpinningTop";
+import { eyebrow } from "./ui";
+
+const Leaderboard = lazy(() => import("./Leaderboard"));
+const Final = lazy(() => import("./Final"));
+
+// Mounts children only once they approach the viewport.
+function WhenNear({ children, minH }: { children: React.ReactNode; minH: number }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [show, setShow] = useState(false);
+  useEffect(() => {
+    const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setShow(true); io.disconnect(); } }, { rootMargin: "600px" });
+    if (ref.current) io.observe(ref.current);
+    return () => io.disconnect();
+  }, []);
+  return <div ref={ref} style={show ? undefined : { minHeight: minH }}>{show && <Suspense fallback={<div style={{ minHeight: minH }} />}>{children}</Suspense>}</div>;
+}
+
+export default function Shell() {
+  const user: User | null = null; // auth comes with the real backend
+  const [playing, setPlaying] = useState<GameId | null>(null);
+  const [refreshKey, setRefreshKey] = useState(0);
+  const [boardFilter, setBoardFilter] = useState<BoardFilter>("dreamwall");
+
+  return (
+    <div className="bg-night min-h-dvh">
+      <header className="fixed top-0 inset-x-0 z-40 bg-gradient-to-b from-night/90 to-transparent">
+        <nav className="max-w-[1200px] mx-auto px-6 h-16 flex items-center justify-between">
+          <a href="#top" className="flex items-center gap-2.5 text-fog">
+            <SpinningTop size={18} className="text-amber" />
+            <span className="text-sm font-semibold tracking-[0.3em]">{BRAND.name}</span>
+          </a>
+          <div className="flex items-center gap-6 text-xs font-semibold uppercase tracking-[0.12em] text-mist">
+            <a href="#games" className="hidden sm:inline hover:text-fog transition-colors">Games</a>
+            <a href="#leaderboard" className="hidden sm:inline hover:text-fog transition-colors">Leaderboard</a>
+            <a href="#games" className="h-9 px-4 rounded-full border border-fog/15 text-fog inline-flex items-center hover:border-amber hover:text-amber transition-colors">Play</a>
+          </div>
+        </nav>
+      </header>
+
+      <div id="top" />
+      <Hero />
+
+      <section id="games" className="relative scroll-mt-16">
+        <div className="max-w-[1200px] mx-auto px-6 pt-16 pb-24 md:pt-24">
+          <p className={eyebrow}>The games</p>
+          <h2 className="font-display text-fog text-5xl md:text-6xl font-light mt-3">Choose Your Dream Level</h2>
+          <div className={"mt-10 grid gap-8 " + (playing ? "" : "lg:grid-cols-[minmax(0,1fr)_420px]")}>
+            <GamesSection user={user} playing={playing} setPlaying={setPlaying}
+              onSubmitted={(g) => { setBoardFilter(g); setRefreshKey((k) => k + 1); }} />
+            <div id="leaderboard" className="scroll-mt-20">
+              <div className="flex items-end justify-between mb-4">
+                <h2 className="font-display text-fog text-3xl md:text-4xl font-light">Hall of Dreamers</h2>
+                <span className={eyebrow}>Higher is better</span>
+              </div>
+              <WhenNear minH={640}><Leaderboard refreshKey={refreshKey} initialFilter={boardFilter} /></WhenNear>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <WhenNear minH={600}><Final /></WhenNear>
+    </div>
+  );
+}
