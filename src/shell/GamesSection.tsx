@@ -7,7 +7,7 @@ import { btnGhost, btnPrimary, card, eyebrow } from "./ui";
 
 const GAMES: Record<GameId, React.LazyExoticComponent<(p: GameProps) => React.ReactElement>> = {
   dreamwall: lazy(() => import("../games/dreamwall")),
-  polarity: lazy(() => import("../games/polarity")),
+  polarity: lazy(() => import("../games/polarity/Polarity")),
   architect: lazy(() => import("../games/architect")),
 };
 
