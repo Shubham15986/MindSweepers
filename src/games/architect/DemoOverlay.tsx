@@ -46,7 +46,7 @@ export default function DemoOverlay({ onClose, onStart }: { onClose: () => void;
           <div className={"absolute inset-0 grid place-items-center" + (scene === 2 ? " ar-demo-pop" : "") + (scene === 1 && inRow && !VISIBLE.has(idx) ? " ar-demo-dim" : "")}
             style={{ animationDelay: scene === 2 ? order * 200 + "ms" : scene === 1 ? "500ms" : undefined }}>
             <span className="ar-tower" style={{ transform: "scaleY(" + frac + ")" }} />
-            <span className="ar-cap" style={{ transform: "translateY(" + (1 - frac) * 100 + "%)" }} />
+            <span className="ar-cap" style={{ bottom: (frac * 100) + "%" }} />
             <span className="ar-num">{v}</span>
           </div>
         )}

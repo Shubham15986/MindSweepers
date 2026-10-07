@@ -38,6 +38,7 @@ export default function Board({ puzzle, cells, notes, selected, wrong, dim, inte
       line.add(idx);
       const h = cells[idx];
       if (h > max) { max = h; vis.add(idx); }
+      else if (h === 0 && max === 0) { vis.add(idx); }
     }
     return { line, vis };
   }, [viewEye, cells, n]);

@@ -35,7 +35,7 @@ function CellImpl({ idx, n, value, notes, given, selected, peer, dup, wrong, dim
       className={"ar-cell" + (given ? " is-given" : "") + (selected ? " is-sel" : "") + (peer && !selected ? " is-peer" : "") + (dup ? " is-dup" : "") + (wrong ? " is-wrong" : "")}
     >
       <span className="ar-tower" style={{ transform: "scaleY(" + frac + ")", opacity: value ? 1 : 0 }} />
-      <span className="ar-cap" style={{ transform: "translateY(" + (1 - frac) * 100 + "%)", opacity: value ? 0.9 : 0 }} />
+      <span className="ar-cap" style={{ bottom: (frac * 100) + "%", opacity: value ? 0.9 : 0 }} />
       {value ? (
         <span className="ar-num">{value}</span>
       ) : notes ? (
