@@ -148,14 +148,6 @@ export default function Architect({ onGameOver, onExit, seed }: GameProps & { se
                 ))}
               </div>
               <p className="text-(--dim) text-lg -mt-1">{LEVELS[s.level].flavor}</p>
-              <div className="g-seg" role="radiogroup" aria-label="Mode">
-                {(["daily", "free"] as const).map((m) => (
-                  <button key={m} type="button" role="radio" aria-checked={s.mode === m} onClick={() => g.setMode(m)}>{m === "daily" ? "Daily" : "Free play"}</button>
-                ))}
-              </div>
-              <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-(--dim) h-4">
-                {ranked ? "Ranked · one city per level each day" : "Free play: scores are not ranked"}
-              </p>
             </div>
 
             <button type="button" className="g-btn-primary mt-8 min-w-[200px]" onClick={() => begin()}>Begin</button>
@@ -184,15 +176,20 @@ export default function Architect({ onGameOver, onExit, seed }: GameProps & { se
           <div className="md:flex-1 md:min-h-0 md:h-full flex flex-col items-center min-w-0">
             <div className="text-center mb-3 shrink-0">
               <p className="text-(--fg) text-2xl font-light leading-none">{s.level}</p>
-              <p className="text-(--dim) text-base">{LEVELS[s.level].flavor}{!ranked && <span className="not-font-sans text-[10px] font-semibold uppercase tracking-[0.18em] ml-2 text-(--dim)">· Free play: scores are not ranked</span>}</p>
+              <p className="text-(--dim) text-base">{LEVELS[s.level].flavor}</p>
             </div>
             <Board puzzle={s.puzzle} cells={s.cells} notes={s.notes} selected={s.selected} wrong={s.wrong} dim={s.dim} interactive={playing} onSelect={g.select} className="md:flex-1 md:min-h-0" />
           </div>
 
           <div className="md:w-[300px] md:self-center shrink-0 flex flex-col gap-3 pb-2">
-            <p className="text-center md:text-left text-sm text-(--fg) min-h-10" aria-live="polite">
-              {s.phase === "revealed" ? "The solution, revealed. No score this time." : s.message ?? (s.pencil ? "Pencil on: numbers become notes." : "Tap a cell, then a height.")}
-            </p>
+            <div>
+              <p className="text-center md:text-left text-sm text-(--fg) min-h-10" aria-live="polite">
+                {s.phase === "revealed" ? "The solution, revealed. No score this time." : s.message ?? (s.pencil ? "Pencil on: numbers become notes." : "Tap a cell, then a height.")}
+              </p>
+              <p className="text-center md:text-left text-xs text-(--dim) mt-2">
+                Click an eye icon outside the grid to view the city in 3D from that angle. Click again to return to 2D.
+              </p>
+            </div>
             <NumberPad n={n} pencil={s.pencil} hintsLeft={MAX_HINTS - s.hints} canUndo={s.past.length > 0} canRedo={s.future.length > 0} disabled={!playing}
               onNumber={g.input} onErase={g.erase} onPencil={g.togglePencil} onUndo={g.undo} onRedo={g.redo} onReveal={g.reveal} />
             <div className="flex flex-wrap items-center justify-between gap-2 max-w-[420px] w-full mx-auto">
@@ -224,7 +221,7 @@ export default function Architect({ onGameOver, onExit, seed }: GameProps & { se
               <div className="g-card py-3"><p className="g-eyebrow !text-[10px]">Reveals</p><p className="text-(--fg) mt-1 tabular">{s.hints}</p></div>
               <div className="g-card py-3"><p className="g-eyebrow !text-[10px]">Score</p><p className="text-(--accent-ink) mt-1 tabular font-semibold">{s.score?.toLocaleString()}</p></div>
             </div>
-            {!ranked && <p className="mt-4 text-[11px] font-semibold uppercase tracking-[0.2em] text-(--dim)">Free play: scores are not ranked</p>}
+            
             <div className="mt-7 flex flex-col gap-3">
               {ranked && (
                 <button type="button" className="g-btn-primary" onClick={submit} disabled={submitted}>{submitted ? "Submitted" : "Submit to leaderboard"}</button>

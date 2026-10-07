@@ -115,7 +115,7 @@ export default function Board({ puzzle, cells, notes, selected, wrong, dim, inte
   items.push(corner("c3"));
 
   const getTransform = () => {
-    if (!viewEye) return "rotateX(25deg) rotateZ(0deg)";
+    if (!viewEye) return "rotateX(0deg) rotateZ(0deg)";
     if (viewEye.side === "bottom") return "rotateX(70deg) rotateZ(0deg)";
     if (viewEye.side === "right") return "rotateX(70deg) rotateZ(90deg)";
     if (viewEye.side === "top") return "rotateX(70deg) rotateZ(180deg)";

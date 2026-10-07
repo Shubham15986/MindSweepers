@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { Check } from "lucide-react";
+import { useState } from "react";
+import { Check, ArrowLeft, ChevronRight, X } from "lucide-react";
 import { DEMO } from "./config";
 import { computeClues, SIDES, type Side } from "./solver";
 import { lineIndex } from "./useArchitect";
@@ -11,19 +11,14 @@ const CLUES = computeClues(DEMO.grid, N);
 const ROW = [0, 1, 2, 3];
 const VISIBLE = new Set([0, 2]);
 
-// Self-contained looping walkthrough. It never touches real game state.
+// Self-contained walkthrough. It never touches real game state.
 export default function DemoOverlay({ onClose, onStart }: { onClose: () => void; onStart: () => void }) {
-  const [scene, setScene] = useState(0);
-  const [loop, setLoop] = useState(0);
-  useEffect(() => {
-    const t = window.setTimeout(() => {
-      if (scene === 3) { setScene(0); setLoop((l) => l + 1); } else setScene(scene + 1);
-    }, DEMO.sceneMs + (scene === 2 ? 1200 : 0));
-    return () => clearTimeout(t);
-  }, [scene]);
+  const [step, setStep] = useState(0);
+  const scene = step;
+  const done = step === 3;
 
   const tpl = "0.72fr repeat(4, 1fr) 0.72fr";
-  const key = scene + "-" + loop;
+  const key = "step-" + scene;
   const clue = (side: Side, i: number) => {
     const focus = scene < 2 && side === "left" && i === 0;
     const ok = scene === 3;
@@ -44,7 +39,7 @@ export default function DemoOverlay({ onClose, onStart }: { onClose: () => void;
       <div key={key + idx} className="ar-cell" style={{ opacity: scene < 2 && !inRow ? 0.35 : 1, cursor: "default" }}>
         {shown && (
           <div className={"absolute inset-0 grid place-items-center" + (scene === 2 ? " ar-demo-pop" : "") + (scene === 1 && inRow && !VISIBLE.has(idx) ? " ar-demo-dim" : "")}
-            style={{ transformStyle: 'preserve-3d', animationDelay: scene === 2 ? order * 200 + "ms" : scene === 1 ? "500ms" : undefined }}>
+            style={{ transformStyle: 'preserve-3d', animationDelay: scene === 2 ? order * 50 + "ms" : scene === 1 ? "500ms" : undefined }}>
             <div className="ar-tower-3d" style={{ opacity: 1 }}>
               <div className="ar-face top" style={{ transform: `translateZ(${frac * 45 * 1.5}px)` }}>
                 <span className="ar-num-3d" style={{ transform: 'translateZ(2px)' }}>{v}</span>
@@ -56,7 +51,7 @@ export default function DemoOverlay({ onClose, onStart }: { onClose: () => void;
             </div>
           </div>
         )}
-        {scene === 0 && VISIBLE.has(idx) && <span className="ar-demo-ring" style={{ animationDelay: 400 + idx * 300 + "ms" }} />}
+        {scene === 0 && VISIBLE.has(idx) && <span className="ar-demo-ring" style={{ animationDelay: 100 + idx * 300 + "ms" }} />}
       </div>
     );
   };
@@ -75,13 +70,14 @@ export default function DemoOverlay({ onClose, onStart }: { onClose: () => void;
 
   return (
     <div className="g-overlay ar-fade" role="dialog" aria-modal="true" aria-label="ARCHITECT demo">
-      <div className="g-card w-full max-w-sm p-6 flex flex-col gap-5 max-h-[90vh] overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-        <div className="flex items-center justify-between">
-          <span className="g-eyebrow">Demo</span>
-          <div className="flex gap-1.5">{CAPTIONS.map((_, k) => <span key={k} className={"ar-dot" + (k === scene ? " is-on" : "")} />)}</div>
+      <div className="g-card relative w-full max-w-sm p-6 flex flex-col max-h-[90vh] overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+        <button type="button" onClick={onClose} aria-label="Close" className="absolute top-4 right-4 text-(--dim) hover:text-(--fg)"><X size={18} /></button>
+        <div className="text-center">
+          <p className="g-eyebrow">Demo</p>
+          <h2 className="text-(--fg) text-2xl font-light mt-1">Step {step + 1}</h2>
         </div>
-        <p key={key} className="ar-demo-caption ar-rise" aria-live="polite">{CAPTIONS[scene]}</p>
-        <div className="ar-board-scene">
+        <p key={key} className="ar-demo-caption ar-rise text-center mt-3 h-10" aria-live="polite">{CAPTIONS[scene]}</p>
+        <div className="ar-board-scene my-4">
           <div className="ar-board-container" style={{ transform: "rotateX(25deg) rotateZ(0deg)", width: "min(100%, 300px)", margin: "0 auto" }}>
             <div className="ar-board pointer-events-none" aria-hidden
               style={{ gridTemplateColumns: tpl, gridTemplateRows: tpl, gap: 4, ["--ar-fs" as string]: "20px" }}>
@@ -89,22 +85,22 @@ export default function DemoOverlay({ onClose, onStart }: { onClose: () => void;
             </div>
           </div>
         </div>
-        <div className="text-sm text-(--dim) space-y-1.5 px-1 pb-2">
+        <div className="text-sm text-(--dim) space-y-1.5 px-1 pb-4">
           <p className="font-semibold text-(--fg)">How to play:</p>
           <ul className="list-disc pl-5 space-y-1">
             <li>Fill the grid so every row and column has towers of height 1 to {N} exactly once.</li>
             <li>The clues on the edges tell you how many towers are visible looking down that line.</li>
             <li>Taller towers block the view of shorter towers behind them.</li>
           </ul>
-          <p className="font-semibold text-(--fg) mt-3">Example: Look at the top row (2, 1, 4, 3)</p>
-          <ul className="list-disc pl-5 space-y-2 mt-1">
-            <li><strong>From the left side (Clue is 2):</strong> You can see the <strong>2</strong>-tower. It completely hides the shorter 1-tower behind it. Then you see the giant <strong>4</strong>-tower, which completely hides the 3-tower. Total towers you can see = 2.</li>
-            <li><strong>From the right side (Clue is 2):</strong> You can see the <strong>3</strong>-tower, and the taller <strong>4</strong>-tower behind it. The giant 4-tower blocks everything else. Total towers you can see = 2.</li>
-          </ul>
         </div>
-        <div className="flex gap-3">
-          <button type="button" onClick={onClose} className="g-btn-ghost flex-1">Skip demo</button>
-          <button type="button" onClick={onStart} className="g-btn-primary flex-1">Start game</button>
+        <div className="flex gap-1.5 justify-center mb-6">
+          {CAPTIONS.map((_, i) => <button key={i} onClick={() => setStep(i)} aria-label={"Step " + (i + 1)} className={"h-1.5 rounded-full transition-all " + (i === step ? "w-8 bg-(--fg)" : i < step ? "w-3 bg-(--accent)" : "w-3 bg-(--line)")} />)}
+        </div>
+        <div className="flex gap-2">
+          <button onClick={() => setStep((s) => Math.max(0, s - 1))} disabled={step === 0} className="h-12 w-12 grid place-items-center rounded-2xl border border-(--line) disabled:opacity-30 shrink-0"><ArrowLeft size={18} /></button>
+          {done
+            ? <button onClick={onStart} className="flex-1 h-12 rounded-2xl bg-(--accent) text-(--bg) font-semibold flex items-center justify-center gap-2">Start Puzzle <ChevronRight size={18} /></button>
+            : <button onClick={() => setStep((s) => s + 1)} className="flex-1 h-12 rounded-2xl bg-(--fg) text-(--bg) font-medium flex items-center justify-center gap-2">Next <ChevronRight size={18} /></button>}
         </div>
       </div>
     </div>
