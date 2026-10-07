@@ -14,11 +14,16 @@ export const ARCH_CSS = baseCss(".architect-root") + `
 .architect-root .ar-cell.is-given.is-peer { background: var(--muted); }
 .architect-root .ar-cell.is-sel { box-shadow: inset 0 0 0 3px var(--accent); }
 .architect-root .ar-cell.is-dup, .architect-root .ar-cell.is-wrong { box-shadow: inset 0 0 0 3px var(--bad); }
-.architect-root .ar-tower { position: absolute; left: 15%; right: 15%; top: 0; bottom: 0; pointer-events: none; transition: transform 260ms cubic-bezier(.2,.8,.2,1), opacity 200ms; }
-.architect-root .ar-cap { position: absolute; left: 15%; right: 15%; pointer-events: none; transition: bottom 260ms cubic-bezier(.2,.8,.2,1), opacity 200ms; }
-.architect-root .ar-tower { transform-origin: bottom; background: linear-gradient(to right, color-mix(in srgb, var(--accent) 70%, transparent), color-mix(in srgb, var(--accent) 40%, transparent)); box-shadow: inset -3px 0 5px rgba(0,0,0,0.15), inset 2px 0 4px rgba(255,255,255,0.2); border-radius: 2px 2px 0 0; }
-.architect-root .ar-cap { border-top: none; background: color-mix(in srgb, var(--accent) 90%, white); height: 6px; border-radius: 2px; box-shadow: 0 2px 4px rgba(0,0,0,0.3), inset 0 1px 2px rgba(255,255,255,0.5); z-index: 2; margin-bottom: -1px; }
-.architect-root .ar-num { position: relative; color: var(--fg); font-weight: 600; font-size: var(--ar-fs); line-height: 1; font-variant-numeric: tabular-nums; }
+.architect-root .ar-board-scene { perspective: 1400px; width: 100%; min-width: 0; overflow: visible; display: flex; justify-content: center; align-items: center; }
+.architect-root .ar-board-container { transform-style: preserve-3d; transition: transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1); }
+.architect-root .ar-tower-3d { position: absolute; inset: 12%; transform-style: preserve-3d; transition: opacity 0.3s; pointer-events: none; }
+.architect-root .ar-face { position: absolute; background: color-mix(in srgb, var(--accent) 90%, black); border: 1px solid color-mix(in srgb, var(--bg) 20%, transparent); transition: transform 0.4s cubic-bezier(0.34, 1.2, 0.64, 1), height 0.4s, width 0.4s; }
+.architect-root .ar-face.top { inset: 0; background: color-mix(in srgb, var(--accent) 70%, white); display: grid; place-items: center; }
+.architect-root .ar-face.front { bottom: 0; left: 0; width: 100%; transform-origin: bottom; }
+.architect-root .ar-face.right { bottom: 0; right: 0; height: 100%; transform-origin: right; }
+.architect-root .ar-face.back { top: 0; left: 0; width: 100%; transform-origin: top; }
+.architect-root .ar-face.left { bottom: 0; left: 0; height: 100%; transform-origin: left; }
+.architect-root .ar-num-3d { color: var(--accent-ink); font-weight: 700; font-size: var(--ar-fs); line-height: 1; transition: transform 0.6s ease; text-shadow: 0 1px 2px rgba(255,255,255,0.5); }
 .architect-root .ar-notes { position: absolute; inset: 8%; display: grid; grid-template-columns: repeat(3, 1fr); font-family: "JetBrains Mono", monospace; font-size: calc(var(--ar-fs) * .36); color: var(--dim); line-height: 1; text-align: center; align-items: center; }
 .architect-root .ar-mark { position: absolute; top: 3px; right: 3px; color: var(--bad); }
 .architect-root .ar-clue { position: relative; width: 100%; height: 100%; display: grid; place-items: center; border-radius: 3px; background: var(--bg); color: var(--fg); font-size: calc(var(--ar-fs) * .78); font-weight: 600; font-variant-numeric: tabular-nums; transition: opacity 200ms; }

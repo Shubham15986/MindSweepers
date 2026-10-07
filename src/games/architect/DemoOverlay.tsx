@@ -45,9 +45,15 @@ export default function DemoOverlay({ onClose, onStart }: { onClose: () => void;
         {shown && (
           <div className={"absolute inset-0 grid place-items-center" + (scene === 2 ? " ar-demo-pop" : "") + (scene === 1 && inRow && !VISIBLE.has(idx) ? " ar-demo-dim" : "")}
             style={{ animationDelay: scene === 2 ? order * 200 + "ms" : scene === 1 ? "500ms" : undefined }}>
-            <span className="ar-tower" style={{ transform: "scaleY(" + frac + ")" }} />
-            <span className="ar-cap" style={{ bottom: (frac * 100) + "%" }} />
-            <span className="ar-num">{v}</span>
+            <div className="ar-tower-3d" style={{ opacity: 1 }}>
+              <div className="ar-face top" style={{ transform: `translateZ(${frac * 45 * 1.5}px)` }}>
+                <span className="ar-num-3d">{v}</span>
+              </div>
+              <div className="ar-face front" style={{ height: `${frac * 45 * 1.5}px`, transform: `rotateX(-90deg)` }} />
+              <div className="ar-face right" style={{ width: `${frac * 45 * 1.5}px`, transform: `rotateY(90deg)` }} />
+              <div className="ar-face back" style={{ height: `${frac * 45 * 1.5}px`, transform: `rotateX(90deg)` }} />
+              <div className="ar-face left" style={{ width: `${frac * 45 * 1.5}px`, transform: `rotateY(-90deg)` }} />
+            </div>
           </div>
         )}
         {scene === 0 && VISIBLE.has(idx) && <span className="ar-demo-ring" style={{ animationDelay: 400 + idx * 300 + "ms" }} />}
@@ -75,9 +81,13 @@ export default function DemoOverlay({ onClose, onStart }: { onClose: () => void;
           <div className="flex gap-1.5">{CAPTIONS.map((_, k) => <span key={k} className={"ar-dot" + (k === scene ? " is-on" : "")} />)}</div>
         </div>
         <p key={key} className="ar-demo-caption ar-rise" aria-live="polite">{CAPTIONS[scene]}</p>
-        <div className="ar-board mx-auto pointer-events-none" aria-hidden
-          style={{ width: "min(100%, 300px)", gridTemplateColumns: tpl, gridTemplateRows: tpl, gap: 4, ["--ar-fs" as string]: "25px" }}>
-          {items}
+        <div className="ar-board-scene">
+          <div className="ar-board-container" style={{ transform: "rotateX(25deg) rotateZ(0deg)", width: "min(100%, 300px)", margin: "0 auto" }}>
+            <div className="ar-board pointer-events-none" aria-hidden
+              style={{ gridTemplateColumns: tpl, gridTemplateRows: tpl, gap: 4, ["--ar-fs" as string]: "20px" }}>
+              {items}
+            </div>
+          </div>
         </div>
         <div className="flex gap-3">
           <button type="button" onClick={onClose} className="g-btn-ghost flex-1">Skip demo</button>
