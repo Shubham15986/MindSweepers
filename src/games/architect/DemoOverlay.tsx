@@ -96,6 +96,10 @@ export default function DemoOverlay({ onClose, onStart }: { onClose: () => void;
             <li>The clues on the edges tell you how many towers are visible looking down that line.</li>
             <li>Taller towers block the view of shorter towers behind them.</li>
           </ul>
+          <p className="font-semibold text-(--fg) mt-2">Example:</p>
+          <p className="pl-1 leading-relaxed">
+            A clue of <strong>1</strong> means the tallest tower ({N}) must be right next to it, hiding all the others behind it. A clue of <strong>{N}</strong> means you must be able to see all {N} towers, so they must be placed in ascending order (1, 2, 3, {N}).
+          </p>
         </div>
         <div className="flex gap-3">
           <button type="button" onClick={onClose} className="g-btn-ghost flex-1">Skip demo</button>
