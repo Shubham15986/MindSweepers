@@ -32,10 +32,16 @@ export default function Shell() {
   const [playing, setPlaying] = useState<GameId | null>(null);
   const [refreshKey, setRefreshKey] = useState(0);
   const [boardFilter, setBoardFilter] = useState<BoardFilter>("dreamwall");
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 100);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <div className="bg-night min-h-dvh">
-      <header className="fixed top-0 inset-x-0 z-40 bg-gradient-to-b from-night/90 to-transparent">
+      <header className={"fixed top-0 inset-x-0 z-40 transition-all duration-300 " + (scrolled ? "bg-night/95 backdrop-blur-md border-b border-fog/10" : "bg-gradient-to-b from-night/90 to-transparent")}>
         <nav className="max-w-[1200px] mx-auto px-6 h-16 flex items-center justify-between">
           <a href="#top" className="flex items-center gap-2.5 text-fog">
             <SpinningTop size={18} className="text-amber" />
@@ -60,7 +66,7 @@ export default function Shell() {
       <Hero user={user} onRequireAuth={() => setShowAuth(true)} />
 
       <section id="games" className="relative scroll-mt-16">
-        <div className="max-w-[1200px] mx-auto px-6 pt-16 pb-24 md:pt-24">
+        <div className="max-w-[1200px] mx-auto px-3 sm:px-6 pt-16 pb-24 md:pt-24">
           <p className={eyebrow}>The games</p>
           <h2 className="font-display text-fog text-5xl md:text-6xl font-light mt-3">Choose Your Dream Level</h2>
           <div className={"mt-10 grid gap-8 " + (playing ? "" : "lg:grid-cols-[minmax(0,1fr)_420px]")}>
