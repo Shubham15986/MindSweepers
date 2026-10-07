@@ -66,17 +66,42 @@ function analyze(cells: Cell[], lv: { n: number, clues: (number | null)[] }) {
     if (q.every((i) => cells[i] === 1)) q.forEach((i) => err.add(i));
   }
   const pools = err.size;
-  // explicit islands (dots + clues) — overflow / double clue
+  // visual feedback: islands (grouping both 0s and 2s)
   const seen = new Set<number>();
   cells.forEach((_, s) => {
-    if (seen.has(s) || !(cells[s] === 2 || lv.clues[s])) return;
+    if (cells[s] === 1 || seen.has(s)) return;
     const comp: number[] = [], st = [s]; seen.add(s);
-    while (st.length) { const c = st.pop()!; comp.push(c); for (const m of neighbors(c, n)) if (!seen.has(m) && (cells[m] === 2 || lv.clues[m])) { seen.add(m); st.push(m); } }
+    let hasExplicitDot = false;
+    
+    while (st.length) { 
+      const c = st.pop()!; comp.push(c);
+      if (cells[c] === 2) hasExplicitDot = true;
+      for (const m of neighbors(c, n)) 
+        if (cells[m] !== 1 && !seen.has(m)) { seen.add(m); st.push(m); } 
+    }
     const clues = comp.filter((i) => lv.clues[i]);
-    const target = clues.length === 1 ? lv.clues[clues[0]]! : 0;
-    if (clues.length > 1 || (clues.length === 1 && comp.length > target)) comp.forEach((i) => err.add(i));
-    else if (clues.length === 1 && comp.length === target && comp.every((i) => neighbors(i, n).every((m) => comp.includes(m) || cells[m] === 1)))
-      comp.forEach((i) => good.add(i));
+    const isClosed = comp.every(i => neighbors(i, n).every(m => comp.includes(m) || cells[m] === 1));
+    const hasSeaBoundary = comp.some(i => neighbors(i, n).some(m => cells[m] === 1));
+    
+    if (isClosed && hasSeaBoundary) {
+      if (clues.length !== 1) {
+        comp.forEach(i => err.add(i));
+      } else {
+        const target = lv.clues[clues[0]]!;
+        if (comp.length !== target) {
+          comp.forEach(i => err.add(i));
+        } else {
+          comp.forEach(i => good.add(i));
+        }
+      }
+    } else if (hasExplicitDot) {
+      const dotComp = comp.filter(i => cells[i] === 2 || lv.clues[i]);
+      if (clues.length > 1) {
+        dotComp.forEach(i => err.add(i));
+      } else if (clues.length === 1 && dotComp.length > lv.clues[clues[0]]!) {
+        dotComp.forEach(i => err.add(i));
+      }
+    }
   });
   // solved check: empties count as island
   let solved = pools === 0;
@@ -435,7 +460,7 @@ function Game({ level, saved, onBack, onMenu, onRules, onSettings, onSave, onSol
 
       
       <div className="grid grid-cols-4 mt-3 mb-2">
-        {([[Undo2, "Undo", undo, !past.length], [Redo2, "Redo", redo, !future.length], [RotateCcw, "Reset", reset, false], [Lightbulb, "Reveal", reveal, false]] as const).map(([I, l, fn, dis]) => (
+        {([[Undo2, "Undo", undo, !past.length], [Redo2, "Redo", redo, !future.length], [RotateCcw, "Reset", reset, false], [Lightbulb, "View Ans", reveal, false]] as const).map(([I, l, fn, dis]) => (
           <button key={l} onClick={fn} disabled={dis || won} className="h-14 flex flex-col items-center justify-center gap-1 rounded-xl hover:bg-[var(--muted)] disabled:opacity-30 transition">
             <I size={19} strokeWidth={1.6} /><span className="text-[11px] text-[var(--dim)]">{l}</span>
           </button>

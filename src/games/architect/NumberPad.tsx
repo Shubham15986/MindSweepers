@@ -29,7 +29,7 @@ export default function NumberPad({ n, pencil, hintsLeft, canUndo, canRedo, disa
         <button type="button" className="ar-tool" onClick={onPencil} disabled={disabled} aria-pressed={pencil}><Pencil size={18} strokeWidth={1.6} /><span>Pencil</span></button>
         <button type="button" className="ar-tool" onClick={onUndo} disabled={disabled || !canUndo}><Undo2 size={18} strokeWidth={1.6} /><span>Undo</span></button>
         <button type="button" className="ar-tool" onClick={onRedo} disabled={disabled || !canRedo}><Redo2 size={18} strokeWidth={1.6} /><span>Redo</span></button>
-        <button type="button" className="ar-tool" onClick={onReveal} disabled={disabled}><Lightbulb size={18} strokeWidth={1.6} /><span className="tabular">Reveal</span></button>
+        <button type="button" className="ar-tool" onClick={onReveal} disabled={disabled}><Lightbulb size={18} strokeWidth={1.6} /><span className="tabular">View Ans</span></button>
       </div>
     </div>
   );

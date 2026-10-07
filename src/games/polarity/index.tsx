@@ -207,7 +207,7 @@ export default function Polarity({ onGameOver, onExit, seed }: GameProps & { see
                     <button type="button" className="g-btn-primary flex-1" onClick={() => begin(s.level, "free")}>New puzzle</button>
                   </>
                 ) : (
-                  <button type="button" className="g-btn-ghost mx-auto !px-4 inline-flex items-center gap-2 !text-(--bad)" onClick={() => setConfirm({ kind: "giveup" })} disabled={!playing}><Flag size={15} />Give up</button>
+                  <button type="button" className="g-btn-ghost mx-auto !px-4 inline-flex items-center gap-2 !text-(--bad)" onClick={() => setConfirm({ kind: "giveup" })} disabled={!playing}><Flag size={15} />View Ans</button>
                 )}
               </div>
             </div>
@@ -244,7 +244,7 @@ export default function Polarity({ onGameOver, onExit, seed }: GameProps & { see
           onNo={() => setConfirm(null)} onYes={() => { const l = confirm.level; setConfirm(null); begin(l); }} />
       )}
       {confirm?.kind === "giveup" && (
-        <Confirm title="Give up?" body="The solution will be revealed. No score is recorded." yes="Reveal"
+        <Confirm title="Give up?" body="The solution will be revealed. No score is recorded." yes="View Ans"
           onNo={() => setConfirm(null)} onYes={() => { setConfirm(null); g.reveal(); }} />
       )}
       {help && <HowToPlay firstRun={help === "tutorial"} onClose={() => setHelp(null)} />}
