@@ -11,13 +11,12 @@ const RULES = [
 const TIPS = [
   "Clue 0 means the line has no poles of that type, so those cells must be blank or the other pole.",
   "A domino whose both halves lie in a row with a 0 + clue can only be blank or have its + in another row.",
-  "When a row or column already meets its pole counts, the remaining dominoes there must be blank.",
-  "Use \"cannot be blank\" (?) marks for deductions.",
+  "When a row or column already meets its pole counts, the remaining dominoes there must be blank."
 ];
 const CONTROLS = [
-  "Tap with no tool: + here, + there, blank, ?, empty. Long press toggles blank.",
-  "Right-click cycles blank and ?. Arrows move, Enter places or flips a magnet, Space cycles blank and ?.",
-  "Tap a clue to grey it out when you're done with it.",
+  "Tap with no tool: + here, + there, blank, empty. Long press toggles blank.",
+  "Right-click toggles blank. Arrows move, Enter places or flips a magnet, Space toggles blank.",
+  "Tap a clue to grey it out when you're done with it."
 ];
 
 export default function HowToPlay({ onClose, firstRun }: { onClose: () => void; firstRun?: boolean }) {
