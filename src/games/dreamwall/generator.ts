@@ -328,7 +328,8 @@ export function generatePuzzle(n: number, seed: string): { size: number; clues: 
         for (const [i, val] of Object.entries(cluesObj)) {
           flatClues[Number(i)] = val;
         }
-        const solution = sol as Cell[];
+        // Python solver outputs 1=white, 2=black. UI expects 1=black, 2=white.
+        const solution = sol.map(v => v === 1 ? 2 : v === 2 ? 1 : 0) as Cell[];
         return { size: n, clues: flatClues, solution };
       }
     }
