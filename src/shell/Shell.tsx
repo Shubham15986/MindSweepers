@@ -111,14 +111,14 @@ export default function Shell() {
       <section id="games" className="relative scroll-mt-16">
         <div className="max-w-[1200px] mx-auto px-3 sm:px-6 pt-16 pb-24 md:pt-24">
           <p className={eyebrow}>The games</p>
-          <h2 className="font-display text-fog text-5xl md:text-6xl font-light mt-3">Choose Your Dream Level</h2>
+          <h2 className="font-display text-fog text-5xl md:text-6xl font-light mt-3">Choose Your Game</h2>
           <div className="mt-10 flex flex-col gap-16">
             <GamesSection user={user} playing={playing} setPlaying={setPlaying}
               onRequireAuth={() => setShowAuth(true)}
               onSubmitted={(g) => { setBoardFilter(g); setRefreshKey((k) => k + 1); }} />
             <div id="leaderboard" className="scroll-mt-20 max-w-2xl mx-auto w-full">
               <div className="flex items-end justify-between mb-4">
-                <h2 className="font-display text-fog text-3xl md:text-4xl font-light">Hall of Dreamers</h2>
+                <h2 className="font-display text-fog text-3xl md:text-4xl font-light">Hall of Fame</h2>
                 <span className={eyebrow}>Higher is better</span>
               </div>
               <WhenNear minH={640}><Leaderboard refreshKey={refreshKey} initialFilter={boardFilter} /></WhenNear>

@@ -174,7 +174,7 @@ export default function Architect({ onGameOver, onExit, seed }: GameProps & { se
       {/* Loading */}
       {s.phase === "loading" && (
         <div className="relative z-10 flex-1 grid place-items-center">
-          <p className="text-(--dim) text-2xl ar-pulse" role="status">The dream is forming...</p>
+          <p className="text-(--dim) text-2xl ar-pulse" role="status">The puzzle is generating...</p>
         </div>
       )}
 

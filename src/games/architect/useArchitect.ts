@@ -199,7 +199,7 @@ export function useArchitect(seedProp?: string) {
     const st = ref.current;
     const p = st.puzzle;
     if (st.phase !== "play" || !p) return;
-    if (st.hints >= MAX_HINTS) return set({ message: "No hints left in this dream." });
+    if (st.hints >= MAX_HINTS) return set({ message: "No hints left in this puzzle." });
     const n = p.n, sol = p.solution;
     const open = (i: number) => !p.givens[i] && st.cells[i] !== sol[i];
     let target = -1, message = "";

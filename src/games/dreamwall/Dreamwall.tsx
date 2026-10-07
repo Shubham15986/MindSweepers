@@ -242,7 +242,7 @@ export default function Dreamwall({ onGameOver }: GameProps) {
               <span className="absolute -bottom-9 right-0 font-mono text-[10px] tracking-widest text-[var(--dim)]">FIG. 01 — 5×5, IN PROGRESS</span>
             </div>
             <div className="order-2 md:order-1 rise">
-              <p className="font-mono text-xs tracking-[0.3em] text-[var(--dim)] mb-4">A NURIKABE PUZZLE · A DREAM WITHIN A GRID</p>
+              <p className="font-mono text-xs tracking-[0.3em] text-[var(--dim)] mb-4">A NURIKABE PUZZLE · A PUZZLE WITHIN A GRID</p>
               <h1 className="text-5xl sm:text-6xl font-light leading-[0.95] tracking-tight mb-5">Islands<br />in a <span className="font-semibold">dark sea.</span></h1>
               <p className="text-[var(--dim)] max-w-sm mb-8 leading-relaxed">Shade the sea, leave the islands. One number per island, one unbroken wall of water, never a pool.</p>
               <div className="space-y-3 max-w-sm">
@@ -264,7 +264,7 @@ export default function Dreamwall({ onGameOver }: GameProps) {
         <main className="mx-auto max-w-5xl px-5 py-6 rise">
           <header className="flex items-center gap-3 mb-8">
             <button onClick={() => setScreen("menu")} aria-label="Back" className="w-11 h-11 grid place-items-center rounded-full hover:bg-[var(--muted)]"><ArrowLeft size={20} strokeWidth={1.6} /></button>
-            <div><h1 className="text-2xl font-semibold">Dream Layers</h1><p className="text-sm text-[var(--dim)]">Go deeper. Each layer unlocks the next.</p></div>
+            <div><h1 className="text-2xl font-semibold">Puzzle Levels</h1><p className="text-sm text-[var(--dim)]">Go deeper. Each layer unlocks the next.</p></div>
           </header>
           <div className="grid md:grid-cols-3 gap-5">
             {LEVELS.map((l) => {
@@ -299,7 +299,7 @@ export default function Dreamwall({ onGameOver }: GameProps) {
         generating || !puzzleData ? (
           <div className="h-full flex-1 min-h-0 flex flex-col items-center justify-center text-[var(--dim)] gap-4 font-mono text-sm">
             <Spinner />
-            <p>Generating {level.n}x{level.n} dreamscape...</p>
+            <p>Generating {level.n}x{level.n} puzzle...</p>
             {level.n >= 8 && <p className="text-[10px] opacity-60">(Complex layers may take up to 30s to stabilize)</p>}
           </div>
         ) : (
@@ -511,7 +511,7 @@ function Spinner() {
 // Demo puzzle: unique solution. Clue 4 at 0, 2 at 6, 1 at 15.
 const DEMO_CLUES: (number | null)[] = [4, null, null, null, null, null, 2, null, null, null, null, null, null, null, null, 1];
 const DEMO_STEPS: { title: string; text: string; sea: number[]; island: number[]; focus: number[] }[] = [
-  { title: "Enter the dream", text: "A 4×4 grid. Three numbers: three islands. Everything else will become one connected sea. Let's plant the idea, one layer at a time.", sea: [], island: [], focus: [0, 6, 15] },
+  { title: "Start Puzzle", text: "A 4×4 grid. Three numbers: three islands. Everything else will become one connected sea. Let's plant the idea, one layer at a time.", sea: [], island: [], focus: [0, 6, 15] },
   { title: "The 1 is already complete", text: "An island of size 1 is just its own cell. Every neighbour must be sea, so we wall it in.", sea: [11, 14], island: [], focus: [15] },
   { title: "Keep the islands apart", text: "Cells touching the 2 sit right on the 4's path. If they were land, the two islands would merge. Seal them with sea.", sea: [2, 5], island: [], focus: [6] },
   { title: "Connect the sea", text: "The wall around the 1 can't be cut off. The only way out is up the right edge, so these cells become sea.", sea: [3, 7], island: [], focus: [11] },
@@ -577,7 +577,7 @@ function Demo({ onClose, onPlay }: { onClose: () => void; onPlay: () => void }) 
           <div className="flex gap-2">
             <button onClick={() => setStep((s) => Math.max(0, s - 1))} disabled={step === 0} className="h-12 w-12 grid place-items-center rounded-2xl border border-[var(--line)] disabled:opacity-30"><ArrowLeft size={18} /></button>
             {done
-              ? <button onClick={onPlay} className="flex-1 h-12 rounded-2xl bg-mint text-ink font-semibold flex items-center justify-center gap-2">Enter The Dream <ChevronRight size={18} /></button>
+              ? <button onClick={onPlay} className="flex-1 h-12 rounded-2xl bg-mint text-ink font-semibold flex items-center justify-center gap-2">Start Puzzle <ChevronRight size={18} /></button>
               : <button onClick={() => setStep((s) => s + 1)} className="flex-1 h-12 rounded-2xl bg-[var(--fg)] text-[var(--bg)] font-medium flex items-center justify-center gap-2">Next <ChevronRight size={18} /></button>}
           </div>
         </div>

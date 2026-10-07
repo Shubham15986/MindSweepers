@@ -197,7 +197,7 @@ export function usePolarity(seedProp?: string) {
     const st = ref.current;
     const p = st.puzzle;
     if (st.phase !== "play" || !p) return;
-    if (st.hints >= MAX_HINTS) return set({ message: "No hints left in this dream." });
+    if (st.hints >= MAX_HINTS) return set({ message: "No hints left in this puzzle." });
     let target = -1, message = "";
     // A line whose + and - clues are both 0 forces every domino touching it to be blank.
     for (let li = 0; li < p.rows + p.cols && target < 0; li++) {

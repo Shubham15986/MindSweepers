@@ -175,7 +175,7 @@ export default function Polarity({ onGameOver, onExit, seed }: GameProps & { see
       {/* Loading */}
       {s.phase === "loading" && (
         <div className="relative z-10 flex-1 grid place-items-center">
-          <p className="text-(--dim) text-2xl pl-pulse" role="status">The dream is forming...</p>
+          <p className="text-(--dim) text-2xl pl-pulse" role="status">The puzzle is generating...</p>
         </div>
       )}
 

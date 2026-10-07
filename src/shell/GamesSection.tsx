@@ -13,7 +13,7 @@ const GAMES: Record<GameId, React.LazyExoticComponent<(p: GameProps) => React.Re
 
 const TABS: { id: GameId; label: string; locked: boolean; title: string; desc: React.ReactNode; tag: string }[] = [
   { id: "dreamwall", label: "Dreamwall", locked: false, title: "Dreamwall", tag: "Easy → Hard",
-    desc: <>A logic puzzle built in three dream layers. Shade the sea, leave the islands, and never let the water pool. Includes a guided <b>DEMO</b>.</> },
+    desc: <>A logic puzzle built in three layers. Shade the sea, leave the islands, and never let the water pool. Includes a guided <b>DEMO</b>.</> },
   { id: "polarity", label: "Polarity", locked: false, title: "Polarity", tag: "Medium", desc: "Place magnets and blanks. Match the pole counts. Like poles must never touch." },
   { id: "architect", label: "Architect", locked: false, title: "Architect", tag: "Medium", desc: "Logic puzzle: place the towers, read the clues, build the city before it folds" },
 ];
@@ -116,7 +116,7 @@ export default function GamesSection({ user, playing, setPlaying, onRequireAuth,
             <div className="absolute inset-0 z-[60] grid place-items-center bg-abyss/80 p-6 ll-fade">
               <div className={card + " w-full max-w-sm p-8 text-center"}>
                 <SpinningTop size={28} className="mx-auto text-amber" />
-                <p className={eyebrow + " mt-4"}>{result.score === 0 ? "Dream Revealed" : "Dream complete"}</p>
+                <p className={eyebrow + " mt-4"}>{result.score === 0 ? "Solution Revealed" : "Puzzle complete"}</p>
                 {result.score > 0 ? (
                   <>
                     <p className="font-display text-fog text-6xl font-light mt-2 tabular-nums">{result.score.toLocaleString()}</p>

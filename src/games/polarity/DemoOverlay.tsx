@@ -11,7 +11,7 @@ const DEMO_STEPS = [
   { title: "The Clues", text: "Numbers around the grid count the poles. Mint (+) clues are top and left. Coral (-) clues are bottom and right.", states: [-1, -1, -1, -1, -1, -1], showClues: true, wrong: [] },
   { title: "Zero Clues", text: "Look at the middle row. It has 0 mint (+) poles. Any domino passing through here can only have coral (-) or be blank.", states: [-1, 0, -1, -1, 0, -1], showClues: true, wrong: [] },
   { title: "Repulsion", text: "Magnets obey physics. Like poles (+ next to + or - next to -) repel and must never touch. Let's see what happens if they do...", states: [-1, -1, 1, -1, -1, 1], showClues: true, wrong: [2, 5] },
-  { title: "Stabilization", text: "When flipped correctly, they attract! Fill every domino correctly and match the clues to stabilize the dream.", states: [1, 0, 1, 2, 0, 2], showClues: true, wrong: [] }
+  { title: "Stabilization", text: "When flipped correctly, they attract! Fill every domino correctly and match the clues to solve the puzzle.", states: [1, 0, 1, 2, 0, 2], showClues: true, wrong: [] }
 ];
 
 export default function DemoOverlay({ onClose, onStart }: { onClose: () => void; onStart: () => void }) {
@@ -54,7 +54,7 @@ export default function DemoOverlay({ onClose, onStart }: { onClose: () => void;
           <div className="flex gap-2">
             <button onClick={() => setStep((s) => Math.max(0, s - 1))} disabled={step === 0} className="h-12 w-12 grid place-items-center rounded-2xl border border-(--line) disabled:opacity-30"><ArrowLeft size={18} /></button>
             {done
-              ? <button onClick={onStart} className="flex-1 h-12 rounded-2xl bg-(--plus) text-[#16262c] font-semibold flex items-center justify-center gap-2">Enter The Dream <ChevronRight size={18} /></button>
+              ? <button onClick={onStart} className="flex-1 h-12 rounded-2xl bg-(--plus) text-[#16262c] font-semibold flex items-center justify-center gap-2">Start Puzzle <ChevronRight size={18} /></button>
               : <button onClick={() => setStep((s) => s + 1)} className="flex-1 h-12 rounded-2xl bg-(--fg) text-[#16262c] font-medium flex items-center justify-center gap-2">Next <ChevronRight size={18} /></button>}
           </div>
         </div>
