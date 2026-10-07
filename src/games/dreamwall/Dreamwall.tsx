@@ -129,12 +129,12 @@ const isUnlocked = (lv: Level, p: Progress) => true;
 
 function Logo({ small }: { small?: boolean }) {
   return (
-    <div className="flex items-center gap-3">
-      <div className={"grid grid-cols-2 gap-[2px] " + (small ? "w-5 h-5" : "w-8 h-8")}>
+    <div className="flex items-center gap-2 md:gap-3">
+      <div className={"grid grid-cols-2 gap-[2px] shrink-0 " + (small ? "w-5 h-5" : "w-6 h-6 md:w-8 md:h-8")}>
         <span className="bg-current rounded-[1px]" /><span className="rounded-[1px] border border-current" />
         <span className="rounded-[1px] border border-current grid place-items-center"><span className="w-1 h-1 rounded-full bg-current" /></span><span className="bg-mint rounded-[1px]" />
       </div>
-      <span className={"font-semibold tracking-[0.42em] " + (small ? "text-sm" : "text-2xl")}>DREAMWALL</span>
+      <span className={"font-semibold tracking-[0.2em] md:tracking-[0.42em] " + (small ? "text-xs md:text-sm" : "text-lg md:text-2xl")}>DREAMWALL</span>
     </div>
   );
 }
@@ -221,38 +221,38 @@ export default function Dreamwall({ onGameOver }: GameProps) {
   const solvedLevels = LEVELS.filter((l) => progress[l.id]?.status === "solved");
   
   return (
-    <div style={vars as React.CSSProperties} className="dreamwall-root min-h-full flex-1 flex flex-col bg-[var(--bg)] text-[var(--fg)] transition-colors duration-300">
+    <div style={vars as React.CSSProperties} className="dreamwall-root min-h-max md:min-h-full flex-1 flex flex-col bg-[var(--bg)] text-[var(--fg)] transition-colors duration-300">
       {screen === "menu" && (
-        <main className="relative mx-auto max-w-5xl flex-1 min-h-0 px-6 py-8 flex flex-col">
-          <header className="flex items-center justify-between">
+        <main className="relative mx-auto max-w-5xl w-full flex-1 min-h-0 px-4 md:px-6 py-6 md:py-8 flex flex-col">
+          <header className="flex flex-wrap items-center justify-between gap-4">
             <Logo small />
-            <div className="flex items-center gap-1">
-              <button onClick={() => setDemo(true)} className="group mr-1 h-10 pl-3 pr-4 rounded-full bg-amber text-night flex items-center gap-2 text-sm font-medium hover:bg-amber/90 transition shadow-md">
+            <div className="flex items-center gap-0.5 md:gap-1">
+              <button onClick={() => setDemo(true)} className="group mr-1 h-8 md:h-10 pl-2 pr-3 md:pl-3 md:pr-4 rounded-full bg-amber text-night flex items-center gap-1.5 md:gap-2 text-[10px] md:text-sm font-medium hover:bg-amber/90 transition shadow-md">
                 <Spinner /> <span className="font-bold tracking-widest uppercase">Demo</span>
               </button>
               {([["stats", BarChart3, "Statistics"], ["rules", Info, "How to play"], ["settings", Settings, "Settings"]] as const).map(([k, I, l]) => (
-                <button key={k} onClick={() => setModal(k)} aria-label={l} className="w-11 h-11 grid place-items-center rounded-full hover:bg-[var(--muted)]"><I size={19} strokeWidth={1.6} /></button>
+                <button key={k} onClick={() => setModal(k)} aria-label={l} className="w-8 h-8 md:w-11 md:h-11 grid place-items-center rounded-full hover:bg-[var(--muted)]"><I size={18} strokeWidth={1.6} className="scale-75 md:scale-100" /></button>
               ))}
             </div>
           </header>
-          <div className="flex-1 grid md:grid-cols-2 gap-10 md:gap-16 items-center py-10">
-            <div className="relative order-1 md:order-2 mx-auto w-full max-w-[300px] md:max-w-[400px]">
-              <div className="absolute -inset-6 border border-[var(--line)] rounded-xl rotate-3" />
+          <div className="flex-1 grid md:grid-cols-2 gap-8 md:gap-16 items-center py-8 md:py-10">
+            <div className="relative order-1 md:order-2 mx-auto w-[85%] max-w-[260px] md:max-w-[400px]">
+              <div className="absolute -inset-4 md:-inset-6 border border-[var(--line)] rounded-xl rotate-3" />
               <div className="relative -rotate-2 shadow-[0_30px_60px_-20px_rgba(19,21,27,.45)] rounded-md"><HeroGrid /></div>
-              <span className="absolute -bottom-9 right-0 font-mono text-[10px] tracking-widest text-[var(--dim)]">FIG. 01 — 5×5, IN PROGRESS</span>
+              <span className="absolute -bottom-7 md:-bottom-9 right-0 font-mono text-[9px] md:text-[10px] tracking-widest text-[var(--dim)]">FIG. 01 — 5×5, IN PROGRESS</span>
             </div>
-            <div className="order-2 md:order-1 rise">
-              <p className="font-mono text-xs tracking-[0.3em] text-[var(--dim)] mb-4">A NURIKABE PUZZLE · A PUZZLE WITHIN A GRID</p>
-              <h1 className="text-5xl sm:text-6xl font-light leading-[0.95] tracking-tight mb-5">Islands<br />in a <span className="font-semibold">dark sea.</span></h1>
-              <p className="text-[var(--dim)] max-w-sm mb-8 leading-relaxed">Shade the sea, leave the islands. One number per island, one unbroken wall of water, never a pool.</p>
-              <div className="space-y-3 max-w-sm">
-                <button onClick={() => open(LEVELS.find((l) => l.id === lastId) ?? LEVELS[0])} className="group w-full h-16 px-6 rounded-2xl bg-[var(--fg)] text-[var(--bg)] flex items-center justify-between hover:scale-[1.01] active:scale-[.99] transition">
-                  <span className="flex items-center gap-3 font-medium"><Play size={18} fill="currentColor" />Continue Journey</span>
-                  <span className="font-mono text-xs opacity-60">{(LEVELS.find((l) => l.id === lastId) ?? LEVELS[0]).tier.dream}</span>
+            <div className="order-2 md:order-1 rise text-center md:text-left">
+              <p className="font-mono text-[10px] md:text-xs tracking-[0.2em] md:tracking-[0.3em] text-[var(--dim)] mb-4 break-words">A NURIKABE PUZZLE · A PUZZLE WITHIN A GRID</p>
+              <h1 className="text-4xl sm:text-5xl md:text-6xl font-light leading-[0.95] tracking-tight mb-4 md:mb-5">Islands<br />in a <span className="font-semibold">dark sea.</span></h1>
+              <p className="text-[var(--dim)] max-w-sm mx-auto md:mx-0 mb-6 md:mb-8 text-sm md:text-base leading-relaxed">Shade the sea, leave the islands. One number per island, one unbroken wall of water, never a pool.</p>
+              <div className="space-y-3 max-w-sm mx-auto md:mx-0">
+                <button onClick={() => open(LEVELS.find((l) => l.id === lastId) ?? LEVELS[0])} className="group w-full h-14 md:h-16 px-6 rounded-2xl bg-[var(--fg)] text-[var(--bg)] flex items-center justify-between hover:scale-[1.01] active:scale-[.99] transition">
+                  <span className="flex items-center gap-3 font-medium text-sm md:text-base"><Play size={18} fill="currentColor" />Continue Journey</span>
+                  <span className="font-mono text-[10px] md:text-xs opacity-60">{(LEVELS.find((l) => l.id === lastId) ?? LEVELS[0]).tier.dream}</span>
                 </button>
-                <button onClick={() => setScreen("levels")} className="w-full h-14 px-6 rounded-2xl border border-[var(--line)] flex items-center justify-between hover:bg-[var(--muted)] transition">
-                  <span className="flex items-center gap-3 font-medium"><LayoutGrid size={18} strokeWidth={1.6} />Level Select</span>
-                  <span className="font-mono text-xs text-[var(--dim)]">{solvedLevels.reduce((t, l) => t + l.tier.points, 0)} pts</span>
+                <button onClick={() => setScreen("levels")} className="w-full h-12 md:h-14 px-6 rounded-2xl border border-[var(--line)] flex items-center justify-between hover:bg-[var(--muted)] transition">
+                  <span className="flex items-center gap-3 font-medium text-sm md:text-base"><LayoutGrid size={18} strokeWidth={1.6} />Level Select</span>
+                  <span className="font-mono text-[10px] md:text-xs text-[var(--dim)]">{solvedLevels.reduce((t, l) => t + l.tier.points, 0)} pts</span>
                 </button>
               </div>
             </div>

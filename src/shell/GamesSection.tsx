@@ -107,7 +107,7 @@ export default function GamesSection({ user, playing, setPlaying, onRequireAuth,
         </div>
         {/* translateZ creates a containing block so the game's fixed overlays stay inside the stage */}
         <div className="relative w-full mx-auto max-w-[1120px] flex-1 min-h-[75dvh] rounded-2xl border border-fog/12 overflow-hidden bg-night [transform:translateZ(0)] flex flex-col">
-          <div className="absolute inset-0 overflow-auto overscroll-contain flex flex-col">
+          <div className="absolute inset-0 overflow-auto overscroll-contain">
             <Suspense fallback={<div className="h-full grid place-items-center"><SpinningTop size={28} className="text-amber" /></div>}>
               <Game user={user} onGameOver={handleGameOver} onExit={exit} />
             </Suspense>
