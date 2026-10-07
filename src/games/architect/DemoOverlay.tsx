@@ -47,7 +47,7 @@ export default function DemoOverlay({ onClose, onStart }: { onClose: () => void;
             style={{ transformStyle: 'preserve-3d', animationDelay: scene === 2 ? order * 200 + "ms" : scene === 1 ? "500ms" : undefined }}>
             <div className="ar-tower-3d" style={{ opacity: 1 }}>
               <div className="ar-face top" style={{ transform: `translateZ(${frac * 45 * 1.5}px)` }}>
-                <span className="ar-num-3d">{v}</span>
+                <span className="ar-num-3d" style={{ transform: 'translateZ(2px)' }}>{v}</span>
               </div>
               <div className="ar-face front" style={{ height: `${frac * 45 * 1.5}px`, transform: `rotateX(-90deg)` }} />
               <div className="ar-face right" style={{ width: `${frac * 45 * 1.5}px`, transform: `rotateY(90deg)` }} />

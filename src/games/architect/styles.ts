@@ -23,7 +23,7 @@ export const ARCH_CSS = baseCss(".architect-root") + `
 .architect-root .ar-face.right { bottom: 0; right: 0; height: 100%; transform-origin: right; }
 .architect-root .ar-face.back { top: 0; left: 0; width: 100%; transform-origin: top; }
 .architect-root .ar-face.left { bottom: 0; left: 0; height: 100%; transform-origin: left; }
-.architect-root .ar-num-3d { color: var(--accent-ink); font-weight: 700; font-size: var(--ar-fs); line-height: 1; transition: transform 0.6s ease; text-shadow: 0 1px 2px rgba(255,255,255,0.5); }
+.architect-root .ar-num-3d { color: #ffffff; font-weight: 800; font-size: calc(var(--ar-fs) * 1.15); line-height: 1; transition: transform 0.6s ease; text-shadow: 0 2px 4px rgba(0,0,0,0.8), 0 0 2px rgba(0,0,0,0.5); display: inline-block; z-index: 10; }
 .architect-root .ar-notes { position: absolute; inset: 8%; display: grid; grid-template-columns: repeat(3, 1fr); font-family: "JetBrains Mono", monospace; font-size: calc(var(--ar-fs) * .36); color: var(--dim); line-height: 1; text-align: center; align-items: center; }
 .architect-root .ar-mark { position: absolute; top: 3px; right: 3px; color: var(--bad); }
 .architect-root .ar-clue { position: relative; width: 100%; height: 100%; display: grid; place-items: center; border-radius: 3px; background: var(--bg); color: var(--fg); font-size: calc(var(--ar-fs) * .78); font-weight: 600; font-variant-numeric: tabular-nums; transition: opacity 200ms; }

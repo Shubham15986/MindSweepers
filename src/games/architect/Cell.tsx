@@ -38,7 +38,7 @@ function CellImpl({ idx, n, value, notes, given, selected, peer, dup, wrong, dim
     >
       <div className="ar-tower-3d" style={{ opacity: value ? 1 : 0 }}>
         <div className="ar-face top" style={{ transform: `translateZ(${frac * cellSize * 1.5}px)` }}>
-          {value ? <span className="ar-num-3d" style={{ transform: `rotateZ(${-boardRotZ}deg)` }}>{value}</span> : null}
+          {value ? <span className="ar-num-3d" style={{ transform: `rotateZ(${-boardRotZ}deg) translateZ(2px)` }}>{value}</span> : null}
         </div>
         <div className="ar-face front" style={{ height: `${frac * cellSize * 1.5}px`, transform: `rotateX(-90deg)` }} />
         <div className="ar-face right" style={{ width: `${frac * cellSize * 1.5}px`, transform: `rotateY(90deg)` }} />
