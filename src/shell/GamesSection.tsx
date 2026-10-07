@@ -118,15 +118,20 @@ export default function GamesSection({ user, playing, setPlaying, onRequireAuth,
             <div className="absolute inset-0 z-[60] grid place-items-center bg-abyss/80 p-6 ll-fade">
               <div className={card + " w-full max-w-sm p-8 text-center"}>
                 <SpinningTop size={28} className="mx-auto text-amber" />
-                <p className={eyebrow + " mt-4"}>Dream complete</p>
-                <p className="font-display text-fog text-6xl font-light mt-2 tabular-nums">{result.score.toLocaleString()}</p>
-                <p className="text-mist mt-1">Level · <span className="text-fog">{result.level}</span></p>
+                <p className={eyebrow + " mt-4"}>{result.score === 0 ? "Dream Revealed" : "Dream complete"}</p>
                 {result.score > 0 ? (
-                  <button onClick={submit} disabled={submitting} className={btnPrimary + " w-full mt-8 disabled:opacity-70"}>{submitting ? "Submitting…" : "Submit to leaderboard"}</button>
+                  <>
+                    <p className="font-display text-fog text-6xl font-light mt-2 tabular-nums">{result.score.toLocaleString()}</p>
+                    <p className="text-mist mt-1">Level · <span className="text-fog">{result.level}</span></p>
+                    <button onClick={submit} disabled={submitting} className={btnPrimary + " w-full mt-8 disabled:opacity-70"}>{submitting ? "Submitting…" : "Submit to leaderboard"}</button>
+                    <button onClick={() => setResult(null)} className="mt-3 h-10 text-sm text-mist hover:text-fog transition-colors">Keep playing</button>
+                  </>
                 ) : (
-                  <p className="mt-8 text-sm text-coral/80 font-medium tracking-wide">Score is 0. Cannot submit.</p>
+                  <>
+                    <p className="text-mist mt-4 leading-relaxed">The solution has been revealed.<br/>Your progress will not be ranked.</p>
+                    <button onClick={() => setResult(null)} className={btnGhost + " w-full mt-6 bg-fog/5"}>View Board</button>
+                  </>
                 )}
-                <button onClick={() => setResult(null)} className="mt-3 h-10 text-sm text-mist hover:text-fog transition-colors">Keep playing</button>
               </div>
             </div>
           )}
