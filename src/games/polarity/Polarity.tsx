@@ -363,12 +363,8 @@ export default function Polarity({ user, onGameOver, onExit }) {
   const solved = A.solved;
 
   const [hasScored, setHasScored] = useState(false);
-  useEffect(() => {
-    if (solved && !hasScored) {
-      if (onGameOver) onGameOver({ score: (levelIdx + 1) * 50, level: "Polarity L" + (levelIdx + 1) });
-      setHasScored(true);
-    }
-  }, [solved, hasScored, levelIdx, onGameOver]);
+  const [checkState, setCheckState] = useState<"idle" | "wrong">("idle");
+  // Auto submit removed. Score is sent when CHECK is clicked.
 
   useEffect(() => {
     setHasScored(false);
@@ -542,7 +538,15 @@ export default function Polarity({ user, onGameOver, onExit }) {
     const textColor = isDone ? "#555d6e" : isErr ? "#ff3344" : "#ffeeaa";
 
     return (
-      <g key={key} onClick={() => toggleClue(key)} className="totem-clue-badge" style={{ cursor: "pointer" }}>
+      <g key={key} onClick={() => {
+              if (solved && onGameOver && !hasScored) {
+                setHasScored(true);
+                onGameOver({ score: (levelIdx + 1) * 50, level: "Polarity L" + (levelIdx + 1) });
+              } else if (!solved) {
+                setCheckState("wrong");
+                setTimeout(() => setCheckState("idle"), 1500);
+              }
+            }}>
         {/* Brass Bevel Ring */}
         <circle cx={x} cy={y} r="16" fill="#141824" stroke="#d4af37" strokeWidth="1.5" filter="drop-shadow(0 2px 4px rgba(0,0,0,0.8))" />
         <circle cx={x} cy={y} r="13" fill="none" stroke="#775511" strokeWidth="1" />
@@ -754,9 +758,9 @@ export default function Polarity({ user, onGameOver, onExit }) {
 
           {/* Primary Save / Check Action Pill Button */}
           <div className="totem-save-btn-wrapper">
-            <button className={`totem-save-btn ${solved ? "solved-glow" : ""}`} onClick={newGame}>
+            <button className={`totem-save-btn ${solved ? "solved-glow" : ""}`} onClick={() => { if (solved && onGameOver && !hasScored) { setHasScored(true); onGameOver({ score: (levelIdx + 1) * 50, level: "Polarity L" + (levelIdx + 1) }); } }}>
               <span className="totem-gem-left" />
-              <span className="totem-save-text">{solved ? "STABILIZED! NEXT DREAM" : "SAVE PROGRESS"}</span>
+              <span className="totem-save-text">{solved ? "STABILIZED!" : checkState === "wrong" ? "INCORRECT" : "CHECK"}</span>
               <span className="totem-gem-right" />
             </button>
           </div>

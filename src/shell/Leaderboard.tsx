@@ -28,11 +28,7 @@ export default function Leaderboard({ refreshKey, initialFilter = "dreamwall" }:
   return (
     <div className={card + " overflow-hidden"}>
       <div className="p-4 md:p-5 border-b border-fog/12 space-y-3">
-        <div className="flex gap-2 overflow-x-auto [scrollbar-width:none]">
-          {FILTERS.map((f) => (
-            <button key={f.id} onClick={() => setFilter(f.id)} className={"shrink-0 h-9 px-4 rounded-full text-xs font-semibold uppercase tracking-[0.08em] transition-colors " + (filter === f.id ? "bg-fog text-night" : "border border-fog/12 text-mist hover:text-fog")}>{f.label}</button>
-          ))}
-        </div>
+        
         <div className="inline-flex p-1 rounded-full bg-night/70 border border-fog/12">
           {RANGES.map((r) => (
             <button key={r.id} onClick={() => setRange(r.id)} className={"h-8 px-4 rounded-full text-xs font-medium transition-colors " + (range === r.id ? "bg-slate text-fog" : "text-mist hover:text-fog")}>{r.label}</button>
@@ -62,8 +58,8 @@ export default function Leaderboard({ refreshKey, initialFilter = "dreamwall" }:
                   </span>
                   <span className="flex items-center gap-3 min-w-0">
                     <span className="w-8 h-8 shrink-0 rounded-full grid place-items-center text-[11px] font-semibold bg-slate text-fog"
-                      style={podium ? { boxShadow: "0 0 0 1.5px " + podium + ", 0 0 16px -2px " + podium } : undefined}>{initials(r.name) || "?"}</span>
-                    <span className={"truncate text-sm " + (r.isYou ? "text-amber font-semibold" : "text-fog")}>{r.name}</span>
+                      style={podium ? { boxShadow: "0 0 0 1.5px " + podium + ", 0 0 16px -2px " + podium } : undefined}>{initials(r.name.split("@")[0].split(" ")[0]) || "?"}</span>
+                    <span className={"truncate text-sm " + (r.isYou ? "text-amber font-semibold" : "text-fog")}>{r.name.split("@")[0].split(" ")[0]}</span>
                   </span>
                   <span className="text-right text-sm font-medium text-fog tabular-nums">{r.score.toLocaleString()}</span>
                   <span className="text-right text-xs text-mist">{r.level}</span>

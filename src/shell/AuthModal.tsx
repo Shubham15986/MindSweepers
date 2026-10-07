@@ -69,7 +69,7 @@ export default function AuthModal({ onClose, onAuthSuccess }: { onClose: () => v
           )}
           <div>
             <label className="block text-xs font-semibold text-mist uppercase tracking-wider mb-1.5">Email</label>
-            <input required type="email" value={email} onChange={e => setEmail(e.target.value)} className={inputClass} placeholder="cobb@mindsweepers.com" />
+            <input required type="email" value={email} onChange={e => setEmail(e.target.value)} className={inputClass} placeholder="@email" />
           </div>
           <div>
             <label className="block text-xs font-semibold text-mist uppercase tracking-wider mb-1.5">Password</label>

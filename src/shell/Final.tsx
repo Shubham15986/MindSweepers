@@ -29,16 +29,6 @@ export default function Final() {
         </div>
         <h2 className="font-display text-fog text-5xl md:text-7xl font-light mt-12">The top is still spinning.</h2>
         <p className="text-mist mt-4 max-w-md mx-auto">New dreams are being built. Get word when the next MindSweepers round opens.</p>
-        {joined ? (
-          <p className="mt-10 font-display italic text-2xl text-fog ll-fade">You're in. We'll find you in the dream.</p>
-        ) : (
-          <form onSubmit={(e) => { e.preventDefault(); if (email.includes("@")) setJoined(true); }} className="mt-10 mx-auto max-w-md flex flex-col sm:flex-row gap-3">
-            <label htmlFor="email" className="sr-only">Email</label>
-            <input id="email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@dreamshare.io"
-              className="flex-1 h-12 px-5 rounded-full bg-night border border-fog/12 text-fog placeholder:text-mist/50 outline-none focus:border-amber transition-colors" />
-            <button className={btnPrimary}>Join the Dream</button>
-          </form>
-        )}
       </div>
       <footer className="border-t border-fog/8">
         <div className="max-w-[1200px] mx-auto px-6 py-8 flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-mist/70">

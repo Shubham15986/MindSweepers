@@ -87,9 +87,9 @@ export default function Hero({ user, onRequireAuth }: { user: any; onRequireAuth
                   <div className="hero-line mt-6 md:mt-8" style={{ transitionDelay: "120ms" }}>
                     <p className="text-mist text-base sm:text-lg md:text-xl">{BRAND.tagline}</p>
                     {user ? (
-                      <a href="#games" className={btnPrimary + " mt-6 md:mt-8 text-sm md:text-base"}>Enter the Dream</a>
+                      <a href="#games" className={btnPrimary + " mt-6 md:mt-8 text-sm md:text-base"}>Play Game</a>
                     ) : (
-                      <button onClick={onRequireAuth} className={btnPrimary + " mt-6 md:mt-8 text-sm md:text-base"}>Enter the Dream</button>
+                      <button onClick={onRequireAuth} className={btnPrimary + " mt-6 md:mt-8 text-sm md:text-base"}>Play Game</button>
                     )}
                   </div>
                 )}
