@@ -23,7 +23,11 @@ function WhenNear({ children, minH }: { children: React.ReactNode; minH: number 
 }
 
 export default function Shell() {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<User | null>(() => {
+    const uid = localStorage.getItem("mw_uid");
+    const uname = localStorage.getItem("mw_uname");
+    return uid && uname ? { id: uid, name: uname } : null;
+  });
   const [showAuth, setShowAuth] = useState(false);
   const [playing, setPlaying] = useState<GameId | null>(null);
   const [refreshKey, setRefreshKey] = useState(0);

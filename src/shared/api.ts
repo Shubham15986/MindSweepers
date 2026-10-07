@@ -2,9 +2,9 @@ import type { BoardFilter, GameId, LeaderboardEntry, Range } from "./types";
 
 const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:3001/api";
 
-// Simple state for demoing "you" (in reality this comes from auth context/JWT)
-let myUserId: string | null = null;
-let myUsername: string | null = null;
+// Read initial auth state from localStorage to survive page reloads
+let myUserId: string | null = localStorage.getItem("mw_uid");
+let myUsername: string | null = localStorage.getItem("mw_uname");
 
 // The backend expects difficulty, we'll map levels or just pass "hard" for now
 // if the game doesn't strictly use easy/medium/hard in its internal level names.
@@ -99,4 +99,6 @@ export async function getMyRank({ game }: { game: BoardFilter }): Promise<{ rank
 export function setAuth(userId: string, username: string) {
   myUserId = userId;
   myUsername = username;
+  localStorage.setItem("mw_uid", userId);
+  localStorage.setItem("mw_uname", username);
 }
