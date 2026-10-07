@@ -77,8 +77,8 @@ function LockedPreview() {
   );
 }
 
-export default function GamesSection({ user, playing, setPlaying, onSubmitted }: {
-  user: User | null; playing: GameId | null; setPlaying: (g: GameId | null) => void; onSubmitted: (g: GameId) => void;
+export default function GamesSection({ user, playing, setPlaying, onRequireAuth, onSubmitted }: {
+  user: User | null; playing: GameId | null; setPlaying: (g: GameId | null) => void; onRequireAuth: () => void; onSubmitted: (g: GameId) => void;
 }) {
   const [tab, setTab] = useState<GameId>("dreamwall");
   const [result, setResult] = useState<GameResult | null>(null);
@@ -153,7 +153,7 @@ export default function GamesSection({ user, playing, setPlaying, onSubmitted }:
           <p className="text-mist mt-3 leading-relaxed">{t.desc}</p>
           {t.locked
             ? <div className="mt-6 inline-flex items-center gap-2 h-12 px-6 rounded-full border border-fog/12 text-mist text-sm font-semibold uppercase tracking-[0.08em]"><SpinningTop size={16} className="" /> Coming soon</div>
-            : <button onClick={() => setPlaying(t.id)} className={btnPrimary + " mt-6"}><Play size={15} fill="currentColor" /> Play</button>}
+            : <button onClick={() => { if (!user) onRequireAuth(); else setPlaying(t.id); }} className={btnPrimary + " mt-6"}><Play size={15} fill="currentColor" /> Play</button>}
         </div>
       </div>
     </div>

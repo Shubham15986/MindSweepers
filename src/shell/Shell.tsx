@@ -4,6 +4,7 @@ import { BRAND } from "../shared/theme";
 import Hero from "./Hero";
 import GamesSection from "./GamesSection";
 import SpinningTop from "./SpinningTop";
+import AuthModal from "./AuthModal";
 import { eyebrow } from "./ui";
 
 const Leaderboard = lazy(() => import("./Leaderboard"));
@@ -22,7 +23,8 @@ function WhenNear({ children, minH }: { children: React.ReactNode; minH: number 
 }
 
 export default function Shell() {
-  const user: User | null = null; // auth comes with the real backend
+  const [user, setUser] = useState<User | null>(null);
+  const [showAuth, setShowAuth] = useState(false);
   const [playing, setPlaying] = useState<GameId | null>(null);
   const [refreshKey, setRefreshKey] = useState(0);
   const [boardFilter, setBoardFilter] = useState<BoardFilter>("dreamwall");
@@ -38,13 +40,17 @@ export default function Shell() {
           <div className="flex items-center gap-6 text-xs font-semibold uppercase tracking-[0.12em] text-mist">
             <a href="#games" className="hidden sm:inline hover:text-fog transition-colors">Games</a>
             <a href="#leaderboard" className="hidden sm:inline hover:text-fog transition-colors">Leaderboard</a>
-            <a href="#games" className="h-9 px-4 rounded-full border border-fog/15 text-fog inline-flex items-center hover:border-amber hover:text-amber transition-colors">Play</a>
+            {user ? (
+              <span className="text-amber">Hello, {user.name}</span>
+            ) : (
+              <button onClick={() => setShowAuth(true)} className="h-9 px-4 rounded-full border border-fog/15 text-fog inline-flex items-center hover:border-amber hover:text-amber transition-colors">Login</button>
+            )}
           </div>
         </nav>
       </header>
 
       <div id="top" />
-      <Hero />
+      <Hero user={user} onRequireAuth={() => setShowAuth(true)} />
 
       <section id="games" className="relative scroll-mt-16">
         <div className="max-w-[1200px] mx-auto px-6 pt-16 pb-24 md:pt-24">
@@ -52,6 +58,7 @@ export default function Shell() {
           <h2 className="font-display text-fog text-5xl md:text-6xl font-light mt-3">Choose Your Dream Level</h2>
           <div className={"mt-10 grid gap-8 " + (playing ? "" : "lg:grid-cols-[minmax(0,1fr)_420px]")}>
             <GamesSection user={user} playing={playing} setPlaying={setPlaying}
+              onRequireAuth={() => setShowAuth(true)}
               onSubmitted={(g) => { setBoardFilter(g); setRefreshKey((k) => k + 1); }} />
             <div id="leaderboard" className="scroll-mt-20">
               <div className="flex items-end justify-between mb-4">
@@ -65,6 +72,13 @@ export default function Shell() {
       </section>
 
       <WhenNear minH={600}><Final /></WhenNear>
+
+      {showAuth && (
+        <AuthModal 
+          onClose={() => setShowAuth(false)} 
+          onAuthSuccess={(u) => { setUser(u); setShowAuth(false); }} 
+        />
+      )}
     </div>
   );
 }

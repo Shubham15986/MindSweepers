@@ -15,7 +15,7 @@ const PHASES: { at: [number, number]; lines: string[]; lead?: boolean }[] = [
   { at: [0.8, 1.01], lines: ["Step inside."] },
 ];
 
-export default function Hero() {
+export default function Hero({ user, onRequireAuth }: { user: any; onRequireAuth: () => void }) {
   const stage = useRef<HTMLElement>(null);
   const img = useRef<HTMLDivElement>(null);
   const vignette = useRef<HTMLDivElement>(null);
@@ -67,25 +67,33 @@ export default function Hero() {
         <div ref={vignette} className="absolute inset-0 opacity-0 bg-[radial-gradient(ellipse_at_50%_55%,transparent_25%,rgba(18,40,46,.75)_70%,#0b1a1f_100%)]" />
         <div ref={glow} className="hidden md:block absolute inset-0 opacity-0 bg-[radial-gradient(circle_at_50%_62%,#E8A24A_0%,transparent_45%)]" />
 
-        <div className="relative h-full max-w-[1200px] mx-auto px-6 md:px-12 flex items-center">
+        <div className="relative h-full max-w-[1200px] mx-auto">
           {PHASES.map((ph, i) => (
-            <div key={i} ref={(el) => { groups.current[i] = el; }} data-on={i === 0 ? "1" : "0"} className="hero-group absolute inset-x-6 md:inset-x-12 text-center md:text-left">
+            <div key={i} ref={(el) => { groups.current[i] = el; }} data-on={i === 0 ? "1" : "0"} className="hero-group absolute inset-0">
               {ph.lead && (
-                <p className="hero-line font-semibold text-fog uppercase leading-[0.85] tracking-[-0.04em] text-[clamp(44px,12.5vw,190px)] -ml-[0.04em]">
-                  Mind<span className="font-light text-amber">Sweepers</span>
-                </p>
-              )}
-              <h1 className={"font-display text-fog font-light leading-[0.95] tracking-tight " + (ph.lead ? "mt-3 text-[32px] md:text-[56px] italic" : "italic text-[48px] md:text-[96px]")}>
-                {ph.lines.map((l, k) => (
-                  <span key={k} className="hero-line block" style={{ transitionDelay: k * 120 + "ms" }}>{l}</span>
-                ))}
-              </h1>
-              {ph.lead && (
-                <div className="hero-line mt-6 md:mt-8" style={{ transitionDelay: "120ms" }}>
-                  <p className="text-mist text-lg md:text-xl">{BRAND.tagline}</p>
-                  <a href="#games" className={btnPrimary + " mt-8"}>Enter the Dream</a>
+                <div className="absolute bottom-20 md:bottom-28 right-6 md:right-12 text-right">
+                  <p className="hero-line font-semibold text-fog uppercase leading-[0.85] tracking-[-0.04em] text-[clamp(36px,10vw,130px)] -mr-[0.04em]">
+                    Mind<span className="font-light text-amber">Sweepers</span>
+                  </p>
                 </div>
               )}
+              <div className="absolute top-1/2 -translate-y-1/2 left-6 md:left-12 text-left">
+                <h1 className={"font-display text-fog font-light leading-[0.95] tracking-tight " + (ph.lead ? "text-[48px] md:text-[80px] italic" : "italic text-[48px] md:text-[96px]")}>
+                  {ph.lines.map((l, k) => (
+                    <span key={k} className="hero-line block" style={{ transitionDelay: k * 120 + "ms" }}>{l}</span>
+                  ))}
+                </h1>
+                {ph.lead && (
+                  <div className="hero-line mt-6 md:mt-8" style={{ transitionDelay: "120ms" }}>
+                    <p className="text-mist text-lg md:text-xl">{BRAND.tagline}</p>
+                    {user ? (
+                      <a href="#games" className={btnPrimary + " mt-8"}>Enter the Dream</a>
+                    ) : (
+                      <button onClick={onRequireAuth} className={btnPrimary + " mt-8"}>Enter the Dream</button>
+                    )}
+                  </div>
+                )}
+              </div>
             </div>
           ))}
         </div>
