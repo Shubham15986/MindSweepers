@@ -78,18 +78,18 @@ export default function Hero({ user, onRequireAuth }: { user: any; onRequireAuth
                 </div>
               )}
               <div className="absolute top-1/2 -translate-y-1/2 left-6 md:left-12 text-left">
-                <h1 className={"font-display text-fog font-light leading-[0.95] tracking-tight " + (ph.lead ? "text-[48px] md:text-[80px] italic" : "italic text-[48px] md:text-[96px]")}>
+                <h1 className={"font-display text-fog font-light leading-[0.95] tracking-tight " + (ph.lead ? "text-[32px] sm:text-[48px] md:text-[80px] italic" : "italic text-[36px] sm:text-[48px] md:text-[96px]")}>
                   {ph.lines.map((l, k) => (
                     <span key={k} className="hero-line block" style={{ transitionDelay: k * 120 + "ms" }}>{l}</span>
                   ))}
                 </h1>
                 {ph.lead && (
                   <div className="hero-line mt-6 md:mt-8" style={{ transitionDelay: "120ms" }}>
-                    <p className="text-mist text-lg md:text-xl">{BRAND.tagline}</p>
+                    <p className="text-mist text-base sm:text-lg md:text-xl">{BRAND.tagline}</p>
                     {user ? (
-                      <a href="#games" className={btnPrimary + " mt-8"}>Enter the Dream</a>
+                      <a href="#games" className={btnPrimary + " mt-6 md:mt-8 text-sm md:text-base"}>Enter the Dream</a>
                     ) : (
-                      <button onClick={onRequireAuth} className={btnPrimary + " mt-8"}>Enter the Dream</button>
+                      <button onClick={onRequireAuth} className={btnPrimary + " mt-6 md:mt-8 text-sm md:text-base"}>Enter the Dream</button>
                     )}
                   </div>
                 )}

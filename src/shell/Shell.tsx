@@ -41,7 +41,7 @@ export default function Shell() {
             <a href="#games" className="hidden sm:inline hover:text-fog transition-colors">Games</a>
             <a href="#leaderboard" className="hidden sm:inline hover:text-fog transition-colors">Leaderboard</a>
             {user ? (
-              <span className="text-amber">Hello, {user.name}</span>
+              <span className="text-amber truncate max-w-[100px] sm:max-w-none">Hello, {user.name}</span>
             ) : (
               <button onClick={() => setShowAuth(true)} className="h-9 px-4 rounded-full border border-fog/15 text-fog inline-flex items-center hover:border-amber hover:text-amber transition-colors">Login</button>
             )}
