@@ -7,8 +7,8 @@ export const POL_CSS = baseCss(".polarity-root") + `
 
 /* Board: sized in px by useFitCell; scrolls sideways rather than shrinking below the minimum */
 .polarity-root .pl-box { width: 100%; min-width: 0; overflow: auto; overscroll-behavior: contain; display: grid; }
-.polarity-root .pl-grid { display: grid; margin: auto; padding: var(--pad); gap: var(--gap); border-radius: 10px; background: var(--frame); }
-.polarity-root .pl-dom { position: relative; display: flex; border-radius: 8px; background: var(--surface); border: 2px solid var(--line); overflow: hidden; }
+.polarity-root .pl-grid { display: grid; margin: auto; padding: var(--pad); gap: var(--gap); border-radius: 14px; background: var(--frame); box-shadow: 0 12px 48px -12px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.05); }
+.polarity-root .pl-dom { position: relative; display: flex; border-radius: 8px; background: var(--surface); border: 2px solid var(--line); overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
 .polarity-root .pl-dom.is-v { flex-direction: column; }
 .polarity-root .pl-fill { position: absolute; inset: 0; background: var(--muted); opacity: 0; transition: opacity 200ms; pointer-events: none; }
 .polarity-root .pl-fill::after { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(135deg, transparent 0 6px, color-mix(in srgb, var(--fg) 7%, transparent) 6px 7px); }
@@ -21,8 +21,8 @@ export const POL_CSS = baseCss(".polarity-root") + `
 .polarity-root .pl-half.is-cursor { box-shadow: inset 0 0 0 3px var(--accent); }
 .polarity-root .pl-half.is-clash { box-shadow: inset 0 0 0 3px var(--bad); }
 .polarity-root .pl-ring { width: 56%; aspect-ratio: 1; border-radius: 999px; animation: pl-pop 200ms cubic-bezier(.2,.8,.2,1) both; }
-.polarity-root .pl-ring.is-plus { background: var(--plus); }
-.polarity-root .pl-ring.is-minus { background: var(--minus); }
+.polarity-root .pl-ring.is-plus { background: var(--plus); box-shadow: 0 0 12px 1px color-mix(in srgb, var(--plus) 60%, transparent); }
+.polarity-root .pl-ring.is-minus { background: var(--minus); box-shadow: 0 0 12px 1px color-mix(in srgb, var(--minus) 60%, transparent); }
 .polarity-root .pl-q { color: var(--dim); font-weight: 600; font-size: calc(var(--u) * .34); animation: pl-fade 200ms both; }
 .polarity-root .pl-badge { position: absolute; top: 2px; right: 2px; width: 14px; height: 14px; border-radius: 999px; background: var(--fg); color: var(--bg); font-size: 9px; font-weight: 800; display: grid; place-items: center; line-height: 1; }
 .polarity-root .pl-badge.is-x { left: 2px; right: auto; background: var(--bad); color: #fff; }
