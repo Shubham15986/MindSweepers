@@ -8,7 +8,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "format": "oxfmt",
-    "start:server": "tsx server/index.ts"
+    "start:server": "node server/index.js"
   },
   "dependencies": {
     "cors": "^2.8.6",

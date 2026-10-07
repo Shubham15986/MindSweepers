@@ -10,6 +10,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Render health check
+app.get('/', (req, res) => res.send('Backend is running!'));
+
 const PORT = process.env.PORT || 3001;
 const MONGO_URI = process.env.MONGO_URI;
 
@@ -87,7 +90,7 @@ app.post('/api/scores/submit', async (req, res) => {
       return res.status(400).json({ error: 'Invalid difficulty' });
     }
 
-    const points = POINTS_MAP[difficulty as keyof typeof POINTS_MAP];
+    const points = POINTS_MAP[difficulty];
 
     const score = new Score({
       userId,
