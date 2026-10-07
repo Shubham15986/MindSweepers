@@ -1,0 +1,1071 @@
+/* ============================================================
+   THE TOTEM — INCEPTION FOLDING CITY & ARCHITECT GUIDE STYLES
+   ============================================================ */
+
+:root {
+  --totem-gold-light: #ffeeaa;
+  --totem-gold: #d4af37;
+  --totem-gold-dark: #886611;
+  --totem-bg-dark: #0a0c12;
+  --totem-panel-bg: rgba(14, 17, 26, 0.94);
+  --totem-border-gold: rgba(212, 175, 55, 0.45);
+  --totem-cyan: #00d4ff;
+  --totem-ruby: #e63946;
+  --totem-teal: #14b8a6;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #06080d;
+  color: #e2c468;
+  font-family: 'Cinzel', serif;
+  user-select: none;
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+}
+
+/* Outer Stage Wrapper (Single-Page Viewport Lock) */
+.totem-stage-wrapper {
+  position: relative;
+  height: 100vh;
+  max-height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 4px;
+  background: #040508;
+  overflow: hidden;
+  perspective: 1200px;
+}
+
+/* ============================================================
+   INCEPTION 3D FOLDING CITY BACKDROP & ANIMATIONS
+   ============================================================ */
+.totem-bg-container {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* Real High-Res Inception Folding City Background */
+.totem-folding-city-art {
+  position: absolute;
+  inset: -10%;
+  background-image: url('/inception_folding_city.jpg');
+  background-size: cover;
+  background-position: center bottom;
+  opacity: 0.38;
+  filter: saturate(1.2) contrast(1.1) brightness(0.7);
+  animation: foldCityPerspective 30s ease-in-out infinite alternate;
+}
+
+/* Upper Inverted Folding City Horizon */
+.totem-folding-city-top-fold {
+  position: absolute;
+  top: -30%;
+  left: -10%;
+  right: -10%;
+  height: 90%;
+  background-image: url('/inception_folding_city.jpg');
+  background-size: cover;
+  background-position: center top;
+  transform: rotate(180deg) perspective(800px) rotateX(45deg);
+  transform-origin: 50% 0%;
+  opacity: 0.28;
+  filter: blur(1px) brightness(0.6);
+  animation: upperFoldBend 24s ease-in-out infinite alternate;
+}
+
+@keyframes foldCityPerspective {
+  0% { transform: scale(1) translateY(0) rotate(0deg); }
+  50% { transform: scale(1.05) translateY(-15px) rotate(1deg); }
+  100% { transform: scale(1.08) translateY(-30px) rotate(-1deg); }
+}
+
+@keyframes upperFoldBend {
+  0% { transform: rotate(180deg) perspective(800px) rotateX(55deg) translateY(0); }
+  100% { transform: rotate(180deg) perspective(800px) rotateX(30deg) translateY(20px); }
+}
+
+/* 3D Wireframe Folding Grid Overlays */
+.totem-fold-grid {
+  position: absolute;
+  left: -50%;
+  width: 200%;
+  height: 100%;
+  background-image:
+    linear-gradient(rgba(0, 212, 255, 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 212, 255, 0.12) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+.totem-fold-grid-bottom {
+  bottom: -20%;
+  transform: perspective(600px) rotateX(75deg);
+  transform-origin: 50% 100%;
+  mask-image: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.8) 100%);
+  -webkit-mask-image: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.8) 100%);
+}
+
+.totem-fold-grid-top {
+  top: -20%;
+  transform: perspective(600px) rotateX(-75deg);
+  transform-origin: 50% 0%;
+  mask-image: linear-gradient(0deg, transparent 0%, rgba(0,0,0,0.8) 100%);
+  -webkit-mask-image: linear-gradient(0deg, transparent 0%, rgba(0,0,0,0.8) 100%);
+}
+
+.totem-city-haze {
+  position: absolute;
+  inset: 0;
+  background: 
+    radial-gradient(ellipse at 50% 20%, rgba(212, 175, 55, 0.12), transparent 70%),
+    linear-gradient(180deg, rgba(6, 8, 14, 0.4) 0%, rgba(4, 5, 8, 0.9) 100%);
+}
+
+/* Floating Dream Particles */
+.totem-particles {
+  position: absolute;
+  inset: 0;
+}
+
+.totem-particle {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  background: #ffeeaa;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #d4af37, 0 0 14px #00d4ff;
+  opacity: 0.5;
+  animation: floatParticle linear infinite;
+}
+
+@keyframes floatParticle {
+  0% { transform: translateY(0) scale(0.5); opacity: 0.1; }
+  50% { opacity: 0.8; }
+  100% { transform: translateY(-350px) scale(1.4); opacity: 0; }
+}
+
+/* Main Container Mobile Viewport Frame (Fits strictly into 1 page height!) */
+.totem-app-card {
+  position: relative;
+  z-index: 10;
+  width: min(100%, 540px);
+  height: calc(100vh - 8px);
+  max-height: calc(100vh - 8px);
+  background: linear-gradient(180deg, rgba(20, 24, 34, 0.96) 0%, rgba(10, 12, 18, 0.98) 100%);
+  border: 1.5px solid var(--totem-border-gold);
+  border-radius: 10px;
+  box-shadow: 
+    0 0 40px rgba(0, 0, 0, 0.95),
+    0 0 20px rgba(212, 175, 55, 0.22) inset;
+  padding: 6px 12px 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 4px;
+  overflow: hidden;
+}
+
+/* ============================================================
+   HEADER NAVIGATION BAR
+   ============================================================ */
+.totem-nav-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(180deg, #2a221a 0%, #15100a 100%);
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  border-radius: 6px;
+  padding: 3px 12px;
+  position: relative;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.75);
+  flex-shrink: 0;
+}
+
+.totem-nav-left, .totem-nav-right {
+  display: flex;
+  gap: 14px;
+}
+
+.totem-nav-link {
+  background: none;
+  border: none;
+  color: #eed688;
+  font-family: 'Cinzel', serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  cursor: pointer;
+  padding: 2px 4px;
+  transition: color 0.2s, text-shadow 0.2s, transform 0.15s;
+}
+
+.totem-nav-link:hover {
+  color: #ffffff;
+  text-shadow: 0 0 10px rgba(255, 238, 170, 0.9);
+  transform: translateY(-1px);
+}
+
+.totem-nav-crest-wrapper {
+  position: absolute;
+  left: 50%;
+  top: -2px;
+  transform: translateX(-50%);
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.9));
+}
+
+/* ============================================================
+   TITLE BRAND SECTION ("THE TOTEM")
+   ============================================================ */
+.totem-brand-section {
+  text-align: center;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.totem-banner-bracket {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: -6px;
+}
+
+.totem-bracket-svg {
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8));
+}
+
+.totem-sub-prefix {
+  font-family: 'Cinzel', serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 5px;
+  color: #ffeeaa;
+  margin-top: -14px;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.9);
+}
+
+/* Title */
+.totem-main-title {
+  margin: 0;
+  font-family: 'Cinzel Decorative', 'Cinzel', serif;
+  font-size: 32px;
+  font-weight: 900;
+  letter-spacing: 4px;
+  color: #1b3552;
+  -webkit-text-stroke: 1px #d4af37;
+  text-shadow: 
+    0 2px 0 #ffeeaa,
+    0 4px 0 #aa7711,
+    0 6px 14px rgba(0, 0, 0, 0.95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+}
+
+.totem-o-wrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  position: relative;
+  vertical-align: middle;
+  border-radius: 50%;
+  background: radial-gradient(circle, #1a324e 0%, #0d1a29 100%);
+  border: 2px solid #d4af37;
+  box-shadow: 
+    0 0 8px rgba(212, 175, 55, 0.7),
+    0 3px 8px rgba(0,0,0,0.8) inset;
+}
+
+.totem-spinning-icon {
+  animation: totemSpin 8s linear infinite;
+  filter: drop-shadow(0 0 6px rgba(255, 238, 170, 0.9));
+}
+
+@keyframes totemSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.totem-quote {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 12.5px;
+  font-style: italic;
+  color: #e2c678;
+  margin: 1px 0 0;
+  line-height: 1.25;
+  padding: 0 8px;
+}
+
+/* ============================================================
+   BOARD FRAME & SELECTOR BAR
+   ============================================================ */
+.totem-board-frame {
+  border: 1.5px solid var(--totem-border-gold);
+  border-radius: 8px;
+  background: rgba(10, 13, 20, 0.92);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.7) inset;
+  padding: 4px;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.totem-board-header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2px;
+  padding: 0 4px;
+  flex-shrink: 0;
+}
+
+.totem-layer-dropdown-pill {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  background: linear-gradient(180deg, #1d2232 0%, #0e111a 100%);
+  border: 1px solid rgba(212, 175, 55, 0.5);
+  border-radius: 6px;
+  padding: 2px 8px;
+  gap: 6px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+}
+
+.totem-chevron {
+  background: none;
+  border: none;
+  color: #ffeeaa;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0 2px;
+  transition: opacity 0.2s;
+}
+
+.totem-chevron:disabled {
+  opacity: 0.25;
+  cursor: not-allowed;
+}
+
+.totem-board-header-centered {
+  justify-content: center;
+}
+
+.totem-layer-label-text {
+  font-family: 'Cinzel', serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: #ffeeaa;
+}
+
+.totem-layer-select-native {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+  width: 100%;
+}
+
+.totem-clues-seated-info {
+  font-family: 'Cinzel', serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: #bdc7d8;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.totem-info-sep {
+  color: #775511;
+}
+
+/* Board Canvas SVG Container */
+.totem-svg-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  outline: none;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.totem-board-svg {
+  width: auto;
+  height: 100%;
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.75));
+}
+
+.totem-conflict-pulse {
+  animation: conflictGlow 1.2s ease-in-out infinite alternate;
+}
+
+@keyframes conflictGlow {
+  0% { stroke-opacity: 0.5; stroke-width: 2px; }
+  100% { stroke-opacity: 1; stroke-width: 4px; }
+}
+
+/* ============================================================
+   BOTTOM DASHBOARD PANEL
+   ============================================================ */
+.totem-dashboard-panel {
+  border: 1px solid var(--totem-border-gold);
+  border-radius: 8px;
+  background: linear-gradient(180deg, #101420 0%, #090a10 100%);
+  padding: 6px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.totem-stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 6px;
+  text-align: center;
+}
+
+.totem-stat-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-right: 1px solid rgba(212, 175, 55, 0.25);
+  padding-right: 4px;
+}
+
+.totem-stat-box:last-child {
+  border-right: none;
+  padding-right: 0;
+}
+
+.totem-stat-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #9aa8bc;
+}
+
+.totem-stat-val {
+  font-size: 17px;
+  font-weight: 900;
+  color: #ffeeaa;
+  line-height: 1.1;
+}
+
+.totem-divider-line {
+  position: relative;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.5), transparent);
+  margin: 1px 0;
+}
+
+.totem-divider-gem {
+  position: absolute;
+  left: 50%;
+  top: -3px;
+  transform: translateX(-50%) rotate(45deg);
+  width: 6px;
+  height: 6px;
+  background: #d4af37;
+}
+
+/* Controls Row */
+.totem-controls-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.totem-stepper-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.totem-stepper-title {
+  font-size: 8.5px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #8c9cb0;
+}
+
+.totem-stepper-box {
+  display: flex;
+  align-items: center;
+  background: #141824;
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  border-radius: 4px;
+  padding: 1px 5px;
+  gap: 4px;
+}
+
+.totem-step-btn {
+  background: none;
+  border: none;
+  color: #ffeeaa;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.totem-step-btn:disabled {
+  opacity: 0.25;
+  cursor: not-allowed;
+}
+
+.totem-step-num {
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  min-width: 12px;
+  text-align: center;
+}
+
+/* Coins Group */
+.totem-coins-group {
+  display: flex;
+  gap: 10px;
+}
+
+.totem-coin-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  cursor: pointer;
+}
+
+.totem-coin {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.65), 0 0 5px rgba(255, 255, 255, 0.25) inset;
+  transition: transform 0.15s, filter 0.15s;
+}
+
+.totem-coin:hover {
+  transform: translateY(-2px) scale(1.06);
+  filter: brightness(1.2);
+}
+
+.totem-coin-gold {
+  background: linear-gradient(135deg, #fce080 0%, #c49618 100%);
+  border: 1.5px solid #ffeeaa;
+}
+
+.totem-coin-teal {
+  background: linear-gradient(135deg, #2dd4bf 0%, #0d9488 100%);
+  border: 1.5px solid #99f6e4;
+}
+
+.totem-coin-ruby {
+  background: linear-gradient(135deg, #f87171 0%, #dc2626 100%);
+  border: 1.5px solid #fca5a5;
+}
+
+.totem-coin-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  color: #c4d0e2;
+}
+
+/* Spinning Totem Dial Area */
+.totem-dial-spin-area {
+  position: relative;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.totem-compass-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1px stroke rgba(212, 175, 55, 0.4);
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.15) 0%, transparent 70%);
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
+}
+
+/* Save Progress Button */
+.totem-save-btn-wrapper {
+  margin-top: 1px;
+}
+
+.totem-save-btn {
+  width: 100%;
+  height: 36px;
+  background: linear-gradient(180deg, #e6c86e 0%, #b88a28 60%, #77520e 100%);
+  border: 1.5px solid #ffeeaa;
+  border-radius: 18px;
+  color: #120e06;
+  font-family: 'Cinzel', serif;
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.6), 0 0 8px rgba(255, 238, 170, 0.4) inset;
+  transition: transform 0.15s, filter 0.15s;
+}
+
+.totem-save-btn:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.1);
+}
+
+.totem-save-btn.solved-glow {
+  background: linear-gradient(180deg, #00f0ff 0%, #0088cc 60%, #004477 100%);
+  border-color: #ffffff;
+  color: #ffffff;
+  box-shadow: 0 0 18px rgba(0, 212, 255, 0.8);
+}
+
+.totem-gem-left, .totem-gem-right {
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #00d4ff;
+  box-shadow: 0 0 6px #00d4ff;
+}
+
+.totem-gem-left { left: 12px; }
+.totem-gem-right { right: 12px; }
+
+.totem-progress-line {
+  text-align: center;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: #8c9cb0;
+  margin-top: 0;
+}
+
+/* Footer Navigation Links */
+.totem-footer-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 0 0;
+  border-top: 1px solid rgba(212, 175, 55, 0.25);
+  flex-shrink: 0;
+}
+
+.totem-footer-nav button {
+  background: none;
+  border: none;
+  color: #eed688;
+  font-family: 'Cinzel', serif;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  cursor: pointer;
+  transition: color 0.2s, text-shadow 0.2s;
+}
+
+.totem-footer-nav button:hover {
+  color: #ffffff;
+  text-shadow: 0 0 8px rgba(255, 238, 170, 0.9);
+}
+
+/* ============================================================
+   ANIMATED ARCHITECT'S GUIDE MODAL AT START
+   ============================================================ */
+.totem-guide-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(3, 4, 7, 0.88);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  animation: fadeInOverlay 0.3s ease-out;
+}
+
+@keyframes fadeInOverlay {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.totem-guide-card {
+  width: min(100%, 460px);
+  background: linear-gradient(180deg, #161b2a 0%, #0a0d16 100%);
+  border: 1.5px solid var(--totem-gold);
+  border-radius: 14px;
+  box-shadow: 
+    0 12px 50px rgba(0, 0, 0, 0.95),
+    0 0 25px rgba(212, 175, 55, 0.2) inset;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  color: #e2c468;
+}
+
+.animate-guide-card {
+  animation: popInCard 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes popInCard {
+  from { transform: scale(0.9) translateY(20px); opacity: 0; }
+  to { transform: scale(1) translateY(0); opacity: 1; }
+}
+
+.totem-guide-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+  padding-bottom: 6px;
+}
+
+.totem-guide-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: #ffeeaa;
+}
+
+.totem-guide-title {
+  margin: 0;
+  font-size: 19px;
+  font-weight: 700;
+  color: #ffffff;
+  text-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
+}
+
+.totem-guide-content {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 16px;
+  line-height: 1.45;
+  color: #e2dac8;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-height: 130px;
+}
+
+.totem-guide-text {
+  margin: 0;
+}
+
+/* Tutorial Preview Mini Domino Box */
+.totem-tut-preview-box {
+  background: rgba(10, 12, 18, 0.9);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  border-radius: 8px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.totem-tut-domino {
+  display: flex;
+  border: 1.5px solid #d4af37;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+}
+
+.totem-tut-half {
+  width: 70px;
+  height: 48px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Cinzel', serif;
+}
+
+.totem-tut-half span {
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.totem-tut-half small {
+  font-size: 7.5px;
+  letter-spacing: 0.5px;
+  margin-top: 2px;
+}
+
+.totem-tut-half.cyan-img-bg {
+  background-image: url('/cyan_city_skyline.jpg');
+  background-size: cover;
+  background-position: center;
+  color: #fff;
+}
+
+.totem-tut-half.dark-img-bg {
+  background-image: url('/dark_void_skyline.jpg');
+  background-size: cover;
+  background-position: center;
+  color: #8899bb;
+}
+
+.totem-tut-half.metal-img-bg {
+  background-image: url('/brass_totem_tile.jpg');
+  background-size: cover;
+  background-position: center;
+  color: #ffeeaa;
+  position: relative;
+  box-shadow: 0 0 10px rgba(0,0,0,0.7) inset;
+}
+
+.totem-tut-half.metal-img-bg small {
+  background: rgba(0, 0, 0, 0.65);
+  padding: 2px 5px;
+  border-radius: 4px;
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  font-weight: 700;
+  text-shadow: 0 1px 3px #000;
+}
+
+.totem-tut-half.cyan-pure {
+  background: linear-gradient(135deg, #00d4ff 0%, #0088cc 100%);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.4);
+}
+
+.totem-tut-half.dark-pure {
+  background: linear-gradient(180deg, #1a1e28 0%, #080a10 100%);
+  color: #7788aa;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.totem-tut-half.cyan {
+  background: linear-gradient(135deg, #0f3c5c 0%, #00d4ff 100%);
+  color: #fff;
+}
+
+.totem-tut-half.dark {
+  background: linear-gradient(135deg, #181b26 0%, #0a0b0f 100%);
+  color: #7788aa;
+}
+
+.totem-tut-half.metal {
+  background: #141722;
+  color: #656e82;
+  border: 1px stroke #2a2e3d;
+}
+
+.totem-tut-domino-pair {
+  display: flex;
+  gap: 10px;
+}
+
+.totem-tut-domino.paradox-alert {
+  border-color: #ff3344;
+  box-shadow: 0 0 15px rgba(255, 51, 68, 0.7);
+  animation: paradoxPulse 1s ease-in-out infinite alternate;
+}
+
+@keyframes paradoxPulse {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.04); }
+}
+
+.totem-tut-alert-tag {
+  font-family: 'Cinzel', serif;
+  font-size: 10.5px;
+  font-weight: 700;
+  color: #ff3344;
+}
+
+.totem-tut-clues-demo {
+  display: flex;
+  gap: 14px;
+  font-family: 'Cinzel', serif;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.cyan-clue { color: #00d4ff; }
+.void-clue { color: #8899bb; }
+
+/* Progress bar fill */
+.totem-guide-progress-bar {
+  width: 100%;
+  height: 4px;
+  background: #181d2a;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.totem-guide-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #d4af37 0%, #ffeeaa 100%);
+  transition: width 0.3s ease;
+}
+
+.totem-guide-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.totem-guide-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #282f42;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.totem-guide-dot.active {
+  background: #d4af37;
+  box-shadow: 0 0 8px #d4af37;
+}
+
+.totem-guide-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 2px;
+}
+
+.pulse-btn {
+  animation: pulseGoldBtn 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes pulseGoldBtn {
+  0% { box-shadow: 0 0 8px rgba(212, 175, 55, 0.4); }
+  100% { box-shadow: 0 0 20px rgba(255, 238, 170, 0.9); }
+}
+
+/* Modals */
+.totem-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 150;
+  background: rgba(4, 5, 8, 0.85);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.totem-modal-card {
+  width: min(100%, 420px);
+  background: linear-gradient(180deg, #151a28 0%, #0a0c14 100%);
+  border: 1.5px solid var(--totem-gold);
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.9);
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  color: #e2c468;
+}
+
+.totem-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+  padding-bottom: 6px;
+}
+
+.totem-modal-tag {
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  color: #a0aab8;
+}
+
+.totem-close-btn {
+  background: none;
+  border: none;
+  color: #d4af37;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.totem-modal-title {
+  margin: 0;
+  font-size: 20px;
+  color: #ffeeaa;
+}
+
+.totem-modal-body {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 16px;
+  line-height: 1.45;
+  color: #e2dac8;
+}
+
+.totem-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.totem-btn-gold {
+  background: linear-gradient(180deg, #ffeeaa 0%, #d4af37 100%);
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  color: #120e06;
+  font-family: 'Cinzel', serif;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.totem-btn-secondary {
+  background: #1c2232;
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  border-radius: 6px;
+  padding: 8px 16px;
+  color: #d4af37;
+  font-family: 'Cinzel', serif;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}

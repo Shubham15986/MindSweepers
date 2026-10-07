@@ -7,7 +7,7 @@ import { btnGhost, btnPrimary, card, eyebrow } from "./ui";
 
 const GAMES: Record<GameId, React.LazyExoticComponent<(p: GameProps) => React.ReactElement>> = {
   dreamwall: lazy(() => import("../games/dreamwall")),
-  polarity: lazy(() => import("../games/polarity")),
+  polarity: lazy(() => import("../games/polarity/Polarity")),
   architect: lazy(() => import("../games/architect")),
 };
 
@@ -35,18 +35,20 @@ function DreamwallPreview() {
 }
 
 function PolarityPreview() {
-  // 4x3 sample: horizontal / vertical dominoes with mint (+) and coral (-) ends.
-  const cells = ["+", "-", "", "+", "", "", "", "-", "-", "", "+", "+"];
+  const cells = ["city", "void", "blank", "brass", "blank", "city", "void", "blank", "void", "city", "blank", "brass"];
   return (
-    <div className="relative aspect-[16/10] rounded-xl overflow-hidden bg-[radial-gradient(circle_at_50%_40%,#2B3E45_0%,#0E1A1F_75%)] grid place-items-center">
-      <div className="grid grid-cols-4 gap-[3px] p-[3px] bg-night rounded-md w-[44%]">
+    <div className="relative aspect-[16/10] rounded-xl overflow-hidden bg-[#0a111a] grid place-items-center border border-[#d4af37]/20">
+      <div className="absolute inset-0 opacity-20" style={{ backgroundImage: "linear-gradient(#d4af37 1px, transparent 1px), linear-gradient(90deg, #d4af37 1px, transparent 1px)", backgroundSize: "20px 20px" }} />
+      <div className="relative grid grid-cols-4 gap-1 p-1 bg-[#1a1f24] rounded border border-[#d4af37] w-[44%] shadow-[0_0_15px_rgba(212,175,55,0.2)]">
         {cells.map((v, i) => (
-          <div key={i} className={"aspect-square rounded-[4px] grid place-items-center " + (v ? "bg-[#16262C]" : "bg-slate")}>
-            {v && <span className={"w-[52%] aspect-square rounded-full " + (v === "+" ? "bg-[#2fd3a6]" : "bg-[#ef6a5b]")} />}
+          <div key={i} className="aspect-square relative overflow-hidden border border-[#d4af37]/30 bg-[#0e141a]">
+            {v === "city" && <div className="absolute inset-0 bg-[#00ffff]/20 border-b-2 border-[#00ffff]" />}
+            {v === "void" && <div className="absolute inset-0 bg-black/60 border-t-2 border-[#ff003c]" />}
+            {v === "brass" && <div className="absolute inset-0 bg-gradient-to-br from-[#d4af37] to-[#8a6b1c] opacity-80" />}
           </div>
         ))}
       </div>
-      <span className="absolute bottom-3 left-4 text-[10px] font-semibold uppercase tracking-[0.24em] text-mist">5×4 · 7×6 · 8×7</span>
+      <span className="absolute bottom-3 left-4 text-[10px] font-semibold uppercase tracking-[0.24em] text-[#d4af37]/70">The Architecture</span>
     </div>
   );
 }
