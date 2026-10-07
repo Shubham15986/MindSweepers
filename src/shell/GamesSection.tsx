@@ -82,23 +82,23 @@ export default function GamesSection({ user, playing, setPlaying, onRequireAuth,
 }) {
   const [tab, setTab] = useState<GameId>("dreamwall");
   const [result, setResult] = useState<GameResult | null>(null);
-  const [submitting, setSubmitting] = useState(false);
-  const timer = useRef<number>(0);
+    const timer = useRef<number>(0);
   useEffect(() => () => clearTimeout(timer.current), []);
 
   const t = TABS.find((x) => x.id === tab)!;
   const Game = playing ? GAMES[playing] : null;
 
   // Let the game's own victory beat land before the shell overlay appears.
-  const handleGameOver = (r: GameResult) => { clearTimeout(timer.current); timer.current = window.setTimeout(() => setResult(r), 1400); };
-  const exit = () => { setResult(null); setPlaying(null); };
-  const submit = async () => {
-    if (!result || !playing) return;
-    setSubmitting(true);
-    await submitScore({ game: playing, score: result.score, level: result.level });
-    setSubmitting(false); setResult(null); onSubmitted(playing);
-    document.getElementById("leaderboard")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  const handleGameOver = async (r: GameResult) => {
+    if (r.score > 0 && playing) {
+      await submitScore({ game: playing, score: r.score, level: r.level });
+      onSubmitted(playing);
+    }
+    clearTimeout(timer.current);
+    timer.current = window.setTimeout(() => setResult(r), 1400);
   };
+  const exit = () => { setResult(null); setPlaying(null); };
+
 
   if (Game) {
     return (
@@ -123,8 +123,7 @@ export default function GamesSection({ user, playing, setPlaying, onRequireAuth,
                   <>
                     <p className="font-display text-fog text-6xl font-light mt-2 tabular-nums">{result.score.toLocaleString()}</p>
                     <p className="text-mist mt-1">Level · <span className="text-fog">{result.level}</span></p>
-                    <button onClick={submit} disabled={submitting} className={btnPrimary + " w-full mt-8 disabled:opacity-70"}>{submitting ? "Submitting…" : "Submit to leaderboard"}</button>
-                    <button onClick={() => setResult(null)} className="mt-3 h-10 text-sm text-mist hover:text-fog transition-colors">Keep playing</button>
+                    <button onClick={() => setResult(null)} className={btnPrimary + " w-full mt-8 bg-amber text-night hover:bg-amber/90"}>Keep playing</button>
                   </>
                 ) : (
                   <>
