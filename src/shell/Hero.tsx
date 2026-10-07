@@ -72,7 +72,7 @@ export default function Hero({ user, onRequireAuth }: { user: any; onRequireAuth
             <div key={i} ref={(el) => { groups.current[i] = el; }} data-on={i === 0 ? "1" : "0"} className="hero-group absolute inset-0">
               {ph.lead && (
                 <div className="absolute bottom-20 md:bottom-28 right-6 md:right-12 text-right">
-                  <p className="hero-line font-semibold text-fog uppercase leading-[0.85] tracking-[-0.04em] text-[clamp(28px,8vw,130px)] -mr-[0.04em]">
+                  <p className="hero-line font-semibold text-fog uppercase leading-[0.85] tracking-[-0.04em] text-[clamp(20px,8vw,130px)] -mr-[0.04em]">
                     Mind<span className="font-light text-amber">Sweepers</span>
                   </p>
                 </div>
