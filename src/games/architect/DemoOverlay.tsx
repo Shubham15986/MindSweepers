@@ -44,10 +44,16 @@ export default function DemoOverlay({ onClose, onStart }: { onClose: () => void;
       <div key={key + idx} className="ar-cell" style={{ opacity: scene < 2 && !inRow ? 0.35 : 1, cursor: "default" }}>
         {shown && (
           <div className={"absolute inset-0 grid place-items-center" + (scene === 2 ? " ar-demo-pop" : "") + (scene === 1 && inRow && !VISIBLE.has(idx) ? " ar-demo-dim" : "")}
-            style={{ animationDelay: scene === 2 ? order * 200 + "ms" : scene === 1 ? "500ms" : undefined }}>
-            <span className="ar-tower" style={{ transform: "scaleY(" + frac + ")" }} />
-            <span className="ar-cap" style={{ transform: "translateY(" + (1 - frac) * 100 + "%)" }} />
-            <span className="ar-num">{v}</span>
+            style={{ transformStyle: 'preserve-3d', animationDelay: scene === 2 ? order * 200 + "ms" : scene === 1 ? "500ms" : undefined }}>
+            <div className="ar-tower-3d" style={{ opacity: 1 }}>
+              <div className="ar-face top" style={{ transform: `translateZ(${frac * 45 * 1.5}px)` }}>
+                <span className="ar-num-3d" style={{ transform: 'translateZ(2px)' }}>{v}</span>
+              </div>
+              <div className="ar-face front" style={{ height: `${frac * 45 * 1.5}px`, transform: `rotateX(-90deg)` }} />
+              <div className="ar-face right" style={{ width: `${frac * 45 * 1.5}px`, transform: `rotateY(90deg)` }} />
+              <div className="ar-face back" style={{ height: `${frac * 45 * 1.5}px`, transform: `rotateX(90deg)` }} />
+              <div className="ar-face left" style={{ width: `${frac * 45 * 1.5}px`, transform: `rotateY(-90deg)` }} />
+            </div>
           </div>
         )}
         {scene === 0 && VISIBLE.has(idx) && <span className="ar-demo-ring" style={{ animationDelay: 400 + idx * 300 + "ms" }} />}
@@ -69,15 +75,32 @@ export default function DemoOverlay({ onClose, onStart }: { onClose: () => void;
 
   return (
     <div className="g-overlay ar-fade" role="dialog" aria-modal="true" aria-label="ARCHITECT demo">
-      <div className="g-card w-full max-w-sm p-6 flex flex-col gap-5">
+      <div className="g-card w-full max-w-sm p-6 flex flex-col gap-5 max-h-[90vh] overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
         <div className="flex items-center justify-between">
           <span className="g-eyebrow">Demo</span>
           <div className="flex gap-1.5">{CAPTIONS.map((_, k) => <span key={k} className={"ar-dot" + (k === scene ? " is-on" : "")} />)}</div>
         </div>
         <p key={key} className="ar-demo-caption ar-rise" aria-live="polite">{CAPTIONS[scene]}</p>
-        <div className="ar-board mx-auto pointer-events-none" aria-hidden
-          style={{ width: "min(100%, 300px)", gridTemplateColumns: tpl, gridTemplateRows: tpl, gap: 4, ["--ar-fs" as string]: "25px" }}>
-          {items}
+        <div className="ar-board-scene">
+          <div className="ar-board-container" style={{ transform: "rotateX(25deg) rotateZ(0deg)", width: "min(100%, 300px)", margin: "0 auto" }}>
+            <div className="ar-board pointer-events-none" aria-hidden
+              style={{ gridTemplateColumns: tpl, gridTemplateRows: tpl, gap: 4, ["--ar-fs" as string]: "20px" }}>
+              {items}
+            </div>
+          </div>
+        </div>
+        <div className="text-sm text-(--dim) space-y-1.5 px-1 pb-2">
+          <p className="font-semibold text-(--fg)">How to play:</p>
+          <ul className="list-disc pl-5 space-y-1">
+            <li>Fill the grid so every row and column has towers of height 1 to {N} exactly once.</li>
+            <li>The clues on the edges tell you how many towers are visible looking down that line.</li>
+            <li>Taller towers block the view of shorter towers behind them.</li>
+          </ul>
+          <p className="font-semibold text-(--fg) mt-3">Example: Look at the top row (2, 1, 4, 3)</p>
+          <ul className="list-disc pl-5 space-y-2 mt-1">
+            <li><strong>From the left side (Clue is 2):</strong> You can see the <strong>2</strong>-tower. It completely hides the shorter 1-tower behind it. Then you see the giant <strong>4</strong>-tower, which completely hides the 3-tower. Total towers you can see = 2.</li>
+            <li><strong>From the right side (Clue is 2):</strong> You can see the <strong>3</strong>-tower, and the taller <strong>4</strong>-tower behind it. The giant 4-tower blocks everything else. Total towers you can see = 2.</li>
+          </ul>
         </div>
         <div className="flex gap-3">
           <button type="button" onClick={onClose} className="g-btn-ghost flex-1">Skip demo</button>

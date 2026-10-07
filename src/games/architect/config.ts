@@ -58,8 +58,10 @@ export const DEMO = {
 export const TUTORIAL_KEY = "architect.tutorialSeen";
 
 export function scoreFor(level: LevelConfig, seconds: number, hints: number) {
-  const time = Math.min(Math.max(0, seconds - level.graceSec) * SCORING.timePenaltyPerSec, level.baseScore * SCORING.timePenaltyCap);
-  return Math.max(SCORING.minScore, Math.round(level.baseScore - time - hints * SCORING.hintPenalty));
+  if (level.key === "Easy") return 20;
+  if (level.key === "Medium") return 30;
+  if (level.key === "Hard") return 50;
+  return 0;
 }
 
 export const today = () => {
