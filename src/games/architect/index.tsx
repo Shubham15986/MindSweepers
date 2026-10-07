@@ -126,7 +126,7 @@ export default function Architect({ onGameOver, onExit, seed }: GameProps & { se
             {levelSelect}
             <span className="flex items-center gap-1.5 text-(--dim)"><TimerIcon size={14} aria-hidden />
               <Timer startedAt={s.startedAt} running={playing} frozen={s.phase === "loading" ? 0 : s.timeMs} /></span>
-            <span className="text-xs text-(--dim) tabular whitespace-nowrap" aria-label={MAX_HINTS - s.hints + " hints left"}>Hints <span className="text-(--fg) font-semibold">{MAX_HINTS - s.hints}</span>/{MAX_HINTS}</span>
+            <span className="text-xs text-(--dim) tabular whitespace-nowrap" aria-label={MAX_HINTS - s.hints + " hints left"}>Reveals <span className="text-(--fg) font-semibold">{s.hints}</span></span>
           </div>
         )}
       </GameNav>
@@ -194,7 +194,7 @@ export default function Architect({ onGameOver, onExit, seed }: GameProps & { se
               {s.phase === "revealed" ? "The solution, revealed. No score this time." : s.message ?? (s.pencil ? "Pencil on: numbers become notes." : "Tap a cell, then a height.")}
             </p>
             <NumberPad n={n} pencil={s.pencil} hintsLeft={MAX_HINTS - s.hints} canUndo={s.past.length > 0} canRedo={s.future.length > 0} disabled={!playing}
-              onNumber={g.input} onErase={g.erase} onPencil={g.togglePencil} onUndo={g.undo} onRedo={g.redo} onHint={g.hint} />
+              onNumber={g.input} onErase={g.erase} onPencil={g.togglePencil} onUndo={g.undo} onRedo={g.redo} onReveal={g.reveal} />
             <div className="flex flex-wrap items-center justify-between gap-2 max-w-[420px] w-full mx-auto">
               <button type="button" className="g-btn-ghost !px-4 inline-flex items-center gap-2" onClick={g.check} disabled={!playing}><CheckCheck size={15} />Check</button>
               <label className="flex items-center gap-2 text-xs text-(--dim) cursor-pointer min-h-11">
@@ -221,7 +221,7 @@ export default function Architect({ onGameOver, onExit, seed }: GameProps & { se
             <h2 className="text-(--fg) font-light text-7xl mt-2">Solved.</h2>
             <div className="mt-6 grid grid-cols-3 gap-2">
               <div className="g-card py-3"><p className="g-eyebrow !text-[10px]">Time</p><p className="text-(--fg) mt-1 tabular">{fmt(s.timeMs)}</p></div>
-              <div className="g-card py-3"><p className="g-eyebrow !text-[10px]">Hints</p><p className="text-(--fg) mt-1 tabular">{s.hints}</p></div>
+              <div className="g-card py-3"><p className="g-eyebrow !text-[10px]">Reveals</p><p className="text-(--fg) mt-1 tabular">{s.hints}</p></div>
               <div className="g-card py-3"><p className="g-eyebrow !text-[10px]">Score</p><p className="text-(--accent-ink) mt-1 tabular font-semibold">{s.score?.toLocaleString()}</p></div>
             </div>
             {!ranked && <p className="mt-4 text-[11px] font-semibold uppercase tracking-[0.2em] text-(--dim)">Free play: scores are not ranked</p>}

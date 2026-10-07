@@ -238,5 +238,5 @@ export function useArchitect(seedProp?: string) {
   const setMode = useCallback((mode: Mode) => set({ mode }), [set]);
   const setLevel = useCallback((level: LevelKey) => set({ level }), [set]);
 
-  return { s, start, input, erase, undo, redo, select, move, togglePencil, toggleDim, check, hint, reveal, toStart, setMode, setLevel, stop };
+  return { s, start, input, erase, undo, redo, select, move, togglePencil, toggleDim, check, reveal, toStart, setMode, setLevel, stop };
 }

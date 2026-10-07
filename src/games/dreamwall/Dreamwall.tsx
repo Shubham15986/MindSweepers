@@ -375,13 +375,10 @@ function Game({ level, saved, onBack, onMenu, onRules, onSettings, onSave, onSol
   const undo = () => { if (!past.length) return; setFuture((f) => [cells, ...f]); setCells(past[past.length - 1]); setPast((p) => p.slice(0, -1)); setStats((s) => ({ ...s, undos: s.undos + 1 })); };
   const redo = () => { if (!future.length) return; setPast((p) => [...p, cells]); setCells(future[0]); setFuture((f) => f.slice(1)); };
   const reset = () => { setPast((p) => [...p, cells]); setFuture([]); setCells(Array(n * n).fill(0) as Cell[]); };
-  const hint = () => {
-    const wrong = cells.findIndex((c, i) => !level.clues[i] && c !== 0 && c !== level.solution[i]);
-    const i = wrong >= 0 ? wrong : cells.findIndex((c, i) => !level.clues[i] && c !== level.solution[i]);
-    if (i < 0) return;
-    setPast((p) => [...p, cells]); setFuture([]);
-    setCells((c) => { const nx = [...c]; nx[i] = level.solution[i]; return nx; });
-    setStats((s) => ({ ...s, hints: s.hints + 1 })); setHintCell(i); setTimeout(() => setHintCell(null), 1400);
+  const reveal = () => {
+    setCells(level.solution);
+    setStats((s) => ({ ...s, hints: s.hints + 1 }));
+    onSolve(time, 0);
   };
 
   const cellPx = "min(" + (n === 4 ? 76 : n === 6 ? 60 : 50) + "px, calc((100vw - 48px)/" + n + "))";
@@ -449,7 +446,7 @@ function Game({ level, saved, onBack, onMenu, onRules, onSettings, onSave, onSol
         ))}
       </div>
       <div className="grid grid-cols-4 mt-3 mb-2">
-        {([[Undo2, "Undo", undo, !past.length], [Redo2, "Redo", redo, !future.length], [RotateCcw, "Reset", reset, false], [Lightbulb, "Hint", hint, false]] as const).map(([I, l, fn, dis]) => (
+        {([[Undo2, "Undo", undo, !past.length], [Redo2, "Redo", redo, !future.length], [RotateCcw, "Reset", reset, false], [Lightbulb, "Reveal", reveal, false]] as const).map(([I, l, fn, dis]) => (
           <button key={l} onClick={fn} disabled={dis || won} className="h-14 flex flex-col items-center justify-center gap-1 rounded-xl hover:bg-[var(--muted)] disabled:opacity-30 transition">
             <I size={19} strokeWidth={1.6} /><span className="text-[11px] text-[var(--dim)]">{l}</span>
           </button>
@@ -474,7 +471,7 @@ function Game({ level, saved, onBack, onMenu, onRules, onSettings, onSave, onSol
             <h2 className="text-3xl font-semibold tracking-tight">{level.index === 2 ? "You escaped Limbo." : "Grid Solved!"}</h2>
             <p className="text-[var(--dim)] mb-6">{level.tier.dream} · {level.tier.name} in {fmt(time)}</p>
             <dl className="divide-y divide-[var(--line)] border-y border-[var(--line)] mb-6 text-sm">
-              {[["Board coverage", "100%"], ["Layer", level.tier.dream + " · " + n + "×" + n], ["Undos · Errors · Hints", stats.undos + " · " + stats.errors + " · " + stats.hints]].map(([k, v]) => (
+              {[["Board coverage", "100%"], ["Layer", level.tier.dream + " · " + n + "×" + n], ["Undos · Errors · Reveals", stats.undos + " · " + stats.errors + " · " + stats.hints]].map(([k, v]) => (
                 <div key={k} className="flex justify-between py-3"><dt className="text-[var(--dim)]">{k}</dt><dd className="font-mono">{v}</dd></div>
               ))}
               <div className="flex justify-between py-3 text-base"><dt className="font-medium">Total</dt><dd className="font-mono font-bold">+{level.tier.points} pts</dd></div>
