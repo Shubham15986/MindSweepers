@@ -4,11 +4,11 @@ import { useCallback, useState } from "react";
 export const PALETTE = {
   light: {
     "--bg": "#f2eee4", "--surface": "#fbf9f4", "--fg": "#13151b", "--dim": "#77746c", "--line": "#dcd6c8", "--muted": "#e9e4d8",
-    "--accent": "#2fd3a6", "--accent-ink": "#13876b", "--bad": "#d4503f", "--overlay": "rgba(242,238,228,.94)", "--frame": "#1a2538",
+    "--accent": "#2fd3a6", "--accent-ink": "#13876b", "--bad": "#d4503f", "--overlay": "rgba(242,238,228,.94)", "--frame": "#1e40af",
   },
   dark: {
     "--bg": "#17181c", "--surface": "#202227", "--fg": "#ece8de", "--dim": "#8d8a83", "--line": "#33353c", "--muted": "#2a2c32",
-    "--accent": "#2fd3a6", "--accent-ink": "#2fd3a6", "--bad": "#ef6a5b", "--overlay": "rgba(23,24,28,.94)", "--frame": "#101b2b",
+    "--accent": "#2fd3a6", "--accent-ink": "#2fd3a6", "--bad": "#ef6a5b", "--overlay": "rgba(23,24,28,.94)", "--frame": "#1e3a8a",
   },
 };
 const POLES = { "--plus": "#2fd3a6", "--minus": "#ef6a5b" };
