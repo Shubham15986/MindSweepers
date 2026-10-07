@@ -35,14 +35,14 @@ function DreamwallPreview() {
 }
 
 function PolarityPreview() {
-  // 4x3 sample: horizontal / vertical dominoes with amber (+) and blue (-) ends.
+  // 4x3 sample: horizontal / vertical dominoes with mint (+) and coral (-) ends.
   const cells = ["+", "-", "", "+", "", "", "", "-", "-", "", "+", "+"];
   return (
     <div className="relative aspect-[16/10] rounded-xl overflow-hidden bg-[radial-gradient(circle_at_50%_40%,#2B3E45_0%,#0E1A1F_75%)] grid place-items-center">
       <div className="grid grid-cols-4 gap-[3px] p-[3px] bg-night rounded-md w-[44%]">
         {cells.map((v, i) => (
           <div key={i} className={"aspect-square rounded-[4px] grid place-items-center " + (v ? "bg-[#16262C]" : "bg-slate")}>
-            {v && <span className={"w-[52%] aspect-square rounded-full " + (v === "+" ? "bg-amber" : "bg-[#5FA8C9]")} />}
+            {v && <span className={"w-[52%] aspect-square rounded-full " + (v === "+" ? "bg-[#2fd3a6]" : "bg-[#ef6a5b]")} />}
           </div>
         ))}
       </div>
@@ -70,7 +70,7 @@ function LockedPreview() {
   return (
     <div className="aspect-[16/10] rounded-xl bg-night/70 border border-dashed border-fog/12 grid place-items-center text-center">
       <div>
-        <SpinningTop size={28} className="mx-auto text-mist ll-spin-slow" />
+        <SpinningTop size={28} className="mx-auto text-mist" />
         <p className="mt-3 text-xs font-semibold uppercase tracking-[0.24em] text-mist">Coming soon</p>
       </div>
     </div>
@@ -110,14 +110,14 @@ export default function GamesSection({ user, playing, setPlaying, onSubmitted }:
         {/* translateZ creates a containing block so the game's fixed overlays stay inside the stage */}
         <div className="relative w-full mx-auto max-w-[960px] h-[78dvh] md:h-[540px] rounded-2xl border border-fog/12 overflow-hidden bg-night [transform:translateZ(0)]">
           <div className="absolute inset-0 overflow-y-auto overscroll-contain">
-            <Suspense fallback={<div className="h-full grid place-items-center"><SpinningTop size={28} className="text-amber ll-spin" /></div>}>
+            <Suspense fallback={<div className="h-full grid place-items-center"><SpinningTop size={28} className="text-amber" /></div>}>
               <Game user={user} onGameOver={handleGameOver} onExit={exit} />
             </Suspense>
           </div>
           {result && (
             <div className="absolute inset-0 z-[60] grid place-items-center bg-abyss/80 p-6 ll-fade">
               <div className={card + " w-full max-w-sm p-8 text-center"}>
-                <SpinningTop size={28} className="mx-auto text-amber ll-wobble" />
+                <SpinningTop size={28} className="mx-auto text-amber" />
                 <p className={eyebrow + " mt-4"}>Dream complete</p>
                 <p className="font-display text-fog text-6xl font-light mt-2 tabular-nums">{result.score.toLocaleString()}</p>
                 <p className="text-mist mt-1">Level · <span className="text-fog">{result.level}</span></p>
@@ -152,7 +152,7 @@ export default function GamesSection({ user, playing, setPlaying, onSubmitted }:
           <h3 className="font-display text-fog text-4xl md:text-5xl font-light mt-4">{t.title}</h3>
           <p className="text-mist mt-3 leading-relaxed">{t.desc}</p>
           {t.locked
-            ? <div className="mt-6 inline-flex items-center gap-2 h-12 px-6 rounded-full border border-fog/12 text-mist text-sm font-semibold uppercase tracking-[0.08em]"><SpinningTop size={16} className="ll-spin-slow" /> Coming soon</div>
+            ? <div className="mt-6 inline-flex items-center gap-2 h-12 px-6 rounded-full border border-fog/12 text-mist text-sm font-semibold uppercase tracking-[0.08em]"><SpinningTop size={16} className="" /> Coming soon</div>
             : <button onClick={() => setPlaying(t.id)} className={btnPrimary + " mt-6"}><Play size={15} fill="currentColor" /> Play</button>}
         </div>
       </div>

@@ -70,7 +70,12 @@ export default function Hero() {
         <div className="relative h-full max-w-[1200px] mx-auto px-6 md:px-12 flex items-center">
           {PHASES.map((ph, i) => (
             <div key={i} ref={(el) => { groups.current[i] = el; }} data-on={i === 0 ? "1" : "0"} className="hero-group absolute inset-x-6 md:inset-x-12 text-center md:text-left">
-              <h1 className={"font-display text-fog font-light leading-[0.95] tracking-tight " + (ph.lead ? "text-[64px] md:text-[128px]" : "italic text-[48px] md:text-[96px]")}>
+              {ph.lead && (
+                <p className="hero-line font-semibold text-fog uppercase leading-[0.85] tracking-[-0.04em] text-[clamp(44px,12.5vw,190px)] -ml-[0.04em]">
+                  Mind<span className="font-light text-amber">Sweepers</span>
+                </p>
+              )}
+              <h1 className={"font-display text-fog font-light leading-[0.95] tracking-tight " + (ph.lead ? "mt-3 text-[32px] md:text-[56px] italic" : "italic text-[48px] md:text-[96px]")}>
                 {ph.lines.map((l, k) => (
                   <span key={k} className="hero-line block" style={{ transitionDelay: k * 120 + "ms" }}>{l}</span>
                 ))}

@@ -46,10 +46,10 @@ export default function Leaderboard({ refreshKey, initialFilter = "dreamwall" }:
 
       <div className="relative max-h-[560px] overflow-y-auto">
         {rows === null ? (
-          <div className="h-[280px] grid place-items-center"><SpinningTop size={24} className="text-mist ll-spin" /></div>
+          <div className="h-[280px] grid place-items-center"><SpinningTop size={24} className="text-mist" /></div>
         ) : rows.length === 0 ? (
           <div className="h-[280px] grid place-items-center text-center px-6">
-            <div><SpinningTop size={28} className="mx-auto text-mist" /><p className="font-display italic text-fog text-2xl mt-3">No dreamers yet. Be the first.</p></div>
+            <div><SpinningTop size={28} className="mx-auto text-mist" still /><p className="font-display italic text-fog text-2xl mt-3">No dreamers yet. Be the first.</p></div>
           </div>
         ) : (
           <ol>
@@ -58,7 +58,7 @@ export default function Leaderboard({ refreshKey, initialFilter = "dreamwall" }:
               return (
                 <li key={r.id} className={"ll-stagger grid grid-cols-[40px_1fr_auto_64px] gap-3 items-center h-14 px-4 md:px-5 border-b border-fog/6 " + (r.isYou ? "bg-amber/8" : "")} style={{ animationDelay: i * 50 + "ms" }}>
                   <span className="flex items-center gap-1 text-sm font-semibold tabular-nums" style={{ color: podium ?? undefined }}>
-                    {podium ? <SpinningTop size={13} /> : null}{i + 1}
+                    {podium ? <SpinningTop size={13} still /> : null}{i + 1}
                   </span>
                   <span className="flex items-center gap-3 min-w-0">
                     <span className="w-8 h-8 shrink-0 rounded-full grid place-items-center text-[11px] font-semibold bg-slate text-fog"

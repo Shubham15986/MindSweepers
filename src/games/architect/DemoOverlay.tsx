@@ -68,20 +68,20 @@ export default function DemoOverlay({ onClose, onStart }: { onClose: () => void;
   items.push(<div key="d" />);
 
   return (
-    <div className="ar-overlay ar-fade" role="dialog" aria-modal="true" aria-label="ARCHITECT demo">
-      <div className="ar-card w-full max-w-sm p-6 flex flex-col gap-5">
+    <div className="g-overlay ar-fade" role="dialog" aria-modal="true" aria-label="ARCHITECT demo">
+      <div className="g-card w-full max-w-sm p-6 flex flex-col gap-5">
         <div className="flex items-center justify-between">
-          <span className="ar-eyebrow">Demo</span>
+          <span className="g-eyebrow">Demo</span>
           <div className="flex gap-1.5">{CAPTIONS.map((_, k) => <span key={k} className={"ar-dot" + (k === scene ? " is-on" : "")} />)}</div>
         </div>
         <p key={key} className="ar-demo-caption ar-rise" aria-live="polite">{CAPTIONS[scene]}</p>
         <div className="ar-board mx-auto pointer-events-none" aria-hidden
-          style={{ width: "min(100%, 300px)", gridTemplateColumns: tpl, gridTemplateRows: tpl, gap: 4, ["--ar-fs" as string]: "calc(100cqw / 5.44 * 0.46)" }}>
+          style={{ width: "min(100%, 300px)", gridTemplateColumns: tpl, gridTemplateRows: tpl, gap: 4, ["--ar-fs" as string]: "25px" }}>
           {items}
         </div>
         <div className="flex gap-3">
-          <button type="button" onClick={onClose} className="ar-btn-ghost flex-1">Skip demo</button>
-          <button type="button" onClick={onStart} className="ar-btn-primary flex-1">Start game</button>
+          <button type="button" onClick={onClose} className="g-btn-ghost flex-1">Skip demo</button>
+          <button type="button" onClick={onStart} className="g-btn-primary flex-1">Start game</button>
         </div>
       </div>
     </div>
