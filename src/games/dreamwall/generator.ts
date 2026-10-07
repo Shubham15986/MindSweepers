@@ -338,6 +338,6 @@ export function generatePuzzle(n: number, seed: string): { size: number; clues: 
     attemptSeed = attemptSeed + "x";
   }
   // Fallback to a known static tiny puzzle if it fails completely so it never crashes
-  if (n === 4) return { size: 4, clues: [null, 2, null, null, null, null, null, null, 1, null, null, 3, null, null, null, null], solution: [2, 2, 1, 1, 1, 2, 1, 2, 2, 1, 1, 2, 1, 1, 2, 2] as Cell[] };
+  if (n === 4) return { size: 4, clues: [null,null,null,null,null,null,null,4,null,null,null,null,1,null,null,2], solution: [1,1,1,2,1,2,2,2,1,1,1,1,2,1,2,2] as Cell[] };
   throw new Error("Failed to generate puzzle");
 }

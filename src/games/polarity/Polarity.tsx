@@ -102,8 +102,8 @@ function MiniDominoPreview({ type }) {
     return (
       <div className="totem-tut-preview-box">
         <div className="totem-tut-domino">
-          <div className="totem-tut-half cyan-img-bg"><small>CYAN SKYLINE</small></div>
-          <div className="totem-tut-half dark-img-bg"><small>VOID NIGHT</small></div>
+          <div className="totem-tut-half cyan-img-bg"><small>CYAN</small></div>
+          <div className="totem-tut-half dark-img-bg"><small>VOID</small></div>
         </div>
       </div>
     );
@@ -112,8 +112,8 @@ function MiniDominoPreview({ type }) {
     return (
       <div className="totem-tut-preview-box">
         <div className="totem-tut-domino">
-          <div className="totem-tut-half metal-img-bg"><small>INERT TOTEM</small></div>
-          <div className="totem-tut-half metal-img-bg"><small>INERT TOTEM</small></div>
+          <div className="totem-tut-half metal-img-bg"><small>INERT</small></div>
+          <div className="totem-tut-half metal-img-bg"><small>INERT</small></div>
         </div>
       </div>
     );
@@ -501,7 +501,7 @@ export default function Polarity({ user, onGameOver, onExit }) {
             }
 
             if (val === 1) {
-              /* Positive Cyan Charge — RESTORED CYAN SKYLINE CITY ARTWORK! */
+              /* Positive Cyan Charge — RESTORED CYAN CITY ARTWORK! */
               return (
                 <g key={k}>
                   <image href="/cyan_city_skyline.jpg" x={rx} y={ry} width={S} height={S} preserveAspectRatio="xMidYMid slice" />
@@ -511,7 +511,7 @@ export default function Polarity({ user, onGameOver, onExit }) {
             }
 
             if (val === -1) {
-              /* Void Negative Charge — RESTORED DARK VOID NIGHT SKYLINE ARTWORK! */
+              /* Void Negative Charge — RESTORED DARK VOID SKYLINE ARTWORK! */
               return (
                 <g key={k}>
                   <image href="/dark_void_skyline.jpg" x={rx} y={ry} width={S} height={S} preserveAspectRatio="xMidYMid slice" />
