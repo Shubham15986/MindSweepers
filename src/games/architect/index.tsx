@@ -174,12 +174,12 @@ export default function Architect({ onGameOver, onExit, seed }: GameProps & { se
       {/* Play / solved / revealed */}
       {s.puzzle && (s.phase === "play" || s.phase === "solved" || s.phase === "revealed") && (
         <div className="relative z-10 flex-1 min-h-0 flex flex-col md:flex-row md:items-stretch gap-4 md:gap-8 px-4 md:px-8 py-4 overflow-y-auto md:overflow-hidden">
-          <div className="md:flex-1 md:min-h-0 md:h-full flex flex-col items-center min-w-0">
+          <div className="flex-1 min-h-0 h-full flex flex-col items-center w-full">
             <div className="text-center mb-3 shrink-0">
               <p className="text-(--fg) text-2xl font-light leading-none">{s.level}</p>
               <p className="text-(--dim) text-base">{LEVELS[s.level].flavor}</p>
             </div>
-            <Board puzzle={s.puzzle} cells={s.cells} notes={s.notes} selected={s.selected} wrong={s.wrong} dim={s.dim} interactive={playing} onSelect={g.select} onViewChange={setIs3D} className="md:flex-1 md:min-h-0" />
+            <Board puzzle={s.puzzle} cells={s.cells} notes={s.notes} selected={s.selected} wrong={s.wrong} dim={s.dim} interactive={playing} onSelect={g.select} onViewChange={setIs3D} className="flex-1 min-h-0 w-full" />
           </div>
 
           <div className="md:w-[300px] md:self-center shrink-0 flex flex-col gap-3 pb-2">

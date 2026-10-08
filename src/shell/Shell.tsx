@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect, useRef, useState } from "react";
-import { User as UserIcon, LogOut } from "lucide-react";
+import { User as UserIcon, LogOut, Menu, X } from "lucide-react";
 import type { BoardFilter, GameId, User } from "../shared/types";
 import { BRAND } from "../shared/theme";
 import Hero from "./Hero";
@@ -31,6 +31,7 @@ export default function Shell() {
   });
   const [showAuth, setShowAuth] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [playing, setPlayingState] = useState<GameId | null>(null);
   const setPlaying = (g: GameId | null) => { window.location.hash = g ? "#/game/" + g : "#/"; };
   
@@ -71,13 +72,14 @@ export default function Shell() {
               <a href="#games" className="hidden sm:inline hover:text-fog transition-colors">Games</a>
               <a href="#leaderboard" className="hidden sm:inline hover:text-fog transition-colors">Leaderboard</a>
               {user ? (
-                <div className="flex items-center gap-3">
+                <div className="hidden sm:flex items-center gap-3">
                   <span className="text-amber truncate max-w-[100px] sm:max-w-none">{user.name.split("@")[0].split(" ")[0]}</span>
                   <button onClick={handleLogout} className="text-xs text-mist hover:text-coral transition-colors">Logout</button>
                 </div>
               ) : (
-                <button onClick={() => setShowAuth(true)} className="h-9 px-4 rounded-full border border-fog/15 text-fog inline-flex items-center hover:border-amber hover:text-amber transition-colors">Login</button>
+                <button onClick={() => setShowAuth(true)} className="hidden sm:inline-flex h-9 px-4 rounded-full border border-fog/15 text-fog items-center hover:border-amber hover:text-amber transition-colors">Login</button>
               )}
+              <button onClick={() => setShowMobileMenu(true)} className="sm:hidden text-fog hover:text-amber transition-colors"><Menu size={24} /></button>
             </div>
           </nav>
         </header>
@@ -86,6 +88,23 @@ export default function Shell() {
             onRequireAuth={() => setShowAuth(true)}
             onSubmitted={(g) => { setBoardFilter(g); setRefreshKey((k) => k + 1); }} />
         </main>
+        
+        {showMobileMenu && (
+          <div className="fixed inset-0 z-50 bg-night/95 backdrop-blur-md flex flex-col items-center justify-center gap-8 text-lg font-semibold uppercase tracking-[0.12em] text-mist">
+            <button className="absolute top-5 right-6 text-fog" onClick={() => setShowMobileMenu(false)}><X size={28} /></button>
+            <a href="#games" onClick={() => { setShowMobileMenu(false); setPlaying(null); }} className="hover:text-amber transition-colors">Games</a>
+            <a href="#leaderboard" onClick={() => { setShowMobileMenu(false); setPlaying(null); }} className="hover:text-amber transition-colors">Leaderboard</a>
+            {user ? (
+              <div className="flex flex-col items-center gap-4 mt-8">
+                <span className="text-amber capitalize text-sm tracking-widest">Player: {user.name.split("@")[0]}</span>
+                <button onClick={() => { handleLogout(); setShowMobileMenu(false); }} className="px-6 py-3 rounded-full border border-coral text-coral hover:bg-coral hover:text-night transition-colors">Logout</button>
+              </div>
+            ) : (
+              <button onClick={() => { setShowAuth(true); setShowMobileMenu(false); }} className="mt-8 px-8 py-4 rounded-full bg-fog text-night hover:bg-amber transition-colors">Login</button>
+            )}
+          </div>
+        )}
+
         {showAuth && <AuthModal onClose={() => setShowAuth(false)} onAuthSuccess={(u) => { setUser(u); setShowAuth(false); }} />}
       </div>
     );
@@ -103,7 +122,7 @@ export default function Shell() {
             <a href="#games" className="hidden sm:inline hover:text-fog transition-colors">Games</a>
             <a href="#leaderboard" className="hidden sm:inline hover:text-fog transition-colors">Leaderboard</a>
             {user ? (
-              <div className="flex items-center gap-2 relative">
+              <div className="hidden sm:flex items-center gap-2 relative">
                 <button onClick={() => setShowProfile(!showProfile)} className="w-8 h-8 rounded-full border border-fog/15 text-fog grid place-items-center hover:border-amber hover:text-amber transition-colors" aria-label="Profile">
                   <UserIcon size={16} />
                 </button>
@@ -118,8 +137,9 @@ export default function Shell() {
                 )}
               </div>
             ) : (
-              <button onClick={() => setShowAuth(true)} className="h-9 px-4 rounded-full border border-fog/15 text-fog inline-flex items-center hover:border-amber hover:text-amber transition-colors">Login</button>
+              <button onClick={() => setShowAuth(true)} className="hidden sm:inline-flex h-9 px-4 rounded-full border border-fog/15 text-fog items-center hover:border-amber hover:text-amber transition-colors">Login</button>
             )}
+            <button onClick={() => setShowMobileMenu(true)} className="sm:hidden text-fog hover:text-amber transition-colors"><Menu size={24} /></button>
           </div>
         </nav>
       </header>
@@ -147,6 +167,22 @@ export default function Shell() {
       </section>
 
       <WhenNear minH={600}><Final /></WhenNear>
+
+      {showMobileMenu && (
+        <div className="fixed inset-0 z-50 bg-night/95 backdrop-blur-md flex flex-col items-center justify-center gap-8 text-lg font-semibold uppercase tracking-[0.12em] text-mist">
+          <button className="absolute top-5 right-6 text-fog" onClick={() => setShowMobileMenu(false)}><X size={28} /></button>
+          <a href="#games" onClick={() => { setShowMobileMenu(false); setPlaying(null); }} className="hover:text-amber transition-colors">Games</a>
+          <a href="#leaderboard" onClick={() => { setShowMobileMenu(false); setPlaying(null); }} className="hover:text-amber transition-colors">Leaderboard</a>
+          {user ? (
+            <div className="flex flex-col items-center gap-4 mt-8">
+              <span className="text-amber capitalize text-sm tracking-widest">Player: {user.name.split("@")[0]}</span>
+              <button onClick={() => { handleLogout(); setShowMobileMenu(false); }} className="px-6 py-3 rounded-full border border-coral text-coral hover:bg-coral hover:text-night transition-colors">Logout</button>
+            </div>
+          ) : (
+            <button onClick={() => { setShowAuth(true); setShowMobileMenu(false); }} className="mt-8 px-8 py-4 rounded-full bg-fog text-night hover:bg-amber transition-colors">Login</button>
+          )}
+        </div>
+      )}
 
       {showAuth && (
         <AuthModal 

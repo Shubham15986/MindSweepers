@@ -192,13 +192,13 @@ export default function Polarity({ onGameOver, onExit, seed }: GameProps & { see
       {s.puzzle && (playing || s.phase === "solved" || s.phase === "revealed") && (
         <div className="relative z-10 flex-1 min-h-0 overflow-y-auto md:overflow-hidden">
           <div className="min-h-full md:h-full flex flex-col md:flex-row md:items-stretch gap-4 md:gap-6 px-3 md:px-6 py-3 md:py-4">
-            <div className="flex flex-col items-center min-w-0 md:flex-1 md:min-h-0">
+            <div className="flex-1 min-h-0 h-full flex flex-col items-center w-full">
               <div className="text-center mb-2 shrink-0 flex items-center justify-center gap-3">
                 <span className="px-3 py-1 rounded-full bg-[var(--surface)] border border-[var(--line)] text-xs font-semibold tracking-wider uppercase">{s.level}</span>
                 <span className="g-mono text-xs tracking-widest text-(--dim)">{lv.flavor}</span>
               </div>
               <Board layout={s.puzzle} states={s.states} wrong={s.wrong} done={s.done} cursor={s.cursor} interactive={playing}
-                minCell={lv.minCellSizePx} onAct={onAct} onToggleDone={g.toggleDone} className="md:flex-1 md:min-h-0" />
+                minCell={lv.minCellSizePx} onAct={onAct} onToggleDone={g.toggleDone} className="flex-1 min-h-0 w-full" />
             </div>
 
             <div className="md:w-[310px] shrink-0 flex flex-col justify-center gap-4 pb-2">
