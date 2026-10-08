@@ -1,5 +1,6 @@
 {
-  "description": "Engage in a single-player spatial logic puzzle with a minimalist design, offering a calming experience as you solve challenging Nurikabe grids.",
+  "title": "MindSweepers",
+  "description": "Three dreams. One leaderboard. A minimalist spatial logic puzzle.",
   "robots": {
     "index": false
   },
