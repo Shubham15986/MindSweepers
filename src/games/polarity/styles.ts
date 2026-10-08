@@ -2,7 +2,7 @@
 import { baseCss } from "../common/theme";
 
 export const POL_CSS = baseCss(".polarity-root") + `
-.polarity-root { position: relative; height: 100%; min-height: 100%; display: flex; flex-direction: column; overflow: hidden; -webkit-tap-highlight-color: transparent; }
+.polarity-root { position: relative; height: 100%; min-height: 100%; display: flex; flex-direction: column; -webkit-tap-highlight-color: transparent; }
 .polarity-root .tabular { font-variant-numeric: tabular-nums; }
 
 /* Board Container & Grid */

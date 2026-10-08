@@ -2,7 +2,7 @@
 import { baseCss } from "../common/theme";
 
 export const ARCH_CSS = baseCss(".architect-root") + `
-.architect-root { position: relative; height: 100%; min-height: 100%; display: flex; flex-direction: column; overflow: hidden; -webkit-tap-highlight-color: transparent; }
+.architect-root { position: relative; height: 100%; min-height: 100%; display: flex; flex-direction: column; -webkit-tap-highlight-color: transparent; }
 .architect-root .tabular { font-variant-numeric: tabular-nums; }
 
 /* Board: sized in px by useFitCell; scrolls rather than shrinking below the minimum */
