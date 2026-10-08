@@ -60,8 +60,6 @@ export default function Architect({ onGameOver, onExit, seed }: GameProps & { se
   const [solvedCount, setSolvedCount] = useState(0);
   const [is3D, setIs3D] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
-
-  const ranked = s.mode === "daily";
   const n = s.puzzle?.n ?? LEVELS[s.level].n;
   const playing = s.phase === "play";
 
@@ -80,14 +78,14 @@ export default function Architect({ onGameOver, onExit, seed }: GameProps & { se
   const exit = () => { g.stop(); onExit(); };
 
   useEffect(() => {
-    if (s.phase === "solved" && !submitted && s.score != null && ranked && s.puzzle) {
+    if (s.phase === "solved" && !submitted && s.score != null && s.puzzle) {
       setSubmitted(true);
       onGameOver({
         score: s.score, level: s.level,
         meta: { seed: s.puzzle.seed, mode: s.mode, timeMs: s.timeMs, hintsUsed: s.hints, boardState: s.cells.join("") },
       });
     }
-  }, [s.phase, submitted, s.score, ranked, s.puzzle, s.level, s.mode, s.timeMs, s.hints, s.cells, onGameOver]);
+  }, [s.phase, submitted, s.score, s.puzzle, s.level, s.mode, s.timeMs, s.hints, s.cells, onGameOver]);
 
   const changeLevel = (level: LevelKey) => {
     if (level === s.level) return;
