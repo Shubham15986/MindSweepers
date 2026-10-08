@@ -201,9 +201,9 @@ export default function Polarity({ onGameOver, onExit, seed }: GameProps & { see
                 minCell={lv.minCellSizePx} onAct={onAct} onToggleDone={g.toggleDone} className="flex-1 min-h-0 w-full" />
             </div>
 
-            <div className="md:w-[310px] shrink-0 flex flex-col justify-center gap-4 pb-2">
-              <div className="p-3 rounded-2xl bg-[var(--surface)] border border-[var(--line)] text-center md:text-left shadow-sm">
-                <p className="text-xs font-medium text-(--fg) leading-relaxed" aria-live="polite">
+            <div className="md:w-[320px] shrink-0 flex flex-col justify-center gap-4 pb-2">
+              <div className="p-3 md:p-4 rounded-2xl bg-[var(--surface)] border border-[var(--line)] text-center shadow-sm">
+                <p className="text-xs md:text-sm font-medium text-(--fg) leading-relaxed" aria-live="polite">
                   {s.phase === "revealed" ? "The solution, revealed. No score recorded." : s.message ?? "Place dominoes cleanly. Ensure numbers match row & column magnetic totals."}
                 </p>
               </div>

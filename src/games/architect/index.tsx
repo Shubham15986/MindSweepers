@@ -182,9 +182,9 @@ export default function Architect({ onGameOver, onExit, seed }: GameProps & { se
             <Board puzzle={s.puzzle} cells={s.cells} notes={s.notes} selected={s.selected} wrong={s.wrong} dim={s.dim} interactive={playing} onSelect={g.select} onViewChange={setIs3D} className="flex-1 min-h-0 w-full" />
           </div>
 
-          <div className="md:w-[310px] shrink-0 flex flex-col justify-center gap-4 pb-2">
-            <div className="p-3 rounded-2xl bg-[var(--surface)] border border-[var(--line)] text-center md:text-left shadow-sm">
-              <p className="text-xs font-medium text-(--fg) leading-relaxed" aria-live="polite">
+          <div className="md:w-[320px] shrink-0 flex flex-col justify-center gap-4 pb-2">
+            <div className="p-3 md:p-4 rounded-2xl bg-[var(--surface)] border border-[var(--line)] text-center shadow-sm">
+              <p className="text-xs md:text-sm font-medium text-(--fg) leading-relaxed" aria-live="polite">
                 {s.phase === "revealed" ? "The solution, revealed. No score recorded." : s.message ?? "Tap a cell, then use + and - to set its height."}
               </p>
             </div>
@@ -194,16 +194,16 @@ export default function Architect({ onGameOver, onExit, seed }: GameProps & { se
 
             <div className="w-full max-w-[440px] mx-auto space-y-2" role="toolbar" aria-label="Tools">
               <div className="grid grid-cols-3 gap-3">
-                <button type="button" className="ar-tool bg-[var(--surface)] border border-[var(--line)] !flex-col gap-1 font-semibold text-xs" disabled={!playing} onClick={g.check} title="Check solution">
-                  <CheckCheck size={17} strokeWidth={1.8} className="text-(--fg)" />
+                <button type="button" className="ar-tool bg-[var(--surface)] border border-[var(--line)] !flex-col gap-1 font-semibold text-xs md:text-sm" disabled={!playing} onClick={g.check} title="Check solution">
+                  <CheckCheck size={18} strokeWidth={1.8} className="text-(--fg)" />
                   <span>Check</span>
                 </button>
-                <button type="button" className="ar-tool bg-[var(--surface)] border border-[var(--line)] !flex-col gap-1 font-semibold text-xs" disabled={!playing} onClick={() => setConfirm({ kind: "giveup" })} title="Give up & view solution">
-                  <Flag size={17} strokeWidth={1.8} className="text-(--fg)" />
+                <button type="button" className="ar-tool bg-[var(--surface)] border border-[var(--line)] !flex-col gap-1 font-semibold text-xs md:text-sm" disabled={!playing} onClick={() => setConfirm({ kind: "giveup" })} title="Give up & view solution">
+                  <Flag size={18} strokeWidth={1.8} className="text-(--fg)" />
                   <span>Solution</span>
                 </button>
-                <button type="button" className="ar-tool !bg-(--fg) !text-(--bg) !border-(--fg) !flex-col gap-1 font-semibold text-xs" onClick={() => begin(s.level, "free")} title="Generate new puzzle">
-                  <RefreshCw size={17} strokeWidth={1.8} className="text-(--bg)" />
+                <button type="button" className="ar-tool !bg-(--fg) !text-(--bg) !border-(--fg) !flex-col gap-1 font-semibold text-xs md:text-sm" onClick={() => begin(s.level, "free")} title="Generate new puzzle">
+                  <RefreshCw size={18} strokeWidth={1.8} className="text-(--bg)" />
                   <span className="!text-(--bg)">New Puzzle</span>
                 </button>
               </div>

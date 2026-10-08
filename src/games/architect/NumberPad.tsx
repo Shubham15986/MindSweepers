@@ -18,10 +18,10 @@ export default function NumberPad({ canUndo, canRedo, disabled, onChangeHeight, 
         <button type="button" disabled={disabled} onClick={() => onChangeHeight(-1)} className="ar-pad-num w-16 text-3xl pb-1" aria-label="Decrease height">-</button>
         <button type="button" disabled={disabled} onClick={() => onChangeHeight(1)} className="ar-pad-num w-16 text-3xl pb-1" aria-label="Increase height">+</button>
       </div>
-      <div className="grid grid-cols-3 gap-2 mt-2 max-w-[300px] mx-auto">
-        <button type="button" className="ar-tool" onClick={onErase} disabled={disabled}><Eraser size={18} strokeWidth={1.6} /><span>Erase</span></button>
-        <button type="button" className="ar-tool" onClick={onUndo} disabled={disabled || !canUndo}><Undo2 size={18} strokeWidth={1.6} /><span>Undo</span></button>
-        <button type="button" className="ar-tool" onClick={onRedo} disabled={disabled || !canRedo}><Redo2 size={18} strokeWidth={1.6} /><span>Redo</span></button>
+      <div className="grid grid-cols-3 gap-3 mt-4 w-full mx-auto">
+        <button type="button" className="ar-tool font-semibold text-xs md:text-sm" onClick={onErase} disabled={disabled}><Eraser size={18} strokeWidth={1.6} /><span>Erase</span></button>
+        <button type="button" className="ar-tool font-semibold text-xs md:text-sm" onClick={onUndo} disabled={disabled || !canUndo}><Undo2 size={18} strokeWidth={1.6} /><span>Undo</span></button>
+        <button type="button" className="ar-tool font-semibold text-xs md:text-sm" onClick={onRedo} disabled={disabled || !canRedo}><Redo2 size={18} strokeWidth={1.6} /><span>Redo</span></button>
       </div>
     </div>
   );
