@@ -59,7 +59,6 @@ export default function Shell() {
         <header className="flex-none h-16 bg-night/95 backdrop-blur-md border-b border-fog/10">
           <nav className="h-full max-w-[1200px] mx-auto px-6 flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-amber"><path d="M12 2v20"/><path d="m4.93 10.93 14.14 14.14"/><path d="m2 22 20-20"/></svg>
               <span className="font-semibold tracking-[0.25em] text-fog text-sm">MINDSWEEPERS</span>
             </div>
             <div className="flex items-center gap-6 text-xs font-semibold uppercase tracking-[0.12em] text-mist">

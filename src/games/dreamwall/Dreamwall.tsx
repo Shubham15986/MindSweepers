@@ -432,7 +432,6 @@ function Game({ level, saved, onBack, onMenu, onRules, onSettings, onSave, onSol
           <div className="flex items-center gap-2"><span className="text-2xl font-semibold tabular-nums">{Math.round((filled / total) * 100)}%</span>
             <span className="w-16 h-1 rounded-full bg-[var(--muted)] overflow-hidden"><span className="block h-full bg-mint transition-all" style={{ width: (filled / total) * 100 + "%" }} /></span></div>
         </div>
-        {a.err.size > 0 && <span className="fade text-xs text-coral font-medium flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-coral" />{a.pools ? "Pool in the sea" : "Island out of shape"}</span>}
       </div>
 
       <div className="flex-1 grid place-items-center py-2">
