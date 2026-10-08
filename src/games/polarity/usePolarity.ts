@@ -32,7 +32,7 @@ export type PolState = {
 };
 
 const initial: PolState = {
-  phase: "start", mode: "daily", level: "Easy", puzzle: null, states: [], past: [], future: [], cursor: 0, tool: null,
+  phase: "start", mode: "free", level: "Easy", puzzle: null, states: [], past: [], future: [], cursor: 0, tool: null,
   hints: 0, message: null, wrong: [], done: [], startedAt: 0, timeMs: 0, score: null,
 };
 

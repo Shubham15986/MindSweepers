@@ -30,7 +30,7 @@ export type ArchState = {
 };
 
 const initial: ArchState = {
-  phase: "start", mode: "daily", level: "Easy", puzzle: null, cells: [], notes: [], past: [], future: [],
+  phase: "start", mode: "free", level: "Easy", puzzle: null, cells: [], notes: [], past: [], future: [],
   selected: 0, pencil: false, dim: false, hints: 0, message: null, wrong: [], startedAt: 0, timeMs: 0, score: null,
 };
 
