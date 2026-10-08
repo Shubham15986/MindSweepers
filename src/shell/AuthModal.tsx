@@ -17,6 +17,20 @@ export default function AuthModal({ onClose, onAuthSuccess }: { onClose: () => v
   const [password, setPassword] = useState("");
   const [otp, setOtp] = useState("");
 
+  const handleResendOtp = async () => {
+    setError(null);
+    setMsg(null);
+    setLoading(true);
+    try {
+      const res = await forgotPassword({ email });
+      setMsg("OTP resent! Check your email.");
+    } catch (err: any) {
+      setError(err.message || "Failed to resend OTP");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
@@ -99,7 +113,10 @@ export default function AuthModal({ onClose, onAuthSuccess }: { onClose: () => v
           {mode === "reset" && (
             <>
               <div>
-                <label className="block text-xs font-semibold text-mist uppercase tracking-wider mb-1.5">OTP (sent to email)</label>
+                <div className="flex items-center justify-between mb-1.5">
+                  <label className="block text-xs font-semibold text-mist uppercase tracking-wider">OTP (sent to email)</label>
+                  <button type="button" onClick={handleResendOtp} disabled={loading} className="text-xs text-amber hover:underline">Resend OTP</button>
+                </div>
                 <input required type="text" value={otp} onChange={e => setOtp(e.target.value)} className={inputClass} placeholder="123456" />
               </div>
             </>
