@@ -31,8 +31,8 @@ export default function ToolPalette({ disabled, onCheck, onReveal, onNewPuzzle }
           <span>New Puzzle</span>
         </button>
       </div>
-      <p className="text-center text-[11px] md:text-xs text-(--dim) pt-1">
-        Tap domino to cycle: <span className="font-semibold text-[#ff4b2b]">+</span> pole, <span className="font-semibold text-[#00b4db]">−</span> pole, or blank.
+      <p className="flex items-center justify-center text-center text-sm font-bold text-[var(--fg)] bg-[var(--fg)]/5 py-2.5 px-4 rounded-xl mt-3 mx-auto w-full max-w-[440px]">
+        <span>Tap domino to cycle: <span className="font-black text-[#ff4b2b]">+</span> pole, <span className="font-black text-[#00b4db]">−</span> pole, or blank.</span>
       </p>
     </div>
   );
