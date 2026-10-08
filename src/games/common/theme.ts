@@ -18,9 +18,9 @@ const KEY = "nk-dark";
 function readDark() { try { return JSON.parse(localStorage.getItem(KEY) ?? "false") === true; } catch { return false; } }
 
 export function useDreamTheme() {
-  const dark = false;
+  const dark = true;
   const toggle = () => {};
-  const vars = { ...PALETTE.light, ...POLES } as React.CSSProperties;
+  const vars = { ...PALETTE.dark, ...POLES } as React.CSSProperties;
   return { dark, toggle, vars };
 }
 
