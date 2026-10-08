@@ -484,23 +484,14 @@ function Game({ level, saved, onBack, onMenu, onRules, onSettings, onSave, onSol
         </div>
       )}
 
-      {won && !revealed && (
-        <div className="fixed inset-0 z-40 grid place-items-end sm:place-items-center bg-ink/30 fade" style={{ animationDelay: "500ms" }}>
-          <div className="rise w-full sm:max-w-sm rounded-t-3xl sm:rounded-3xl bg-[var(--surface)] p-7 shadow-2xl" style={{ animationDelay: "600ms" }}>
-            <div className="w-12 h-12 rounded-2xl bg-mint grid place-items-center mb-5"><Check className="text-ink" strokeWidth={2.5} /></div>
-            <h2 className="text-3xl font-semibold tracking-tight">{level.index === 2 ? "You escaped Limbo." : "Grid Solved!"}</h2>
-            <p className="text-[var(--dim)] mb-6">{level.tier.dream} · {level.tier.name} in {fmt(time)}</p>
-            <dl className="divide-y divide-[var(--line)] border-y border-[var(--line)] mb-6 text-sm">
-              {[["Board coverage", "100%"], ["Layer", level.tier.dream + " · " + n + "×" + n], ["Undos · Errors · Reveals", stats.undos + " · " + stats.errors + " · " + stats.hints]].map(([k, v]) => (
-                <div key={k} className="flex justify-between py-3"><dt className="text-[var(--dim)]">{k}</dt><dd className="font-mono">{v}</dd></div>
-              ))}
-              <div className="flex justify-between py-3 text-base"><dt className="font-medium">Total</dt><dd className="font-mono font-bold">+{level.tier.points} pts</dd></div>
-            </dl>
-            <button onClick={onNext} className="w-full h-14 rounded-2xl bg-[var(--fg)] text-[var(--bg)] font-medium flex items-center justify-center gap-2">{level.index === 2 ? "Wake up" : "Go deeper"} <ChevronRight size={18} /></button>
-            <div className="grid grid-cols-2 gap-2 mt-2">
-              <button onClick={onReplay} className="h-12 rounded-2xl border border-[var(--line)]">Replay / New Grid</button>
-              <button onClick={onMenu} className="h-12 rounded-2xl border border-[var(--line)]">Menu</button>
-            </div>
+      {won && (
+        <div className="mt-6 flex flex-col gap-3 animate-in fade-in slide-in-from-bottom-4 duration-500">
+          <button onClick={onNext} className="w-full h-14 rounded-2xl bg-amber text-night font-bold text-lg flex items-center justify-center gap-2">
+            {level.index === 2 ? "Wake up" : "Go deeper"} <ChevronRight size={20} strokeWidth={2.5} />
+          </button>
+          <div className="grid grid-cols-2 gap-2">
+            <button onClick={onReplay} className="h-12 rounded-2xl border border-[var(--line)] font-medium">New Grid</button>
+            <button onClick={onMenu} className="h-12 rounded-2xl border border-[var(--line)] font-medium">Menu</button>
           </div>
         </div>
       )}
