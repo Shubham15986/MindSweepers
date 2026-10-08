@@ -65,9 +65,11 @@ export default function Shell() {
         <header className="flex-none h-16 bg-night/95 backdrop-blur-md border-b border-fog/10">
           <nav className="h-full max-w-[1200px] mx-auto px-6 flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <span className="font-semibold tracking-[0.25em] text-fog text-sm">MINDSWEEPERS</span>
+              <a href="#/" className="font-semibold tracking-[0.25em] text-fog text-sm hover:text-amber transition-colors">MINDSWEEPERS</a>
             </div>
             <div className="flex items-center gap-6 text-xs font-semibold uppercase tracking-[0.12em] text-mist">
+              <a href="#games" className="hidden sm:inline hover:text-fog transition-colors">Games</a>
+              <a href="#leaderboard" className="hidden sm:inline hover:text-fog transition-colors">Leaderboard</a>
               {user ? (
                 <div className="flex items-center gap-3">
                   <span className="text-amber truncate max-w-[100px] sm:max-w-none">{user.name.split("@")[0].split(" ")[0]}</span>
