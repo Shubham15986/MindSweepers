@@ -3,16 +3,32 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import nodemailer from 'nodemailer';
+import helmet from 'helmet';
+import rateLimit from 'express-rate-limit';
 import { User, Score } from './models.js';
 
 dotenv.config();
 
 const app = express();
+
+// Security Middleware (Helmet sets secure HTTP headers)
+app.use(helmet());
 app.use(cors());
 app.use(express.json());
 
-// Render health check
+// Rate Limiting (Prevents bots/malware from bombarding the server)
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
+  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+  message: { error: "Too many requests from this IP, please try again after 15 minutes." }
+});
+app.use(limiter);
+
+// Health check endpoints for Render
 app.get('/', (req, res) => res.send('Backend is running!'));
+app.get('/health', (req, res) => res.status(200).json({ status: 'ok', uptime: process.uptime() }));
 
 const PORT = process.env.PORT || 3001;
 const MONGO_URI = process.env.MONGO_URI;
