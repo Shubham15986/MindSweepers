@@ -12,7 +12,7 @@ import GameNav from "../common/GameNav";
 import { useDreamTheme } from "../common/theme";
 
 import imgEasy from "../../assets/polarity-easy.jpg";
-import imgMedium from "../../assets/polarity-medium.jpg";
+import imgMedium from "../../assets/polarity-medium.png";
 import imgHard from "../../assets/polarity-hard.jpg";
 
 const LEVEL_ICONS: Record<string, string> = {
