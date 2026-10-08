@@ -11,6 +11,16 @@ import { POL_CSS } from "./styles";
 import GameNav from "../common/GameNav";
 import { useDreamTheme } from "../common/theme";
 
+import imgEasy from "../../assets/polarity-easy.jpg";
+import imgMedium from "../../assets/polarity-medium.jpg";
+import imgHard from "../../assets/polarity-hard.jpg";
+
+const LEVEL_ICONS: Record<string, string> = {
+  Easy: imgEasy,
+  Medium: imgMedium,
+  Hard: imgHard
+};
+
 const fmt = (ms: number) => {
   const s = Math.floor(ms / 1000);
   return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0");
@@ -168,7 +178,11 @@ export default function Polarity({ onGameOver, onExit, seed }: GameProps & { see
                         <span className="font-mono text-[10px] tracking-[0.3em] text-[var(--dim)]">{l.toUpperCase()}</span>
                       </div>
                       <div className="grid mb-5 aspect-square bg-[var(--muted)] border border-[var(--line)] p-[2px] rounded-lg items-center justify-center group-hover:border-cyan-500/30 transition-colors overflow-hidden">
-                        <img src={`/assets/polarity-${l.toLowerCase()}.jpg`} alt={`${l} level preview`} className="w-full h-full object-contain rounded-md opacity-90 group-hover:opacity-100 transition-opacity" />
+                        {LEVEL_ICONS[l] ? (
+                          <img src={LEVEL_ICONS[l]} alt={`${l} level preview`} className="w-full h-full object-cover rounded-md opacity-90 group-hover:opacity-100 transition-opacity" />
+                        ) : (
+                          <div className="text-4xl text-center font-black text-(--dim) group-hover:text-(--fg) transition-colors">{LEVELS[l].cols}×{LEVELS[l].rows}</div>
+                        )}
                       </div>
                       <div>
                         <p className="text-[var(--fg)] font-medium text-lg leading-tight mb-1">{l}</p>
