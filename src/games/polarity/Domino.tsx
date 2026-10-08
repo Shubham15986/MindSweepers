@@ -47,8 +47,8 @@ function DominoImpl({ a, b, cols, state, wrong, clashA, clashB, cursor, interact
         onPointerLeave={() => clearTimeout(press.current.t)}
         onPointerCancel={() => clearTimeout(press.current.t)}
       >
-        {p > 0 && <span key={state} className="pl-ring is-plus" aria-hidden></span>}
-        {p < 0 && <span key={state} className="pl-ring is-minus" aria-hidden></span>}
+        {p > 0 && <span key={state} className="pl-ring is-plus" aria-hidden>+</span>}
+        {p < 0 && <span key={state} className="pl-ring is-minus" aria-hidden>−</span>}
         {state === QMARK && <span className="pl-q" aria-hidden>?</span>}
         {clash && <span className="pl-badge" aria-hidden>!</span>}
       </button>

@@ -134,29 +134,55 @@ export default function Polarity({ onGameOver, onExit, seed }: GameProps & { see
 
       {/* Start */}
       {s.phase === "start" && (
-        <div className="relative z-10 flex-1 overflow-y-auto grid place-items-center px-6 py-8">
-          <div className="text-center max-w-md w-full pl-rise">
-            <p className="g-eyebrow">Logic puzzle · Magnets</p>
-            <h1 className="font-light text-6xl md:text-7xl tracking-tight leading-[0.95] mt-3">POLA<span className="font-semibold">RITY</span></h1>
-            <p className="text-(--dim) text-2xl mt-2">Two poles. No contact.</p>
-            <div className="mt-9 flex flex-col items-center gap-4">
-              <div className="g-seg" role="radiogroup" aria-label="Level">
-                {LEVEL_ORDER.map((l) => (
-                  <button key={l} type="button" role="radio" aria-checked={s.level === l} onClick={() => g.setLevel(l)}>
-                    {l} <span className="tabular text-(--dim) ml-1">{LEVELS[l].cols}×{LEVELS[l].rows}</span>
-                  </button>
-                ))}
+        <div className="relative z-10 flex-1 h-full min-h-0 flex flex-col items-center justify-center px-4 py-2 overflow-hidden select-none">
+          <div className="text-center max-w-md w-full pl-rise flex flex-col items-center justify-center">
+            <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-tr from-[#ff4b2b] to-[#00b4db] p-0.5 shadow-lg shadow-cyan-500/20 mb-2 animate-pulse">
+              <div className="w-full h-full bg-[var(--surface)] rounded-[13px] flex items-center justify-center font-black text-xl text-[var(--fg)] tracking-tighter">
+                <span className="text-[#ff4b2b]">+</span><span className="text-[#00b4db]">-</span>
               </div>
-              <p className="text-(--dim) text-lg -mt-1">{lv.flavor}</p>
             </div>
-            <button type="button" className="g-btn-primary mt-8 min-w-[200px]" onClick={() => begin()}>Begin</button>
+            <p className="g-eyebrow tracking-widest text-[10px] uppercase text-(--dim)">Electromagnetic Logic Puzzle</p>
+            <h1 className="font-extralight text-5xl md:text-6xl tracking-tight leading-none mt-1">POLA<span className="font-semibold bg-clip-text text-transparent bg-gradient-to-r from-[#ff4b2b] via-[var(--fg)] to-[#00b4db]">RITY</span></h1>
+            <p className="text-(--dim) text-base mt-1.5 font-light">Two OPPOSING poles. NO like contact.</p>
+            
+            <div className="mt-4 w-full max-w-sm mx-auto">
+              <div className="flex items-center justify-center p-1.5 rounded-full bg-[var(--muted)] border border-[var(--line)] shadow-inner gap-1" role="radiogroup" aria-label="Level">
+                {LEVEL_ORDER.map((l) => {
+                  const isSelected = s.level === l;
+                  return (
+                    <button
+                      key={l}
+                      type="button"
+                      role="radio"
+                      aria-checked={isSelected}
+                      onClick={() => g.setLevel(l)}
+                      className={`flex-1 py-1.5 px-3 rounded-full text-center transition-all duration-200 cursor-pointer flex flex-col items-center justify-center ${
+                        isSelected
+                          ? "bg-[var(--surface)] text-[var(--fg)] shadow-md font-bold scale-[1.02]"
+                          : "text-[var(--dim)] hover:text-[var(--fg)] font-medium"
+                      }`}
+                    >
+                      <span className="text-xs font-semibold leading-tight">{l}</span>
+                      <span className="text-[10px] opacity-70 leading-tight font-mono">{LEVELS[l].cols}×{LEVELS[l].rows}</span>
+                    </button>
+                  );
+                })}
+              </div>
+              <p className="text-(--dim) text-xs font-medium text-center mt-2">{lv.flavor}</p>
+            </div>
+            
+            <button type="button" className="g-btn-primary mt-5 min-w-[200px] h-11 text-sm font-semibold shadow-lg shadow-amber/10 hover:scale-[1.02] active:scale-[0.98] transition-all" onClick={() => begin()}>
+              Begin Magnetic Challenge
+            </button>
+
             <div className="mt-4 flex justify-center gap-2">
-              <button type="button" className="g-btn-ghost inline-flex items-center gap-2" onClick={() => setHelp("help")}><BookOpen size={15} />How to play</button>
-              <button type="button" className="g-btn-ghost" onClick={() => setDemo(true)}>Demo</button>
+              <button type="button" className="g-btn-ghost inline-flex items-center gap-2 text-xs !min-h-[38px] !px-4" onClick={() => setHelp("help")}><BookOpen size={14} />How to Play</button>
+              <button type="button" className="g-btn-ghost text-xs !min-h-[38px] !px-4" onClick={() => setDemo(true)}>Interactive Demo</button>
             </div>
+
             {solvedCount > 0 && (
-              <p className="mt-6 text-xs text-(--dim) tabular">
-                This session: {solvedCount} solved
+              <p className="mt-3 text-[11px] text-(--dim) tabular font-medium bg-[var(--surface)] inline-block px-3 py-1 rounded-full border border-[var(--line)]">
+                ⚡ Session Progress: {solvedCount} Solved
               </p>
             )}
           </div>
@@ -166,7 +192,10 @@ export default function Polarity({ onGameOver, onExit, seed }: GameProps & { see
       {/* Loading */}
       {s.phase === "loading" && (
         <div className="relative z-10 flex-1 grid place-items-center">
-          <p className="text-(--dim) text-2xl pl-pulse" role="status">The puzzle is generating...</p>
+          <div className="text-center space-y-3">
+            <div className="inline-block w-10 h-10 border-2 border-cyan-500 border-t-transparent rounded-full animate-spin" />
+            <p className="text-(--dim) text-xl font-light pl-pulse" role="status">Constructing Magnetic Field Grid...</p>
+          </div>
         </div>
       )}
 
@@ -175,26 +204,35 @@ export default function Polarity({ onGameOver, onExit, seed }: GameProps & { see
         <div className="relative z-10 flex-1 min-h-0 overflow-y-auto md:overflow-hidden">
           <div className="min-h-full md:h-full flex flex-col md:flex-row md:items-stretch gap-4 md:gap-6 px-3 md:px-6 py-3 md:py-4">
             <div className="flex flex-col items-center min-w-0 md:flex-1 md:min-h-0">
-              <div className="text-center mb-2 shrink-0">
-                <span className="text-xl font-semibold tracking-tight">{s.level}</span>
-                <span className="g-mono text-[10px] tracking-[0.25em] uppercase text-(--dim) ml-2">{lv.flavor}</span>
-                
+              <div className="text-center mb-2 shrink-0 flex items-center justify-center gap-3">
+                <span className="px-3 py-1 rounded-full bg-[var(--surface)] border border-[var(--line)] text-xs font-semibold tracking-wider uppercase">{s.level}</span>
+                <span className="g-mono text-xs tracking-widest text-(--dim)">{lv.flavor}</span>
+                {playing && (
+                  <div className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-[var(--surface)] border border-[var(--line)] text-xs">
+                    <TimerIcon size={13} className="text-amber-500" />
+                    <Timer startedAt={s.startedAt} running={playing} frozen={s.timeMs} />
+                  </div>
+                )}
               </div>
               <Board layout={s.puzzle} states={s.states} wrong={s.wrong} done={s.done} cursor={s.cursor} interactive={playing}
                 minCell={lv.minCellSizePx} onAct={onAct} onToggleDone={g.toggleDone} className="md:flex-1 md:min-h-0" />
             </div>
 
-            <div className="md:w-[290px] shrink-0 flex flex-col justify-center gap-3 pb-2">
-              <p className="text-center md:text-left text-sm text-(--fg) min-h-10" aria-live="polite">
-                {s.phase === "revealed" ? "The solution, revealed. No score this time." : s.message ?? "Decide every domino: magnet or blank."}
-              </p>
+            <div className="md:w-[310px] shrink-0 flex flex-col justify-center gap-4 pb-2">
+              <div className="p-3 rounded-2xl bg-[var(--surface)] border border-[var(--line)] text-center md:text-left shadow-sm">
+                <p className="text-xs font-medium text-(--fg) leading-relaxed" aria-live="polite">
+                  {s.phase === "revealed" ? "The solution, revealed. No score recorded." : s.message ?? "Place dominoes cleanly. Ensure numbers match row & column magnetic totals."}
+                </p>
+              </div>
+
               <ToolPalette tool={s.tool} canUndo={s.past.length > 0} canRedo={s.future.length > 0} disabled={!playing}
                 onTool={g.setTool} onUndo={g.undo} onRedo={g.redo} onCheck={g.check} onReveal={() => setConfirm({ kind: "giveup" })} onNewPuzzle={() => begin(s.level, "free")} />
+              
               <div className="flex gap-2 max-w-[440px] w-full mx-auto">
                 {s.phase === "revealed" && (
                   <>
-                    <button type="button" className="g-btn-ghost flex-1" onClick={g.toStart}>Back</button>
-                    <button type="button" className="g-btn-primary flex-1" onClick={() => begin(s.level, "free")}>New puzzle</button>
+                    <button type="button" className="g-btn-ghost flex-1" onClick={g.toStart}>Back to Start</button>
+                    <button type="button" className="g-btn-primary flex-1" onClick={() => begin(s.level, "free")}>New Puzzle</button>
                   </>
                 )}
               </div>
@@ -206,24 +244,27 @@ export default function Polarity({ onGameOver, onExit, seed }: GameProps & { see
       {/* Solved */}
       {s.phase === "solved" && (
         <div className="g-overlay pl-fade-slow" role="dialog" aria-modal="true" aria-label="Solved">
-          <div className="relative text-center w-full max-w-sm pl-rise">
-            <p className="g-eyebrow">{s.level} · {lv.flavor}</p>
-            <h2 className="text-(--fg) font-light text-7xl mt-2">Solved.</h2>
-            <div className="mt-6 flex justify-center">
-              <div className="g-card py-3 px-6"><p className="g-eyebrow !text-[10px]">Score</p><p className="text-(--accent-ink) mt-1 tabular font-semibold">{s.score?.toLocaleString()}</p></div>
+          <div className="relative text-center w-full max-w-sm pl-rise p-6 rounded-3xl bg-[var(--surface)] border border-[var(--line)] shadow-2xl backdrop-blur-xl">
+            <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 mb-2">
+              <span className="text-2xl font-black">⚡</span>
+            </div>
+            <p className="g-eyebrow text-emerald-400 font-semibold">{s.level} · {lv.flavor}</p>
+            <h2 className="text-(--fg) font-light text-6xl mt-1">Solved!</h2>
+            <div className="mt-5 flex justify-center">
+              <div className="g-card py-3 px-8 rounded-2xl border border-[var(--line)] bg-[var(--bg)]"><p className="g-eyebrow !text-[10px] tracking-widest">FINAL SCORE</p><p className="text-emerald-400 text-3xl mt-0.5 tabular font-bold">{s.score?.toLocaleString()}</p></div>
             </div>
             
-            <div className="mt-7 flex flex-col gap-3 animate-in fade-in slide-in-from-bottom-4 duration-500">
-              <button type="button" className="w-full h-14 rounded-2xl bg-amber text-night font-bold text-lg flex items-center justify-center gap-2" onClick={() => begin(s.level, "free")}>
-                New Grid <ChevronRight size={20} strokeWidth={2.5} />
+            <div className="mt-7 flex flex-col gap-3">
+              <button type="button" className="w-full h-13 rounded-2xl bg-gradient-to-r from-amber to-amber-500 text-night font-bold text-base flex items-center justify-center gap-2 shadow-lg hover:brightness-110 active:scale-[0.98] transition-all" onClick={() => begin(s.level, "free")}>
+                Next Magnetic Grid <ChevronRight size={18} strokeWidth={2.5} />
               </button>
               <div className="grid grid-cols-2 gap-2">
                 {nextLevel ? (
-                  <button type="button" className="h-12 rounded-2xl border border-[var(--line)] font-medium text-[var(--fg)]" onClick={() => begin(nextLevel, s.mode)}>Next Level</button>
+                  <button type="button" className="h-11 rounded-2xl border border-[var(--line)] font-semibold text-[var(--fg)] text-sm hover:bg-[var(--surface)] transition-all" onClick={() => begin(nextLevel, s.mode)}>Next Level</button>
                 ) : (
-                  <button type="button" className="h-12 rounded-2xl border border-[var(--line)] font-medium text-[var(--fg)] opacity-50" disabled>Finish</button>
+                  <button type="button" className="h-11 rounded-2xl border border-[var(--line)] font-semibold text-[var(--fg)] text-sm opacity-40" disabled>Finish</button>
                 )}
-                <button type="button" className="h-12 rounded-2xl border border-[var(--line)] font-medium text-[var(--fg)]" onClick={exit}>Menu</button>
+                <button type="button" className="h-11 rounded-2xl border border-[var(--line)] font-semibold text-[var(--fg)] text-sm hover:bg-[var(--surface)] transition-all" onClick={exit}>Menu</button>
               </div>
             </div>
           </div>
