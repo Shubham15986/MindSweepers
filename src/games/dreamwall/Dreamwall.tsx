@@ -456,8 +456,8 @@ function Game({ level, saved, onBack, onMenu, onRules, onSettings, onSave, onSol
         <div className="flex flex-col gap-2 mt-3 mb-2 px-1">
           <p className="text-center text-xs text-[var(--dim)] mb-2 font-medium">The solution, revealed. No score recorded.</p>
           <div className="flex gap-2">
-            <button type="button" onClick={onReplay} className="flex-1 h-12 rounded-xl bg-[var(--surface)] border border-[var(--line)] font-medium text-[var(--fg)] hover:bg-[var(--line)] transition-colors">New Grid</button>
-            <button type="button" onClick={onNext} className="flex-1 h-12 rounded-xl bg-[var(--fg)] text-[var(--bg)] font-medium hover:opacity-90 transition-opacity">{level.index === LEVELS.length - 1 ? "Finish" : "Next Level"}</button>
+            <button type="button" onClick={onBack} className="flex-1 h-12 rounded-xl bg-[var(--surface)] border border-[var(--line)] font-medium text-[var(--fg)] hover:bg-[var(--line)] transition-colors">Change Level</button>
+            <button type="button" onClick={onReplay} className="flex-1 h-12 rounded-xl bg-[var(--fg)] text-[var(--bg)] font-medium hover:opacity-90 transition-opacity">Next Grid</button>
           </div>
         </div>
       ) : (
