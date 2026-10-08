@@ -80,7 +80,7 @@ export default function GamesSection({ user, playing, setPlaying, onRequireAuth,
     return (
       <div className="ll-fade flex flex-col h-full flex-1">
         <div className="flex items-center justify-between mb-4">
-          <button onClick={exit} className={btnGhost}><ArrowLeft size={16} /> Back</button>
+          <button onClick={exit} className={btnGhost}><ArrowLeft size={16} /> All Games</button>
           <span className="text-lg md:text-xl font-display text-amber tracking-[0.2em] uppercase font-semibold">{TABS.find((x) => x.id === playing)!.label}</span>
         </div>
         {/* translateZ creates a containing block so the game's fixed overlays stay inside the stage */}
