@@ -1,4 +1,3 @@
-import { BANK } from "./bank";
 // Nurikabe engine: rule validation, unique-solution solver, puzzle generator.
 // Ported from Python to TypeScript.
 
@@ -84,6 +83,7 @@ class Solver {
   nb: number[][];
   sq: [number, number, number, number][];
   solutions: number[][];
+  iters: number = 0;
 
   constructor(n: number, clues: Record<number, number>) {
     this.n = n;
@@ -212,6 +212,7 @@ class Solver {
   }
 
   search(g: number[], limit: number) {
+    if (this.iters++ > 5000) return; // Time-bounded fast abort!
     if (this.solutions.length >= limit) return;
     if (!this.propagate(g)) return;
     if (!g.includes(0)) {
@@ -315,14 +316,28 @@ function makeClues(g: number[], n: number, rand: () => number): Record<number, n
   return clues;
 }
 
-
-
 export function generatePuzzle(n: number, seed: string): { size: number; clues: (number | null)[]; solution: Cell[] } {
-  const list = BANK[n] || BANK[4];
-  let h = 0;
-  for (let i = 0; i < seed.length; i++) {
-    h = Math.imul(31, h) + seed.charCodeAt(i) | 0;
+  let attemptSeed = seed;
+  for (let superAttempt = 0; superAttempt < 20; superAttempt++) {
+    const rand = mulberry32(hashSeed(attemptSeed));
+    let attempts = 0;
+    while (attempts < 2000) {
+      attempts++;
+      const sol = randomSolution(n, rand);
+      if (!sol.includes(1)) continue;
+      for (let k = 0; k < 4; k++) {
+        const cluesObj = makeClues(sol, n, rand);
+        if (countSolutions(n, cluesObj, 2) === 1) {
+          const flatClues: (number | null)[] = Array(n * n).fill(null);
+          for (const [i, val] of Object.entries(cluesObj)) {
+            flatClues[Number(i)] = val;
+          }
+          const solution = sol.map(v => v === 1 ? 2 : v === 2 ? 1 : 0) as Cell[];
+          return { size: n, clues: flatClues, solution };
+        }
+      }
+    }
+    attemptSeed = attemptSeed + "x";
   }
-  const idx = Math.abs(h) % list.length;
-  return list[idx];
+  throw new Error("Failed to generate puzzle");
 }
