@@ -172,62 +172,68 @@ export default function Architect({ onGameOver, onExit, seed }: GameProps & { se
       )}
 
       {s.puzzle && (s.phase === "play" || s.phase === "solved" || s.phase === "revealed") && (
-        <div className="relative z-10 flex-1 min-h-0 w-full">
-          <div className="min-h-full flex flex-col items-center justify-start max-w-2xl mx-auto gap-6 px-4 md:px-8 py-4 md:py-8">
-          <div className="flex-1 min-h-0 flex flex-col items-center w-full max-h-[60vh]">
-            <div className="text-center mb-4 shrink-0">
-              <p className="text-(--fg) text-2xl font-light leading-none">{s.level}</p>
-              <p className="text-(--dim) text-base">{LEVELS[s.level].flavor}</p>
-            </div>
-            <Board puzzle={s.puzzle} cells={s.cells} notes={s.notes} selected={s.selected} wrong={s.wrong} dim={s.dim} interactive={playing} onSelect={g.select} onViewChange={setIs3D} className="flex-1 min-h-0 w-full" fitHeight={false} />
-          </div>
-
-          <div className="w-full shrink-0 flex flex-col justify-center gap-4 pb-4">
-            <div className="p-3 md:p-4 rounded-2xl bg-[var(--surface)] border border-[var(--line)] text-center shadow-sm">
-              <p className="text-xs md:text-sm font-medium text-(--fg) leading-relaxed" aria-live="polite">
-                {s.phase === "revealed" ? "The solution, revealed. No score recorded." : s.message ?? "Tap a cell, then use + and - to set its height."}
-              </p>
-            </div>
-            
-            <NumberPad n={n} canUndo={s.past.length > 0} canRedo={s.future.length > 0} disabled={!playing}
-              onChangeHeight={g.changeHeight} onErase={g.erase} onUndo={g.undo} onRedo={g.redo} />
-
-            <div className="w-full max-w-[440px] mx-auto space-y-2" role="toolbar" aria-label="Tools">
-              <div className="grid grid-cols-3 gap-3">
-                <button type="button" className="ar-tool bg-[var(--surface)] border border-[var(--line)] !flex-col gap-1 font-semibold text-xs md:text-sm" disabled={!playing} onClick={g.check} title="Check solution">
-                  <CheckCheck size={18} strokeWidth={1.8} className="text-(--fg)" />
-                  <span>Check</span>
-                </button>
-                <button type="button" className="ar-tool bg-[var(--surface)] border border-[var(--line)] !flex-col gap-1 font-semibold text-xs md:text-sm" disabled={!playing} onClick={() => setConfirm({ kind: "giveup" })} title="Give up & view solution">
-                  <Flag size={18} strokeWidth={1.8} className="text-(--fg)" />
-                  <span>Solution</span>
-                </button>
-                <button type="button" className="ar-tool !bg-(--fg) !text-(--bg) !border-(--fg) !flex-col gap-1 font-semibold text-xs md:text-sm" onClick={() => begin(s.level, "free")} title="Generate new puzzle">
-                  <RefreshCw size={18} strokeWidth={1.8} className="text-(--bg)" />
-                  <span className="!text-(--bg)">New Puzzle</span>
-                </button>
+        <div className="relative z-10 flex-1 min-h-0 overflow-y-auto md:overflow-hidden w-full">
+          <div className="min-h-full md:h-full flex flex-col md:flex-row md:items-stretch gap-4 md:gap-6 px-3 md:px-6 py-2 md:py-4">
+            <div className="flex flex-col items-center min-w-0 md:flex-1 md:min-h-0 justify-center">
+              <div className="text-center mb-2 shrink-0 flex items-center justify-center gap-3">
+                <span className="px-3 py-1 rounded-full bg-[var(--surface)] border border-[var(--line)] text-xs font-semibold tracking-wider uppercase">{s.level}</span>
+                <span className="g-mono text-xs tracking-widest text-(--dim)">{LEVELS[s.level].flavor}</span>
+                {playing && (
+                  <div className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-[var(--surface)] border border-[var(--line)] text-xs">
+                    <TimerIcon size={13} className="text-amber-500" />
+                    <Timer startedAt={s.startedAt} running={playing} frozen={s.timeMs} />
+                  </div>
+                )}
               </div>
-              <div className="flex flex-col items-center gap-2 pt-2">
-                <label className="flex items-center gap-2 text-[11px] text-(--dim) cursor-pointer">
-                  <input type="checkbox" checked={s.dim} onChange={g.toggleDim} className="accent-[var(--fg)] w-3.5 h-3.5" />Dim satisfied clues
-                </label>
-                <p className="flex items-center justify-center gap-2 text-center text-sm font-bold text-[var(--fg)] bg-[var(--fg)]/5 py-2.5 px-4 rounded-xl mt-1 w-full max-w-[440px]">
-                  <Eye size={18} className="text-[var(--accent-ink)]" />
-                  <span>{is3D ? "Press the eye again to return to 2D view." : "Press an eye to view that row or column in 3D."}</span>
+              <Board puzzle={s.puzzle} cells={s.cells} notes={s.notes} selected={s.selected} wrong={s.wrong} dim={s.dim} interactive={playing} onSelect={g.select} onViewChange={setIs3D} className="md:flex-1 md:min-h-0 w-full" fitHeight={true} />
+            </div>
+
+            <div className="md:w-[350px] shrink-0 flex flex-col justify-center gap-3 pb-2">
+              <div className="p-3 rounded-2xl bg-[var(--surface)] border border-[var(--line)] text-center shadow-sm">
+                <p className="text-xs font-medium text-(--fg) leading-relaxed" aria-live="polite">
+                  {s.phase === "revealed" ? "The solution, revealed. No score recorded." : s.message ?? "Tap a cell, then use + and - to set its height."}
                 </p>
               </div>
               
-              <div className="flex gap-2 max-w-[440px] w-full mx-auto mt-2">
-                {s.phase === "revealed" && (
-                  <>
-                    <button type="button" className="g-btn-ghost flex-1" onClick={g.toStart}>Back to Start</button>
-                    <button type="button" className="g-btn-primary flex-1" onClick={() => begin(s.level, "free")}>New Puzzle</button>
-                  </>
-                )}
+              <NumberPad n={n} canUndo={s.past.length > 0} canRedo={s.future.length > 0} disabled={!playing}
+                onChangeHeight={g.changeHeight} onErase={g.erase} onUndo={g.undo} onRedo={g.redo} />
+
+              <div className="w-full max-w-[440px] mx-auto space-y-2" role="toolbar" aria-label="Tools">
+                <div className="grid grid-cols-3 gap-2">
+                  <button type="button" className="ar-tool bg-[var(--surface)] border border-[var(--line)] !flex-col gap-1 font-semibold text-xs" disabled={!playing} onClick={g.check} title="Check solution">
+                    <CheckCheck size={16} strokeWidth={1.8} className="text-(--fg)" />
+                    <span>Check</span>
+                  </button>
+                  <button type="button" className="ar-tool bg-[var(--surface)] border border-[var(--line)] !flex-col gap-1 font-semibold text-xs" disabled={!playing} onClick={() => setConfirm({ kind: "giveup" })} title="Give up & view solution">
+                    <Flag size={16} strokeWidth={1.8} className="text-(--fg)" />
+                    <span>Solution</span>
+                  </button>
+                  <button type="button" className="ar-tool !bg-(--fg) !text-(--bg) !border-(--fg) !flex-col gap-1 font-semibold text-xs" onClick={() => begin(s.level, "free")} title="Generate new puzzle">
+                    <RefreshCw size={16} strokeWidth={1.8} className="text-(--bg)" />
+                    <span className="!text-(--bg)">New Puzzle</span>
+                  </button>
+                </div>
+                <div className="flex flex-col items-center gap-1.5 pt-1">
+                  <label className="flex items-center gap-2 text-[11px] text-(--dim) cursor-pointer">
+                    <input type="checkbox" checked={s.dim} onChange={g.toggleDim} className="accent-[var(--fg)] w-3.5 h-3.5" />Dim satisfied clues
+                  </label>
+                  <p className="flex items-center justify-center gap-2 text-center text-xs font-semibold text-[var(--fg)] bg-[var(--fg)]/5 py-2 px-3 rounded-xl w-full max-w-[440px]">
+                    <Eye size={16} className="text-[var(--accent-ink)] shrink-0" />
+                    <span>{is3D ? "Press eye again to return to 2D." : "Press an eye to view row/col in 3D."}</span>
+                  </p>
+                </div>
+                
+                <div className="flex gap-2 max-w-[440px] w-full mx-auto">
+                  {s.phase === "revealed" && (
+                    <>
+                      <button type="button" className="g-btn-ghost flex-1 text-xs" onClick={g.toStart}>Back to Start</button>
+                      <button type="button" className="g-btn-primary flex-1 text-xs" onClick={() => begin(s.level, "free")}>New Puzzle</button>
+                    </>
+                  )}
+                </div>
               </div>
             </div>
           </div>
-        </div>
         </div>
       )}
 

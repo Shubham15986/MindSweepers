@@ -3,8 +3,10 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import nodemailer from 'nodemailer';
-import helmet from 'helmet';
-import rateLimit from 'express-rate-limit';
+let helmet;
+try { helmet = (await import('helmet')).default; } catch {}
+let rateLimit;
+try { rateLimit = (await import('express-rate-limit')).default; } catch {}
 import { User, Score } from './models.js';
 
 dotenv.config();
@@ -12,19 +14,21 @@ dotenv.config();
 const app = express();
 
 // Security Middleware (Helmet sets secure HTTP headers)
-app.use(helmet());
+if (helmet) app.use(helmet());
 app.use(cors());
 app.use(express.json());
 
 // Rate Limiting (Prevents bots/malware from bombarding the server)
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
-  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
-  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
-  message: { error: "Too many requests from this IP, please try again after 15 minutes." }
-});
-app.use(limiter);
+if (rateLimit) {
+  const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
+    standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+    legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+    message: { error: "Too many requests from this IP, please try again after 15 minutes." }
+  });
+  app.use('/api/', limiter);
+}
 
 // Health check endpoints for Render
 app.get('/', (req, res) => res.send('Backend is running!'));
@@ -41,21 +45,45 @@ const transporter = nodemailer.createTransport({
   }
 });
 
+let dbPromise = null;
+
 const connectDB = async () => {
   if (mongoose.connection.readyState >= 1) return;
-  if (!MONGO_URI) throw new Error("MONGO_URI is missing in environment variables!");
-  
-  try {
-    await mongoose.connect(MONGO_URI, { 
-      serverSelectionTimeoutMS: 5000,
-      maxPoolSize: 10 // Prevent connection limits on Vercel
-    });
-    console.log('✅ Connected to MongoDB');
-  } catch (err) {
-    console.error('❌ MongoDB connection error:', err);
-    throw new Error('Database connection failed: ' + err.message);
-  }
+  if (dbPromise) return dbPromise;
+
+  dbPromise = (async () => {
+    if (!MONGO_URI) {
+      console.warn("⚠️ MONGO_URI is not set. Starting in-memory MongoDB for local development...");
+      try {
+        const { MongoMemoryServer } = await import("mongodb-memory-server");
+        const mongoServer = await MongoMemoryServer.create();
+        await mongoose.connect(mongoServer.getUri());
+        console.log('✅ Connected to In-Memory MongoDB');
+      } catch (err) {
+        dbPromise = null;
+        console.error('❌ Failed to start In-Memory MongoDB:', err);
+        throw new Error('Database connection failed: MONGO_URI missing and In-Memory MongoDB could not start.');
+      }
+    } else {
+      try {
+        await mongoose.connect(MONGO_URI, { 
+          serverSelectionTimeoutMS: 5000,
+          maxPoolSize: 10 // Prevent connection limits on Vercel
+        });
+        console.log('✅ Connected to MongoDB');
+      } catch (err) {
+        dbPromise = null;
+        console.error('❌ MongoDB connection error:', err);
+        throw new Error('Database connection failed: ' + err.message);
+      }
+    }
+  })();
+
+  return dbPromise;
 };
+
+// Initiate database connection on server boot
+connectDB().catch(() => {});
 
 // ------------------------------------------------------------------
 // AUTH ENDPOINTS
@@ -79,7 +107,10 @@ app.post('/api/auth/register', async (req, res) => {
     res.status(201).json({ message: 'User registered successfully', userId: user._id, username: user.username });
   } catch (error) {
     console.error('Registration Error:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    if (error.name === 'ValidationError') {
+      return res.status(400).json({ error: Object.values(error.errors).map(e => e.message).join(', ') });
+    }
+    res.status(500).json({ error: error.message || 'Internal server error' });
   }
 });
 
