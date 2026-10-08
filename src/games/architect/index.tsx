@@ -8,6 +8,15 @@ import NumberPad from "./NumberPad";
 import DemoOverlay from "./DemoOverlay";
 import HowToPlay from "./HowToPlay";
 import { ARCH_CSS } from "./styles";
+import imgEasy from "../../assets/architect-easy.jpg";
+import imgMedium from "../../assets/architect-medium.jpg";
+import imgHard from "../../assets/architect-hard.jpg";
+
+const LEVEL_ICONS: Record<string, string> = {
+  Easy: imgEasy,
+  Medium: imgMedium,
+  Hard: imgHard
+};
 import GameNav from "../common/GameNav";
 import { useDreamTheme } from "../common/theme";
 
@@ -158,8 +167,12 @@ export default function Architect({ onGameOver, onExit, seed }: GameProps & { se
                       <div className="flex items-center justify-between mb-4">
                         <span className="font-mono text-[10px] tracking-[0.3em] text-[var(--dim)]">{l.toUpperCase()}</span>
                       </div>
-                      <div className="grid mb-5 aspect-square bg-[var(--muted)] border border-[var(--line)] p-[2px] rounded-lg items-center justify-center group-hover:border-blue-500/30 transition-colors">
-                        <div className="text-4xl text-center font-black text-(--dim) group-hover:text-(--fg) transition-colors">{LEVELS[l].n}×{LEVELS[l].n}</div>
+                      <div className="grid mb-5 aspect-square bg-[var(--muted)] border border-[var(--line)] p-[2px] rounded-lg items-center justify-center group-hover:border-blue-500/30 transition-colors overflow-hidden">
+                        {LEVEL_ICONS[l] ? (
+                          <img src={LEVEL_ICONS[l]} alt={l} className="w-full h-full object-cover rounded-md opacity-80 group-hover:opacity-100 transition-opacity" />
+                        ) : (
+                          <div className="text-4xl text-center font-black text-(--dim) group-hover:text-(--fg) transition-colors">{LEVELS[l].n}×{LEVELS[l].n}</div>
+                        )}
                       </div>
                       <div>
                         <p className="text-[var(--fg)] font-medium text-lg leading-tight mb-1">{l}</p>
