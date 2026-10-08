@@ -405,6 +405,7 @@ function Game({ level, saved, onBack, onMenu, onRules, onSettings, onSave, onSol
     setCells(level.solution);
     setStats((s) => ({ ...s, hints: s.hints + 1 }));
     setRevealed(true);
+    setWon(true);
     onSolve(time, 0);
   };
 

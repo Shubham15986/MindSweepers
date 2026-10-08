@@ -15,15 +15,15 @@ export type LevelConfig = {
 
 export const LEVELS: Record<LevelKey, LevelConfig> = {
   Easy: {
-    key: "Easy", flavor: "Dream", n: 4, baseScore: 1000, graceSec: 60,
+    key: "Easy", flavor: "Dream", n: 4, baseScore: 20, graceSec: 60,
     gen: { n: 4, removeClues: false, givens: [2, 3], minClues: 16, budgetMs: 3000 },
   },
   Medium: {
-    key: "Medium", flavor: "Deeper", n: 5, baseScore: 2500, graceSec: 120,
+    key: "Medium", flavor: "Deeper", n: 5, baseScore: 30, graceSec: 120,
     gen: { n: 5, removeClues: false, givens: [0, 0], minClues: 20, budgetMs: 3000 },
   },
   Hard: {
-    key: "Hard", flavor: "Limbo's edge", n: 6, baseScore: 5000, graceSec: 240,
+    key: "Hard", flavor: "Limbo's edge", n: 6, baseScore: 50, graceSec: 240,
     // Clues are removed while the solution stays unique, down to minClues.
     gen: { n: 6, removeClues: true, givens: [0, 0], minClues: 10, budgetMs: 3000 },
   },
@@ -58,10 +58,8 @@ export const DEMO = {
 export const TUTORIAL_KEY = "architect.tutorialSeen";
 
 export function scoreFor(level: LevelConfig, seconds: number, hints: number) {
-  if (level.key === "Easy") return 20;
-  if (level.key === "Medium") return 30;
-  if (level.key === "Hard") return 50;
-  return 0;
+  if (hints > 0) return 0;
+  return level.baseScore;
 }
 
 export const today = () => {

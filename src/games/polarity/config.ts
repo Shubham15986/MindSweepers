@@ -23,15 +23,15 @@ export type LevelConfig = {
 export const LEVELS: Record<LevelKey, LevelConfig> = {
   Easy: {
     key: "Easy", flavor: "Dream", difficulty: "Easy", cols: 4, rows: 3, stripClues: false, clueKeepRatio: 1,
-    targetUniqueSolution: true, minCellSizePx: 44, lookahead: false, baseScore: 1000, graceSec: 60,
+    targetUniqueSolution: true, minCellSizePx: 44, lookahead: false, baseScore: 20, graceSec: 60,
   },
   Medium: {
     key: "Medium", flavor: "Deeper", difficulty: "Medium", cols: 4, rows: 5, stripClues: false, clueKeepRatio: 1,
-    targetUniqueSolution: true, minCellSizePx: 44, lookahead: false, baseScore: 2500, graceSec: 150,
+    targetUniqueSolution: true, minCellSizePx: 44, lookahead: false, baseScore: 30, graceSec: 150,
   },
   Hard: {
     key: "Hard", flavor: "Limbo's edge", difficulty: "Hard", cols: 6, rows: 5, stripClues: true, clueKeepRatio: 0.6,
-    targetUniqueSolution: true, minCellSizePx: 36, lookahead: true, baseScore: 5000, graceSec: 300,
+    targetUniqueSolution: true, minCellSizePx: 36, lookahead: true, baseScore: 50, graceSec: 300,
   },
 };
 export const LEVEL_ORDER: LevelKey[] = ["Easy", "Medium", "Hard"];
@@ -69,8 +69,8 @@ export const DEMO = {
 export const TUTORIAL_KEY = "polarity.tutorialSeen";
 
 export function scoreFor(level: LevelConfig, seconds: number, hints: number) {
-  const time = Math.min(Math.max(0, seconds - level.graceSec) * SCORING.timePenaltyPerSec, level.baseScore * SCORING.timePenaltyCap);
-  return Math.max(SCORING.minScore, Math.round(level.baseScore - time - hints * SCORING.hintPenalty));
+  if (hints > 0) return 0;
+  return level.baseScore;
 }
 
 export const today = () => {
