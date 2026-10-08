@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   ArrowLeft, Undo2, Redo2, RotateCcw, Settings, Lightbulb, Info, BarChart3, Lock,
-  Square, Circle, Eraser, X, Moon, Sun, Play, LayoutGrid, Pause, ChevronRight, Check,
+  Square, Circle, Eraser, X, Moon, Sun, Play, LayoutGrid, ChevronRight, Check,
 } from "lucide-react";
 import type { GameProps } from "../../shared/types";
 import "./dreamwall.css";
@@ -352,7 +352,6 @@ function Game({ level, saved, onBack, onMenu, onRules, onSettings, onSave, onSol
   const [future, setFuture] = useState<Cell[][]>([]);
   const [tool, setTool] = useState<Tool>(1);
   const [time, setTime] = useState(0);
-  const [paused, setPaused] = useState(false);
   const [stats, setStats] = useState({ undos: 0, errors: 0, hints: 0 });
   const [won, setWon] = useState(false);
   const [revealed, setRevealed] = useState(false);
@@ -363,7 +362,7 @@ function Game({ level, saved, onBack, onMenu, onRules, onSettings, onSave, onSol
   const filled = cells.filter((c, i) => c && !level.clues[i]).length;
   const total = level.clues.filter((c) => !c).length;
 
-  useEffect(() => { if (won || paused) return; const t = setInterval(() => setTime((s) => s + 1), 1000); return () => clearInterval(t); }, [won, paused]);
+  useEffect(() => { if (won) return; const t = setInterval(() => setTime((s) => s + 1), 1000); return () => clearInterval(t); }, [won]);
   useEffect(() => { if (!won) onSave(cells); }, [cells]); // eslint-disable-line
   const prevPools = useRef(a.pools);
   useEffect(() => { if (a.pools > prevPools.current) setStats((s) => ({ ...s, errors: s.errors + 1 })); prevPools.current = a.pools; }, [a.pools]);
@@ -418,7 +417,6 @@ function Game({ level, saved, onBack, onMenu, onRules, onSettings, onSave, onSol
         </div>
         <div className="flex">
           <button onClick={onRules} aria-label="Rules" className="w-11 h-11 grid place-items-center rounded-full hover:bg-[var(--muted)]"><Info size={19} strokeWidth={1.6} /></button>
-          <button onClick={() => setPaused(true)} aria-label="Pause" className="w-11 h-11 grid place-items-center rounded-full hover:bg-[var(--muted)]"><Pause size={19} strokeWidth={1.6} /></button>
         </div>
       </nav>
 
@@ -472,16 +470,7 @@ function Game({ level, saved, onBack, onMenu, onRules, onSettings, onSave, onSol
         </div>
       )}
 
-      {paused && (
-        <div className="fixed inset-0 z-40 grid place-items-center bg-[var(--bg)]/80 backdrop-blur-md fade">
-          <div className="rise text-center space-y-3 w-64">
-            <p className="font-mono text-xs tracking-[0.3em] text-[var(--dim)] mb-4">PAUSED</p>
-            <button onClick={() => setPaused(false)} className="w-full h-14 rounded-2xl bg-[var(--fg)] text-[var(--bg)] font-medium">Resume</button>
-            <button onClick={() => { setPaused(false); onSettings(); }} className="w-full h-12 rounded-2xl border border-[var(--line)]">Settings</button>
-            <button onClick={onMenu} className="w-full h-12 rounded-2xl text-[var(--dim)]">Main menu</button>
-          </div>
-        </div>
-      )}
+
 
       {won && !revealed && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-ink/70 backdrop-blur-md animate-in fade-in duration-500 p-4" role="dialog" aria-modal="true" aria-label="Solved">
