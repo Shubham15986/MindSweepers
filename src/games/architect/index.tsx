@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { BookOpen, CheckCheck, Flag, LogOut, Timer as TimerIcon, Eye, ChevronRight, RefreshCw } from "lucide-react";
+import { BookOpen, CheckCheck, Flag, LogOut, Eye, ChevronRight, RefreshCw } from "lucide-react";
 import type { GameProps } from "../../shared/types";
 import { LEVELS, LEVEL_ORDER, MAX_HINTS, TUTORIAL_KEY, type LevelKey } from "./config";
 import { useArchitect, type Mode } from "./useArchitect";
@@ -11,21 +11,7 @@ import { ARCH_CSS } from "./styles";
 import GameNav from "../common/GameNav";
 import { useDreamTheme } from "../common/theme";
 
-const fmt = (ms: number) => {
-  const s = Math.floor(ms / 1000);
-  return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0");
-};
 
-// Ticks on its own so the board never re-renders once a second.
-function Timer({ startedAt, running, frozen }: { startedAt: number; running: boolean; frozen: number }) {
-  const [now, setNow] = useState(Date.now());
-  useEffect(() => {
-    if (!running) return;
-    const id = window.setInterval(() => setNow(Date.now()), 1000);
-    return () => clearInterval(id);
-  }, [running]);
-  return <span className="tabular text-(--fg) text-sm font-semibold" aria-label="Elapsed time">{fmt(running ? now - startedAt : frozen)}</span>;
-}
 
 function Confirm({ title, body, yes, onYes, onNo }: { title: string; body: string; yes: string; onYes: () => void; onNo: () => void }) {
   const ref = useRef<HTMLButtonElement>(null);
@@ -178,12 +164,6 @@ export default function Architect({ onGameOver, onExit, seed }: GameProps & { se
               <div className="text-center mb-2 shrink-0 flex items-center justify-center gap-3">
                 <span className="px-3 py-1 rounded-full bg-[var(--surface)] border border-[var(--line)] text-xs font-semibold tracking-wider uppercase">{s.level}</span>
                 <span className="g-mono text-xs tracking-widest text-(--dim)">{LEVELS[s.level].flavor}</span>
-                {playing && (
-                  <div className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-[var(--surface)] border border-[var(--line)] text-xs">
-                    <TimerIcon size={13} className="text-amber-500" />
-                    <Timer startedAt={s.startedAt} running={playing} frozen={s.timeMs} />
-                  </div>
-                )}
               </div>
               <Board puzzle={s.puzzle} cells={s.cells} notes={s.notes} selected={s.selected} wrong={s.wrong} dim={s.dim} interactive={playing} onSelect={g.select} onViewChange={setIs3D} className="md:flex-1 md:min-h-0 w-full" fitHeight={true} />
             </div>
