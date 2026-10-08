@@ -71,12 +71,12 @@ export default function GamesSection({ user, playing, setPlaying, onRequireAuth,
   if (Game) {
     return (
       <div className="ll-fade flex flex-col h-full flex-1">
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center justify-between mb-4 px-6 pt-4">
           <button onClick={exit} className={btnGhost}><ArrowLeft size={16} /> All Games</button>
           <span className="text-lg md:text-xl font-display text-amber tracking-[0.2em] uppercase font-semibold">{TABS.find((x) => x.id === playing)!.label}</span>
         </div>
-        {/* The game is now fully inline, without an internal scrolling box or translateZ clipping */}
-        <div className="w-full mx-auto max-w-[1120px] flex-1 flex flex-col min-h-[75dvh]">
+        {/* The game is now fully inline, edge-to-edge */}
+        <div className="w-full flex-1 flex flex-col min-h-[75dvh]">
           <Suspense fallback={<div className="flex-1 grid place-items-center"><SpinningTop size={28} className="text-amber" /></div>}>
             <Game user={user} onGameOver={handleGameOver} onExit={exit} />
           </Suspense>
