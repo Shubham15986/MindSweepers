@@ -14,8 +14,10 @@ const GAMES: Record<GameId, React.LazyExoticComponent<(p: GameProps) => React.Re
 const TABS: { id: GameId; label: string; locked: boolean; title: string; desc: React.ReactNode; tag: string }[] = [
   { id: "dreamwall", label: "Dreamwall", locked: false, title: "Dreamwall", tag: "Easy → Hard",
     desc: <>A logic puzzle built in three layers. Shade the sea, leave the islands, and never let the water pool. Includes a guided <b>DEMO</b>.</> },
-  { id: "polarity", label: "Polarity", locked: false, title: "Polarity", tag: "Medium", desc: "Place magnets and blanks. Match the pole counts. Like poles must never touch." },
-  { id: "architect", label: "Architect", locked: false, title: "Architect", tag: "Medium", desc: "Logic puzzle: place the towers, read the clues, build the city before it folds" },
+  { id: "polarity", label: "Polarity", locked: false, title: "Polarity", tag: "Medium", 
+    desc: <>Place magnets and blanks. Match the pole counts. Like poles must never touch. Includes a guided <b>DEMO</b>.</> },
+  { id: "architect", label: "Architect", locked: false, title: "Architect", tag: "Medium", 
+    desc: <>Logic puzzle: place the towers, read the clues, build the city before it folds. Includes a guided <b>DEMO</b>.</> },
 ];
 
 function DreamwallPreview() {
@@ -97,7 +99,7 @@ export default function GamesSection({ user, playing, setPlaying, onRequireAuth,
               <span className="h-7 px-3 rounded-full bg-slate text-fog text-[11px] font-semibold uppercase tracking-[0.12em] inline-flex items-center">{t.tag}</span>
               {t.locked && <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-mist">Locked</span>}
             </div>
-            <h3 className="font-display text-fog text-3xl font-light mt-4">{t.title}</h3>
+            <h3 className="font-display text-fog text-3xl font-medium mt-4 tracking-wide">{t.title}</h3>
             <p className="text-mist mt-3 text-sm leading-relaxed flex-1">{t.desc}</p>
             {t.locked
               ? <div className="mt-6 inline-flex items-center justify-center gap-2 h-12 px-6 rounded-full border border-fog/12 text-mist text-sm font-semibold uppercase tracking-[0.08em] w-full"><SpinningTop size={16} /> Coming soon</div>
