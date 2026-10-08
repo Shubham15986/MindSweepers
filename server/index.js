@@ -167,6 +167,31 @@ app.post('/api/scores/submit', async (req, res) => {
   }
 });
 
+app.get('/api/scores/:userId', async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const { gameId } = req.query;
+    
+    // In mongoose 7+, you can usually just pass the string to match, or use new mongoose.Types.ObjectId(userId)
+    // We'll just pass the string if it works, or require ObjectId.
+    const match = { userId: new mongoose.Types.ObjectId(userId) };
+    if (gameId && gameId !== 'overall') {
+      match.gameId = gameId;
+    }
+
+    const result = await Score.aggregate([
+      { $match: match },
+      { $group: { _id: null, totalScore: { $sum: '$points' } } }
+    ]);
+
+    const score = result.length > 0 ? result[0].totalScore : 0;
+    res.json({ score });
+  } catch (error) {
+    console.error('Get Score Error:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 app.get('/api/leaderboard', async (req, res) => {
   try {
     const leaderboard = await Score.aggregate([

@@ -118,7 +118,17 @@ export async function getMyRank({ game }: { game: BoardFilter }): Promise<{ rank
   if (!myUserId) return { rank: null, score: null, level: null };
   const rows = await getLeaderboard({ game, range: "all" });
   const i = rows.findIndex((r) => r.isYou);
-  return i < 0 ? { rank: null, score: null, level: null } : { rank: i + 1, score: rows[i].score, level: rows[i].level };
+  if (i >= 0) {
+    return { rank: i + 1, score: rows[i].score, level: rows[i].level };
+  }
+  try {
+    const res = await fetch(`${API_BASE}/scores/${myUserId}?gameId=${game}`);
+    if (res.ok) {
+      const data = await res.json();
+      return { rank: null, score: data.score, level: null };
+    }
+  } catch (e) {}
+  return { rank: null, score: null, level: null };
 }
 
 // Temporary auth helper for testing

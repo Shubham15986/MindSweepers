@@ -60,7 +60,7 @@ export default function Leaderboard({ refreshKey, initialFilter = "dreamwall" }:
           </ol>
         )}
 
-        {rows && !rows.some(r => r.isYou) && me.score != null && me.score > 0 && (
+        {rows && !rows.some(r => r.isYou) && me.score != null && (
           <div className="sticky bottom-0 bg-night/95 backdrop-blur-md border-t border-fog/20 grid grid-cols-[40px_1fr_auto] gap-3 items-center h-14 px-4 md:px-5">
             <span className="text-sm font-semibold text-mist tabular-nums">-</span>
             <span className="flex items-center gap-3 min-w-0">
