@@ -3,7 +3,7 @@ import { ArrowLeft, Lock, Play } from "lucide-react";
 import type { GameId, GameProps, GameResult, User } from "../shared/types";
 import { submitScore } from "../shared/api";
 import SpinningTop from "./SpinningTop";
-import { btnGhost, btnPrimary } from "./ui";
+import { btnGhost, btnPrimary, card } from "./ui";
 
 const GAMES: Record<GameId, React.LazyExoticComponent<(p: GameProps) => React.ReactElement>> = {
   dreamwall: lazy(() => import("../games/dreamwall")),
