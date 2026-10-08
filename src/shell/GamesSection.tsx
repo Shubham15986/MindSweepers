@@ -1,9 +1,9 @@
-import { lazy, Suspense, useEffect, useRef, useState } from "react";
+import { lazy, Suspense } from "react";
 import { ArrowLeft, Lock, Play } from "lucide-react";
 import type { GameId, GameProps, GameResult, User } from "../shared/types";
 import { submitScore } from "../shared/api";
 import SpinningTop from "./SpinningTop";
-import { btnGhost, btnPrimary, card, eyebrow } from "./ui";
+import { btnGhost, btnPrimary } from "./ui";
 
 const GAMES: Record<GameId, React.LazyExoticComponent<(p: GameProps) => React.ReactElement>> = {
   dreamwall: lazy(() => import("../games/dreamwall")),
@@ -56,10 +56,6 @@ function LockedPreview() {
 export default function GamesSection({ user, playing, setPlaying, onRequireAuth, onSubmitted }: {
   user: User | null; playing: GameId | null; setPlaying: (g: GameId | null) => void; onRequireAuth: () => void; onSubmitted: (g: GameId) => void;
 }) {
-  const [result, setResult] = useState<GameResult | null>(null);
-  const timer = useRef<number>(0);
-  useEffect(() => () => clearTimeout(timer.current), []);
-
   const Game = playing ? GAMES[playing] : null;
 
   // Let the game's own victory beat land before the shell overlay appears.
@@ -68,12 +64,8 @@ export default function GamesSection({ user, playing, setPlaying, onRequireAuth,
       await submitScore({ game: playing, score: r.score, level: r.level });
       onSubmitted(playing);
     }
-    if (playing !== "dreamwall") {
-      clearTimeout(timer.current);
-      timer.current = window.setTimeout(() => setResult(r), 1400);
-    }
   };
-  const exit = () => { setResult(null); setPlaying(null); };
+  const exit = () => setPlaying(null);
 
 
   if (Game) {
@@ -90,26 +82,6 @@ export default function GamesSection({ user, playing, setPlaying, onRequireAuth,
               <Game user={user} onGameOver={handleGameOver} onExit={exit} />
             </Suspense>
           </div>
-          {result && (
-            <div className="absolute inset-0 z-[60] grid place-items-center bg-abyss/80 p-6 ll-fade">
-              <div className={card + " w-full max-w-sm p-8 text-center"}>
-                <SpinningTop size={28} className="mx-auto text-amber" />
-                <p className={eyebrow + " mt-4"}>{result.score === 0 ? "Solution Revealed" : "Puzzle complete"}</p>
-                {result.score > 0 ? (
-                  <>
-                    <p className="font-display text-fog text-6xl font-light mt-2 tabular-nums">{result.score.toLocaleString()}</p>
-                    <p className="text-mist mt-1">Level · <span className="text-fog">{result.level}</span></p>
-                    <button onClick={() => setResult(null)} className={btnPrimary + " w-full mt-8 bg-amber text-night hover:bg-amber/90"}>Keep playing</button>
-                  </>
-                ) : (
-                  <>
-                    <p className="text-mist mt-4 leading-relaxed">The solution has been revealed.<br/>Your progress will not be ranked.</p>
-                    <button onClick={() => setResult(null)} className={btnGhost + " w-full mt-6 bg-fog/5"}>View Board</button>
-                  </>
-                )}
-              </div>
-            </div>
-          )}
         </div>
       </div>
     );
