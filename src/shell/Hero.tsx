@@ -10,8 +10,8 @@ export default function Hero({ user, onRequireAuth }: { user: any; onRequireAuth
       </div>
       <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(14,26,31,.55)_0%,rgba(14,26,31,.1)_35%,rgba(14,26,31,.25)_65%,rgba(14,26,31,.85)_100%)]" />
 
-      <div className="relative z-10 text-center px-4 mt-16">
-        <h1 className="font-display font-light text-fog italic text-[48px] sm:text-[64px] md:text-[96px] leading-[0.95] tracking-tight">
+      <div className="relative z-10 text-center px-4 mt-40">
+        <h1 className="font-display font-bold text-fog italic text-[48px] sm:text-[64px] md:text-[96px] leading-[0.95] tracking-tight">
           Mind<span className="text-amber">Sweepers</span>
         </h1>
         <p className="mt-6 text-mist text-lg md:text-xl font-medium tracking-wide">
