@@ -89,6 +89,7 @@ export default function DemoOverlay({ onClose, onStart }: { onClose: () => void;
           <p className="font-semibold text-(--fg)">How to play:</p>
           <ul className="list-disc pl-5 space-y-1">
             <li>Fill the grid so every row and column has towers of height 1 to {N} exactly once.</li>
+            <li>Tap a cell and use + and - to set its height.</li>
             <li>The clues on the edges tell you how many towers are visible looking down that line.</li>
             <li>Taller towers block the view of shorter towers behind them.</li>
           </ul>
