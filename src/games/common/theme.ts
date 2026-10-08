@@ -7,8 +7,8 @@ export const PALETTE = {
     "--accent": "#2fd3a6", "--accent-ink": "#13876b", "--bad": "#d4503f", "--overlay": "rgba(242,238,228,.94)", "--frame": "#1e40af",
   },
   dark: {
-    "--bg": "transparent", "--surface": "#16262c", "--fg": "#d9e2e3", "--dim": "#9fb2b6", "--line": "rgba(217,226,227,0.15)", "--muted": "#2b3e45",
-    "--accent": "#e8a24a", "--accent-ink": "#e8a24a", "--bad": "#ef6a5b", "--overlay": "rgba(14,26,31,.94)", "--frame": "#16262c",
+    "--bg": "#17181c", "--surface": "#202227", "--fg": "#ece8de", "--dim": "#8d8a83", "--line": "#33353c", "--muted": "#2a2c32",
+    "--accent": "#2fd3a6", "--accent-ink": "#2fd3a6", "--bad": "#ef6a5b", "--overlay": "rgba(23,24,28,.94)", "--frame": "#1e3a8a",
   },
 };
 const POLES = { "--plus": "#2fd3a6", "--minus": "#ef6a5b" };
@@ -18,9 +18,9 @@ const KEY = "nk-dark";
 function readDark() { try { return JSON.parse(localStorage.getItem(KEY) ?? "false") === true; } catch { return false; } }
 
 export function useDreamTheme() {
-  const dark = true;
+  const dark = false;
   const toggle = () => {};
-  const vars = { ...PALETTE.dark, ...POLES } as React.CSSProperties;
+  const vars = { ...PALETTE.light, ...POLES } as React.CSSProperties;
   return { dark, toggle, vars };
 }
 

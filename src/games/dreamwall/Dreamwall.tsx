@@ -198,7 +198,7 @@ function HeroGrid() {
 }
 
 export default function Dreamwall({ onGameOver }: GameProps) {
-  const dark = true;
+  const dark = false;
   const [progress, setProgress] = useState<Progress>(() => load("nk-progress", {}));
   const [screen, setScreen] = useState<"menu" | "levels" | "game">("menu");
   const [level, setLevel] = useState<Level>(LEVELS[0]);
@@ -219,7 +219,7 @@ export default function Dreamwall({ onGameOver }: GameProps) {
     generate(lv.n, lv.seed, (data) => setPuzzleData(data));
   };
   const vars = dark
-    ? { "--bg": "transparent", "--surface": "#16262c", "--fg": "#d9e2e3", "--dim": "#9fb2b6", "--line": "rgba(217,226,227,0.15)", "--muted": "#2b3e45" }
+    ? { "--bg": "#17181c", "--surface": "#202227", "--fg": "#ece8de", "--dim": "#8d8a83", "--line": "#33353c", "--muted": "#2a2c32" }
     : { "--bg": "#f2eee4", "--surface": "#fbf9f4", "--fg": "#13151b", "--dim": "#77746c", "--line": "#dcd6c8", "--muted": "#e9e4d8" };
 
   const solvedLevels = LEVELS.filter((l) => progress[l.id]?.status === "solved");
