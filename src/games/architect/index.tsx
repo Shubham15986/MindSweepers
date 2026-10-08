@@ -184,15 +184,15 @@ export default function Architect({ onGameOver, onExit, seed }: GameProps & { se
           <div className="md:w-[300px] md:self-center shrink-0 flex flex-col gap-3 pb-2">
             <div>
               <p className="text-center md:text-left text-sm text-(--fg) min-h-10" aria-live="polite">
-                {s.phase === "revealed" ? "The solution, revealed. No score this time." : s.message ?? (s.pencil ? "Pencil on: numbers become notes." : "Tap a cell, then a height.")}
+                {s.phase === "revealed" ? "The solution, revealed. No score this time." : s.message ?? "Tap a cell, then a height."}
               </p>
               <p className="flex items-center justify-center md:justify-start gap-2 text-center md:text-left text-sm text-(--dim) mt-3 leading-relaxed font-medium">
                 <Eye size={18} />
                 <span>{is3D ? "Press the eye again to return to 2D view." : "Press an eye to view that row or column in 3D."}</span>
               </p>
             </div>
-            <NumberPad n={n} pencil={s.pencil} hintsLeft={MAX_HINTS - s.hints} canUndo={s.past.length > 0} canRedo={s.future.length > 0} disabled={!playing}
-              onNumber={g.input} onErase={g.erase} onPencil={g.togglePencil} onUndo={g.undo} onRedo={g.redo} onReveal={g.reveal} />
+            <NumberPad n={n} canUndo={s.past.length > 0} canRedo={s.future.length > 0} disabled={!playing}
+              onNumber={g.input} onErase={g.erase} onUndo={g.undo} onRedo={g.redo} onReveal={g.reveal} />
             <div className="flex flex-wrap items-center justify-between gap-2 max-w-[420px] w-full mx-auto">
               <button type="button" className="g-btn-ghost !px-4 inline-flex items-center gap-2" onClick={g.check} disabled={!playing}><CheckCheck size={15} />Check</button>
               <label className="flex items-center gap-2 text-xs text-(--dim) cursor-pointer min-h-11">
