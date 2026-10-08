@@ -33,6 +33,12 @@ export default function Shell() {
   const [showProfile, setShowProfile] = useState(false);
   const [playing, setPlayingState] = useState<GameId | null>(null);
   const setPlaying = (g: GameId | null) => { window.location.hash = g ? "#/game/" + g : "#/"; };
+  
+  const handleLogout = () => {
+    localStorage.clear();
+    window.location.replace("/"); // Forces a full reload and clears the hash completely
+  };
+
   useEffect(() => {
     const handleHash = () => {
       const h = window.location.hash;
@@ -65,7 +71,7 @@ export default function Shell() {
               {user ? (
                 <div className="flex items-center gap-3">
                   <span className="text-amber truncate max-w-[100px] sm:max-w-none">{user.name.split("@")[0].split(" ")[0]}</span>
-                  <button onClick={() => { localStorage.clear(); setUser(null); }} className="text-xs text-mist hover:text-coral transition-colors">Logout</button>
+                  <button onClick={handleLogout} className="text-xs text-mist hover:text-coral transition-colors">Logout</button>
                 </div>
               ) : (
                 <button onClick={() => setShowAuth(true)} className="h-9 px-4 rounded-full border border-fog/15 text-fog inline-flex items-center hover:border-amber hover:text-amber transition-colors">Login</button>
@@ -99,7 +105,7 @@ export default function Shell() {
                 <button onClick={() => setShowProfile(!showProfile)} className="w-8 h-8 rounded-full border border-fog/15 text-fog grid place-items-center hover:border-amber hover:text-amber transition-colors" aria-label="Profile">
                   <UserIcon size={16} />
                 </button>
-                <button onClick={() => { localStorage.clear(); setUser(null); setPlayingState(null); }} className="w-8 h-8 rounded-full border border-fog/15 text-fog grid place-items-center hover:border-coral hover:text-coral transition-colors" aria-label="Logout" title="Logout">
+                <button onClick={handleLogout} className="w-8 h-8 rounded-full border border-fog/15 text-fog grid place-items-center hover:border-coral hover:text-coral transition-colors" aria-label="Logout" title="Logout">
                   <LogOut size={16} />
                 </button>
                 {showProfile && (
