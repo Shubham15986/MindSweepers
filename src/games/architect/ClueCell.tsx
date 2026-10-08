@@ -26,7 +26,7 @@ function ClueCellImpl({ side, i, value, status, dim, eyeActive, onToggleEye }: P
       {value || ""}
       {status === "ok" && <Check size={10} strokeWidth={3} className="ar-clue-icon" aria-hidden />}
       {status === "bad" && <X size={10} strokeWidth={3} className="ar-clue-icon" aria-hidden />}
-      {onToggleEye && <Eye size={16} strokeWidth={2.5} className={"absolute text-(--dim) transition-transform hover:scale-110 " + (side === "top" ? "bottom-full mb-1" : side === "bottom" ? "top-full mt-1" : side === "left" ? "right-full mr-1" : "left-full ml-1")} />}
+      {onToggleEye && <Eye size={22} strokeWidth={2.5} className={"absolute transition-all hover:scale-110 " + (eyeActive ? "text-(--fg) scale-110 drop-shadow-md" : "text-(--dim) hover:text-(--fg)") + " " + (side === "top" ? "bottom-full mb-1.5" : side === "bottom" ? "top-full mt-1.5" : side === "left" ? "right-full mr-1.5" : "left-full ml-1.5")} />}
     </div>
   );
 }

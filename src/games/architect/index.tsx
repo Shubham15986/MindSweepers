@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { BookOpen, CheckCheck, Flag, LogOut, Timer as TimerIcon } from "lucide-react";
+import { BookOpen, CheckCheck, Flag, LogOut, Timer as TimerIcon, Eye } from "lucide-react";
 import type { GameProps } from "../../shared/types";
 import { LEVELS, LEVEL_ORDER, MAX_HINTS, TUTORIAL_KEY, type LevelKey } from "./config";
 import { useArchitect, type Mode } from "./useArchitect";
@@ -58,6 +58,7 @@ export default function Architect({ onGameOver, onExit, seed }: GameProps & { se
   // Session-only memory: never persisted.
   const [best, setBest] = useState<Partial<Record<LevelKey, number>>>({});
   const [solvedCount, setSolvedCount] = useState(0);
+  const [is3D, setIs3D] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
 
   const ranked = s.mode === "daily";
@@ -178,7 +179,7 @@ export default function Architect({ onGameOver, onExit, seed }: GameProps & { se
               <p className="text-(--fg) text-2xl font-light leading-none">{s.level}</p>
               <p className="text-(--dim) text-base">{LEVELS[s.level].flavor}</p>
             </div>
-            <Board puzzle={s.puzzle} cells={s.cells} notes={s.notes} selected={s.selected} wrong={s.wrong} dim={s.dim} interactive={playing} onSelect={g.select} className="md:flex-1 md:min-h-0" />
+            <Board puzzle={s.puzzle} cells={s.cells} notes={s.notes} selected={s.selected} wrong={s.wrong} dim={s.dim} interactive={playing} onSelect={g.select} onViewChange={setIs3D} className="md:flex-1 md:min-h-0" />
           </div>
 
           <div className="md:w-[300px] md:self-center shrink-0 flex flex-col gap-3 pb-2">
@@ -186,8 +187,9 @@ export default function Architect({ onGameOver, onExit, seed }: GameProps & { se
               <p className="text-center md:text-left text-sm text-(--fg) min-h-10" aria-live="polite">
                 {s.phase === "revealed" ? "The solution, revealed. No score this time." : s.message ?? (s.pencil ? "Pencil on: numbers become notes." : "Tap a cell, then a height.")}
               </p>
-              <p className="text-center md:text-left text-xs text-(--dim) mt-2">
-                Click an eye icon outside the grid to view the city in 3D from that angle. Click again to return to 2D.
+              <p className="flex items-center justify-center md:justify-start gap-2 text-center md:text-left text-sm text-(--dim) mt-3 leading-relaxed font-medium">
+                <Eye size={18} />
+                <span>{is3D ? "Press the eye again to return to 2D view." : "Press an eye to view that row or column in 3D."}</span>
               </p>
             </div>
             <NumberPad n={n} pencil={s.pencil} hintsLeft={MAX_HINTS - s.hints} canUndo={s.past.length > 0} canRedo={s.future.length > 0} disabled={!playing}

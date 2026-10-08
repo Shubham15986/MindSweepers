@@ -16,10 +16,11 @@ type Props = {
   dim: boolean;
   interactive: boolean;
   onSelect: (i: number) => void;
+  onViewChange?: (is3D: boolean) => void;
   className?: string;
 };
 
-export default function Board({ puzzle, cells, notes, selected, wrong, dim, interactive, onSelect, className = "" }: Props) {
+export default function Board({ puzzle, cells, notes, selected, wrong, dim, interactive, onSelect, onViewChange, className = "" }: Props) {
   const n = puzzle.n;
   const root = useRef<HTMLDivElement>(null);
   const selRef = useRef(onSelect);
@@ -27,6 +28,7 @@ export default function Board({ puzzle, cells, notes, selected, wrong, dim, inte
   const handleSelect = useCallback((i: number) => { if (interactive) selRef.current(i); }, [interactive]);
   
   const [viewEye, setViewEye] = useState<{side: Side, i: number} | null>(null);
+  useEffect(() => { onViewChange?.(!!viewEye); }, [viewEye, onViewChange]);
   
   const viewState = useMemo(() => {
     if (!viewEye) return null;
@@ -83,7 +85,7 @@ export default function Board({ puzzle, cells, notes, selected, wrong, dim, inte
   }, [selected]);
 
   const sr = Math.floor(selected / n), sc = selected % n;
-  const units = n + 2 * BOARD.clueRatio, chrome = 12 + (n + 1) * BOARD.gap;
+  const units = n + 2 * BOARD.clueRatio, chrome = 64 + (n + 1) * BOARD.gap;
   const { box, cell } = useFitCell(units, units, chrome, chrome, BOARD.minCell, BOARD.maxCell);
   const tpl = Math.round(cell * BOARD.clueRatio) + "px repeat(" + n + ", " + cell + "px) " + Math.round(cell * BOARD.clueRatio) + "px";
   const fs = Math.round(cell * 0.46) + "px";
