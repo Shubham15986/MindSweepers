@@ -436,7 +436,7 @@ function Game({ level, saved, onBack, onMenu, onRules, onSettings, onSave, onSol
 
       <div className="flex-1 grid place-items-center py-2">
         <div className={"relative rounded-lg p-[3px] bg-ink shadow-[0_24px_50px_-24px_rgba(19,21,27,.6)] transition " + (won ? "blur-[2px] scale-[.98]" : "")}
-          style={{ display: "grid", gridTemplateColumns: "repeat(" + n + ", minmax(0, 1fr))", gap: "2px", touchAction: "none", width: "100%", maxWidth: "540px", aspectRatio: "1" }}
+          style={{ display: "grid", gridTemplateColumns: "repeat(" + n + ", minmax(0, 1fr))", gap: "2px", touchAction: "none", width: "100%", maxWidth: Math.min(540, Math.max(260, n * 68)) + "px", aspectRatio: "1" }}
           onPointerLeave={() => {}}>
           {cells.map((c, i) => {
             const clue = level.clues[i];
