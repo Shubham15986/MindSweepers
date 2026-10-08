@@ -99,7 +99,7 @@ export default function Shell() {
                 <button onClick={() => setShowProfile(!showProfile)} className="w-8 h-8 rounded-full border border-fog/15 text-fog grid place-items-center hover:border-amber hover:text-amber transition-colors" aria-label="Profile">
                   <UserIcon size={16} />
                 </button>
-                <button onClick={() => { localStorage.clear(); setUser(null); }} className="w-8 h-8 rounded-full border border-fog/15 text-fog grid place-items-center hover:border-coral hover:text-coral transition-colors" aria-label="Logout" title="Logout">
+                <button onClick={() => { localStorage.clear(); setUser(null); setPlayingState(null); }} className="w-8 h-8 rounded-full border border-fog/15 text-fog grid place-items-center hover:border-coral hover:text-coral transition-colors" aria-label="Logout" title="Logout">
                   <LogOut size={16} />
                 </button>
                 {showProfile && (
