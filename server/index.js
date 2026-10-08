@@ -109,7 +109,7 @@ app.post('/api/auth/forgot-password', async (req, res) => {
     }
   } catch (error) {
     console.error('Forgot Password Error:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: 'Failed to send email: ' + (error.message || 'Unknown error') });
   }
 });
 
