@@ -75,8 +75,7 @@ export default function GamesSection({ user, playing, setPlaying, onRequireAuth,
           <button onClick={exit} className={btnGhost}><ArrowLeft size={16} /> All Games</button>
           <span className="text-lg md:text-xl font-display text-amber tracking-[0.2em] uppercase font-semibold">{TABS.find((x) => x.id === playing)!.label}</span>
         </div>
-        {/* translateZ creates a containing block so the game's fixed overlays stay inside the stage */}
-        <div className="relative w-full mx-auto max-w-[1120px] flex-1 min-h-[75dvh] rounded-2xl border border-fog/12 overflow-hidden bg-night [transform:translateZ(0)] flex flex-col">
+        <div className="relative w-full mx-auto max-w-[1120px] flex-1 min-h-[75dvh] [transform:translateZ(0)] flex flex-col">
           <div className="absolute inset-0 overflow-auto overscroll-contain">
             <Suspense fallback={<div className="h-full grid place-items-center"><SpinningTop size={28} className="text-amber" /></div>}>
               <Game user={user} onGameOver={handleGameOver} onExit={exit} />
