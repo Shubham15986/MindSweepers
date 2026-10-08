@@ -212,8 +212,8 @@ export default function Architect({ onGameOver, onExit, seed }: GameProps & { se
                 <label className="flex items-center gap-2 text-[11px] text-(--dim) cursor-pointer">
                   <input type="checkbox" checked={s.dim} onChange={g.toggleDim} className="accent-[var(--fg)] w-3.5 h-3.5" />Dim satisfied clues
                 </label>
-                <p className="flex items-center justify-center gap-1.5 text-center text-[11px] text-(--dim)">
-                  <Eye size={14} />
+                <p className="flex items-center justify-center gap-2 text-center text-sm font-bold text-[var(--fg)] bg-[var(--fg)]/5 py-2.5 px-4 rounded-xl mt-1 w-full max-w-[440px]">
+                  <Eye size={18} className="text-[var(--accent-ink)]" />
                   <span>{is3D ? "Press the eye again to return to 2D view." : "Press an eye to view that row or column in 3D."}</span>
                 </p>
               </div>
