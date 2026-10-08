@@ -8,12 +8,11 @@ import { card } from "./ui";
 const FILTERS: { id: BoardFilter; label: string }[] = [
   { id: "dreamwall", label: "Dreamwall" }, { id: "polarity", label: "Polarity" }, { id: "architect", label: "Architect" }, { id: "overall", label: "Overall" },
 ];
-const RANGES: { id: Range; label: string }[] = [{ id: "today", label: "Today" }, { id: "week", label: "Week" }, { id: "all", label: "All-time" }];
 const initials = (n: string) => n.replace(/[^A-Za-z]/g, " ").trim().split(/\s+|(?=[A-Z])/).slice(0, 2).map((s) => s[0]).join("").toUpperCase();
 
 export default function Leaderboard({ refreshKey, initialFilter = "dreamwall" }: { refreshKey: number; initialFilter?: BoardFilter }) {
   const [filter, setFilter] = useState<BoardFilter>(initialFilter);
-  const [range, setRange] = useState<Range>("all");
+  const range: Range = "all";
   const [rows, setRows] = useState<LeaderboardEntry[] | null>(null);
   const [me, setMe] = useState<{ rank: number | null; score: number | null; level: string | null }>({ rank: null, score: null, level: null });
 
@@ -27,14 +26,6 @@ export default function Leaderboard({ refreshKey, initialFilter = "dreamwall" }:
 
   return (
     <div className={card + " overflow-hidden"}>
-      <div className="p-4 md:p-5 border-b border-fog/12 space-y-3">
-        
-        <div className="inline-flex p-1 rounded-full bg-night/70 border border-fog/12">
-          {RANGES.map((r) => (
-            <button key={r.id} onClick={() => setRange(r.id)} className={"h-8 px-4 rounded-full text-xs font-medium transition-colors " + (range === r.id ? "bg-slate text-fog" : "text-mist hover:text-fog")}>{r.label}</button>
-          ))}
-        </div>
-      </div>
 
       <div className="grid grid-cols-[40px_1fr_auto] gap-3 px-4 md:px-5 h-10 items-center text-[10px] font-semibold uppercase tracking-[0.2em] text-mist/70 border-b border-fog/8">
         <span>Rank</span><span>Dreamer</span><span className="text-right">Score</span>
