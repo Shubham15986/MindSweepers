@@ -487,11 +487,13 @@ function Game({ level, saved, onBack, onMenu, onRules, onSettings, onSave, onSol
 
       {won && (
         <div className="mt-6 flex flex-col gap-3 animate-in fade-in slide-in-from-bottom-4 duration-500">
-          <button onClick={onNext} className="w-full h-14 rounded-2xl bg-amber text-night font-bold text-lg flex items-center justify-center gap-2">
-            {level.index === LEVELS.length - 1 ? "Finish" : "Next Level"} <ChevronRight size={20} strokeWidth={2.5} />
+          <button onClick={onReplay} className="w-full h-14 rounded-2xl bg-amber text-night font-bold text-lg flex items-center justify-center gap-2">
+            New Grid <ChevronRight size={20} strokeWidth={2.5} />
           </button>
           <div className="grid grid-cols-2 gap-2">
-            <button onClick={onReplay} className="h-12 rounded-2xl border border-[var(--line)] font-medium">New Grid</button>
+            <button onClick={onNext} className="h-12 rounded-2xl border border-[var(--line)] font-medium">
+              {level.index === LEVELS.length - 1 ? "Finish" : "Next Level"}
+            </button>
             <button onClick={onMenu} className="h-12 rounded-2xl border border-[var(--line)] font-medium">Menu</button>
           </div>
         </div>
@@ -530,13 +532,13 @@ function Demo({ onClose, onPlay }: { onClose: () => void; onPlay: () => void }) 
   const done = step === last;
   return (
     <div className="fixed inset-0 z-50 bg-ink/60 backdrop-blur-md grid place-items-center p-4 fade">
-      <div className="rise relative w-full max-w-3xl rounded-3xl bg-[var(--surface)] text-[var(--fg)] overflow-hidden shadow-2xl grid md:grid-cols-[1.1fr_1fr]">
-        <div className="relative bg-ink p-8 sm:p-10 grid place-items-center overflow-hidden">
+      <div className="rise relative w-full h-[90dvh] md:h-auto md:max-w-3xl rounded-3xl bg-[var(--surface)] text-[var(--fg)] overflow-hidden shadow-2xl flex flex-col md:grid md:grid-cols-[1.1fr_1fr]">
+        <div className="relative bg-ink p-4 sm:p-10 flex-1 grid place-items-center overflow-hidden min-h-0">
           {/* nested dream frames */}
           {[0, 1, 2, 3].map((k) => (
             <span key={k} className="absolute border border-white/10 rounded-2xl dream-ring" style={{ inset: k * 18 + "px", animationDelay: k * 0.6 + "s" }} />
           ))}
-          <div className={"relative grid grid-cols-4 gap-[3px] p-[3px] rounded-lg w-full max-w-[280px] transition-all duration-700 " + (done ? "bg-mint shadow-[0_0_60px_-5px_#2fd3a6]" : "bg-white/15")} style={{ transform: "perspective(800px) rotateX(" + (done ? 0 : 8) + "deg) rotateZ(" + (done ? 0 : -1.5) + "deg)" }}>
+          <div className={"relative grid grid-cols-4 gap-[3px] p-[3px] rounded-lg w-full max-w-[240px] sm:max-w-[280px] transition-all duration-700 " + (done ? "bg-mint shadow-[0_0_60px_-5px_#2fd3a6]" : "bg-white/15")} style={{ transform: "perspective(800px) rotateX(" + (done ? 0 : 8) + "deg) rotateZ(" + (done ? 0 : -1.5) + "deg)" }}>
             {cells.map((c, i) => {
               const clue = DEMO_CLUES[i], focus = cur.focus.includes(i);
               return (
