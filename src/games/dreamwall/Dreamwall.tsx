@@ -234,9 +234,6 @@ export default function Dreamwall({ onGameOver }: GameProps) {
               <button onClick={() => setDemo(true)} className="group mr-1 h-8 md:h-10 pl-2 pr-3 md:pl-3 md:pr-4 rounded-full bg-amber text-night flex items-center gap-1.5 md:gap-2 text-[10px] md:text-sm font-medium hover:bg-amber/90 transition shadow-md">
                 <Spinner /> <span className="font-bold tracking-widest uppercase">Demo</span>
               </button>
-              {([["stats", BarChart3, "Statistics"], ["rules", Info, "How to play"], ["settings", Settings, "Settings"]] as const).map(([k, I, l]) => (
-                <button key={k} onClick={() => setModal(k)} aria-label={l} className="w-8 h-8 md:w-11 md:h-11 grid place-items-center rounded-full hover:bg-[var(--muted)]"><I size={18} strokeWidth={1.6} className="scale-75 md:scale-100" /></button>
-              ))}
             </div>
           </header>
           <div className="flex-1 grid md:grid-cols-2 gap-8 md:gap-16 items-center py-8 md:py-10">
