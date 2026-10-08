@@ -237,7 +237,7 @@ export default function Dreamwall({ onGameOver }: GameProps) {
             </div>
           </header>
           <div className="flex-1 grid md:grid-cols-2 gap-8 md:gap-16 items-center py-8 md:py-10">
-            <div className="relative order-1 md:order-2 mx-auto w-[90%] max-w-[280px] md:max-w-[420px]">
+            <div className="relative order-1 md:order-2 mx-auto w-[95%] max-w-[320px] md:max-w-[460px]">
               <div className="absolute -inset-4 md:-inset-6 border border-[var(--line)] rounded-xl rotate-3" />
               <div className="relative -rotate-2 shadow-[0_30px_60px_-20px_rgba(19,21,27,.45)] rounded-md"><HeroGrid /></div>
               <span className="absolute -bottom-7 md:-bottom-9 right-0 font-mono text-[9px] md:text-[10px] tracking-widest text-[var(--dim)]">FIG. 01 — 5×5, IN PROGRESS</span>
@@ -413,7 +413,7 @@ function Game({ level, saved, onBack, onMenu, onRules, onSettings, onSave, onSol
   ];
 
   return (
-    <main className="mx-auto max-w-xl flex-1 min-h-0 flex flex-col px-2 md:px-4 py-4 select-none">
+    <main className="mx-auto max-w-2xl w-full flex-1 min-h-0 flex flex-col px-0 md:px-4 py-4 select-none">
       <nav className="flex items-center justify-between">
         <button onClick={onBack} aria-label="Back" className="w-11 h-11 grid place-items-center rounded-full hover:bg-[var(--muted)]"><ArrowLeft size={20} strokeWidth={1.6} /></button>
         <div className="text-center">
@@ -436,7 +436,7 @@ function Game({ level, saved, onBack, onMenu, onRules, onSettings, onSave, onSol
 
       <div className="flex-1 grid place-items-center py-2">
         <div className={"relative rounded-lg p-[3px] bg-ink shadow-[0_24px_50px_-24px_rgba(19,21,27,.6)] transition " + (won ? "blur-[2px] scale-[.98]" : "")}
-          style={{ display: "grid", gridTemplateColumns: "repeat(" + n + ", minmax(0, 1fr))", gap: "2px", touchAction: "none", width: "100%", maxWidth: "480px", aspectRatio: "1" }}
+          style={{ display: "grid", gridTemplateColumns: "repeat(" + n + ", minmax(0, 1fr))", gap: "2px", touchAction: "none", width: "100%", maxWidth: "540px", aspectRatio: "1" }}
           onPointerLeave={() => {}}>
           {cells.map((c, i) => {
             const clue = level.clues[i];

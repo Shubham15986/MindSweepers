@@ -73,7 +73,7 @@ export default function Shell() {
             </div>
           </nav>
         </header>
-        <main className="flex-1 w-full max-w-[1200px] mx-auto px-3 sm:px-6 py-6 md:py-8 flex flex-col">
+        <main className="flex-1 w-full max-w-[1200px] mx-auto px-1 sm:px-6 py-6 md:py-8 flex flex-col">
           <GamesSection user={user} playing={playing} setPlaying={setPlaying}
             onRequireAuth={() => setShowAuth(true)}
             onSubmitted={(g) => { setBoardFilter(g); setRefreshKey((k) => k + 1); }} />
