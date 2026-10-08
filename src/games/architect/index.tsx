@@ -171,19 +171,18 @@ export default function Architect({ onGameOver, onExit, seed }: GameProps & { se
         </div>
       )}
 
-      {/* Play / solved / revealed */}
       {s.puzzle && (s.phase === "play" || s.phase === "solved" || s.phase === "revealed") && (
-        <div className="relative z-10 flex-1 min-h-0 overflow-y-auto md:overflow-hidden w-full">
-          <div className="min-h-full md:h-full flex flex-col md:flex-row md:items-center justify-center max-w-[1080px] mx-auto gap-4 md:gap-10 px-4 md:px-8 py-4">
-          <div className="flex-1 min-h-0 h-full flex flex-col items-center w-full">
-            <div className="text-center mb-3 shrink-0">
+        <div className="relative z-10 flex-1 min-h-0 overflow-y-auto w-full">
+          <div className="min-h-full flex flex-col items-center justify-start max-w-2xl mx-auto gap-6 px-4 md:px-8 py-4 md:py-8">
+          <div className="flex-1 min-h-0 flex flex-col items-center w-full max-h-[60vh]">
+            <div className="text-center mb-4 shrink-0">
               <p className="text-(--fg) text-2xl font-light leading-none">{s.level}</p>
               <p className="text-(--dim) text-base">{LEVELS[s.level].flavor}</p>
             </div>
-            <Board puzzle={s.puzzle} cells={s.cells} notes={s.notes} selected={s.selected} wrong={s.wrong} dim={s.dim} interactive={playing} onSelect={g.select} onViewChange={setIs3D} className="flex-1 min-h-0 w-full" />
+            <Board puzzle={s.puzzle} cells={s.cells} notes={s.notes} selected={s.selected} wrong={s.wrong} dim={s.dim} interactive={playing} onSelect={g.select} onViewChange={setIs3D} className="flex-1 min-h-0 w-full" fitHeight={false} />
           </div>
 
-          <div className="md:w-[360px] shrink-0 flex flex-col justify-center gap-4 pb-2">
+          <div className="w-full shrink-0 flex flex-col justify-center gap-4 pb-4">
             <div className="p-3 md:p-4 rounded-2xl bg-[var(--surface)] border border-[var(--line)] text-center shadow-sm">
               <p className="text-xs md:text-sm font-medium text-(--fg) leading-relaxed" aria-live="polite">
                 {s.phase === "revealed" ? "The solution, revealed. No score recorded." : s.message ?? "Tap a cell, then use + and - to set its height."}

@@ -18,9 +18,10 @@ type Props = {
   onSelect: (i: number) => void;
   onViewChange?: (is3D: boolean) => void;
   className?: string;
+  fitHeight?: boolean;
 };
 
-export default function Board({ puzzle, cells, notes, selected, wrong, dim, interactive, onSelect, onViewChange, className = "" }: Props) {
+export default function Board({ puzzle, cells, notes, selected, wrong, dim, interactive, onSelect, onViewChange, className = "", fitHeight = true }: Props) {
   const n = puzzle.n;
   const root = useRef<HTMLDivElement>(null);
   const selRef = useRef(onSelect);
@@ -86,7 +87,7 @@ export default function Board({ puzzle, cells, notes, selected, wrong, dim, inte
 
   const sr = Math.floor(selected / n), sc = selected % n;
   const units = n + 2 * BOARD.clueRatio, chrome = 64 + (n + 1) * BOARD.gap;
-  const { box, cell } = useFitCell(units, units, chrome, chrome, BOARD.minCell, BOARD.maxCell);
+  const { box, cell } = useFitCell(units, units, chrome, chrome, BOARD.minCell, BOARD.maxCell, fitHeight);
   const tpl = Math.round(cell * BOARD.clueRatio) + "px repeat(" + n + ", " + cell + "px) " + Math.round(cell * BOARD.clueRatio) + "px";
   const fs = Math.round(cell * 0.46) + "px";
   const clue = (side: Side, i: number) => {
