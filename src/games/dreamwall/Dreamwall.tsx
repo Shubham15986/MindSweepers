@@ -523,9 +523,10 @@ function Demo({ onClose, onPlay }: { onClose: () => void; onPlay: () => void }) 
   const fresh = new Set([...cur.sea, ...cur.island]);
   const done = step === last;
   return (
-    <div className="fixed inset-0 z-50 bg-ink/60 backdrop-blur-md grid place-items-center p-4 fade overflow-y-auto">
-      <div className="rise relative w-full max-w-3xl rounded-3xl bg-[var(--surface)] text-[var(--fg)] overflow-hidden shadow-2xl grid md:grid-cols-[1.1fr_1fr]">
-        <div className="relative bg-ink p-6 sm:p-10 grid place-items-center overflow-hidden min-h-[260px] md:min-h-0">
+    <div className="fixed inset-0 z-50 bg-ink/60 backdrop-blur-md overflow-y-auto fade">
+      <div className="min-h-full flex items-center justify-center p-4">
+        <div className="rise relative w-full max-w-3xl rounded-3xl bg-[var(--surface)] text-[var(--fg)] overflow-hidden shadow-2xl grid md:grid-cols-[1.1fr_1fr]">
+          <div className="relative bg-ink p-6 sm:p-10 grid place-items-center overflow-hidden min-h-[260px] md:min-h-0">
           {/* nested dream frames */}
           {[0, 1, 2, 3].map((k) => (
             <span key={k} className="absolute border border-white/10 rounded-2xl dream-ring" style={{ inset: k * 18 + "px", animationDelay: k * 0.6 + "s" }} />
@@ -571,6 +572,7 @@ function Demo({ onClose, onPlay }: { onClose: () => void; onPlay: () => void }) 
               : <button onClick={() => setStep((s) => s + 1)} className="flex-1 h-12 rounded-2xl bg-[var(--fg)] text-[var(--bg)] font-medium flex items-center justify-center gap-2">Next <ChevronRight size={18} /></button>}
           </div>
         </div>
+      </div>
       </div>
     </div>
   );
