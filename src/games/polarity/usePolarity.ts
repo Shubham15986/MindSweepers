@@ -117,16 +117,12 @@ export function usePolarity(seedProp?: string) {
     });
   }, [generate, seedProp, set]);
 
-  /** Apply a change with undo history; solved when every domino matches the (unique) solution. */
+  /** Apply a change with undo history. */
   const commit = useCallback((states: number[], extra: Partial<PolState> = {}) => {
     const st = ref.current;
     const p = st.puzzle;
     if (!p) return;
     const patch: Partial<PolState> = { message: null, ...extra, states, past: [...st.past, st.states], future: [], wrong: [] };
-    if (states.every((v, d) => v === p.solution[d])) {
-      const timeMs = Date.now() - st.startedAt;
-      Object.assign(patch, { phase: "solved", timeMs, score: scoreFor(LEVELS[st.level], Math.floor(timeMs / 1000), extra.hints ?? st.hints) });
-    }
     set(patch);
   }, [set]);
 
@@ -180,13 +176,25 @@ export function usePolarity(seedProp?: string) {
     const st = ref.current;
     const p = st.puzzle;
     if (st.phase !== "play" || !p) return;
+    
+    // Check if fully correct
+    if (st.states.every((v, d) => v === p.solution[d])) {
+      const timeMs = Date.now() - st.startedAt;
+      set({ 
+        phase: "solved", 
+        timeMs, 
+        score: scoreFor(LEVELS[st.level], Math.floor(timeMs / 1000), st.hints) 
+      });
+      return;
+    }
+
     const wrong: number[] = [];
     st.states.forEach((v, d) => {
       if (v === UNDECIDED) return;
       if (v === QMARK ? p.solution[d] === 0 : v !== p.solution[d]) wrong.push(d);
     });
     const any = st.states.some((v) => v !== UNDECIDED);
-    set({ wrong, message: !any ? "Decide a few dominoes first." : wrong.length ? wrong.length + (wrong.length === 1 ? " domino is" : " dominoes are") + " wrong." : "Everything so far is correct." });
+    set({ wrong, message: !any ? "Decide a few dominoes first." : wrong.length ? wrong.length + (wrong.length === 1 ? " domino is" : " dominoes are") + " wrong." : "Everything so far is correct, keep going!" });
   }, [set]);
 
   /**

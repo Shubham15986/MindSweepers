@@ -1,4 +1,4 @@
-import { Flag, RefreshCw } from "lucide-react";
+import { CheckCheck, Flag, RefreshCw } from "lucide-react";
 import type { Tool } from "./usePolarity";
 
 type Props = {
@@ -14,10 +14,14 @@ type Props = {
   onNewPuzzle: () => void;
 };
 
-export default function ToolPalette({ disabled, onReveal, onNewPuzzle }: Props) {
+export default function ToolPalette({ disabled, onCheck, onReveal, onNewPuzzle }: Props) {
   return (
     <div className="w-full max-w-[440px] mx-auto space-y-2" role="toolbar" aria-label="Tools">
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-3 gap-3">
+        <button type="button" className="pl-tool !min-h-[48px] flex-row gap-2 font-semibold text-xs" disabled={disabled} onClick={onCheck} title="Check solution">
+          <CheckCheck size={17} strokeWidth={1.8} />
+          <span>Check</span>
+        </button>
         <button type="button" className="pl-tool !min-h-[48px] flex-row gap-2 font-semibold text-xs" disabled={disabled} onClick={onReveal} title="Give up & view solution">
           <Flag size={17} strokeWidth={1.8} />
           <span>Solution</span>

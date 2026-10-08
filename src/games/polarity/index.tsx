@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { BookOpen, Flag, LogOut, Timer as TimerIcon, ChevronRight } from "lucide-react";
+import { BookOpen, Flag, LogOut, ChevronRight } from "lucide-react";
 import type { GameProps } from "../../shared/types";
 import { LEVELS, LEVEL_ORDER, MAX_HINTS, TUTORIAL_KEY, type LevelKey } from "./config";
 import { usePolarity, type Action, type Mode } from "./usePolarity";
@@ -15,17 +15,6 @@ const fmt = (ms: number) => {
   const s = Math.floor(ms / 1000);
   return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0");
 };
-
-// Ticks on its own so the board never re-renders once a second.
-function Timer({ startedAt, running, frozen }: { startedAt: number; running: boolean; frozen: number }) {
-  const [now, setNow] = useState(Date.now());
-  useEffect(() => {
-    if (!running) return;
-    const id = window.setInterval(() => setNow(Date.now()), 1000);
-    return () => clearInterval(id);
-  }, [running]);
-  return <span className="tabular text-(--fg) text-sm font-semibold" aria-label="Elapsed time">{fmt(running ? now - startedAt : frozen)}</span>;
-}
 
 function Confirm({ title, body, yes, onYes, onNo }: { title: string; body: string; yes: string; onYes: () => void; onNo: () => void }) {
   const ref = useRef<HTMLButtonElement>(null);
@@ -59,7 +48,6 @@ export default function Polarity({ onGameOver, onExit, seed }: GameProps & { see
   const [best, setBest] = useState<Partial<Record<LevelKey, number>>>({});
   const [solvedCount, setSolvedCount] = useState(0);
 
-  const ranked = s.mode === "daily";
   const playing = s.phase === "play";
   const lv = LEVELS[s.level];
 
@@ -78,14 +66,15 @@ export default function Polarity({ onGameOver, onExit, seed }: GameProps & { see
   const exit = () => { g.stop(); onExit(); };
 
   useEffect(() => {
-    if (s.phase === "solved" && !submitted && s.score != null && ranked && s.puzzle) {
+    if (s.phase === "solved" && !submitted && s.score != null && s.puzzle) {
       setSubmitted(true);
       onGameOver({
         score: s.score, level: s.level,
         meta: { seed: s.puzzle.seed, mode: s.mode, timeMs: s.timeMs, hintsUsed: s.hints, boardState: s.states.join("") },
       });
+      setTimeout(() => begin(s.level, "free"), 1500);
     }
-  }, [s.phase, submitted, s.score, ranked, s.puzzle, s.level, s.mode, s.timeMs, s.hints, s.states, onGameOver]);
+  }, [s.phase, submitted, s.score, s.puzzle, s.level, s.mode, s.timeMs, s.hints, s.states, onGameOver, begin]);
 
   const changeLevel = (level: LevelKey) => {
     if (level === s.level) return;
@@ -207,12 +196,6 @@ export default function Polarity({ onGameOver, onExit, seed }: GameProps & { see
               <div className="text-center mb-2 shrink-0 flex items-center justify-center gap-3">
                 <span className="px-3 py-1 rounded-full bg-[var(--surface)] border border-[var(--line)] text-xs font-semibold tracking-wider uppercase">{s.level}</span>
                 <span className="g-mono text-xs tracking-widest text-(--dim)">{lv.flavor}</span>
-                {playing && (
-                  <div className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-[var(--surface)] border border-[var(--line)] text-xs">
-                    <TimerIcon size={13} className="text-amber-500" />
-                    <Timer startedAt={s.startedAt} running={playing} frozen={s.timeMs} />
-                  </div>
-                )}
               </div>
               <Board layout={s.puzzle} states={s.states} wrong={s.wrong} done={s.done} cursor={s.cursor} interactive={playing}
                 minCell={lv.minCellSizePx} onAct={onAct} onToggleDone={g.toggleDone} className="md:flex-1 md:min-h-0" />
