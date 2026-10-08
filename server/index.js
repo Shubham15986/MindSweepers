@@ -71,6 +71,49 @@ app.post('/api/auth/login', async (req, res) => {
   }
 });
 
+app.post('/api/auth/forgot-password', async (req, res) => {
+  try {
+    const { email } = req.body;
+    const user = await User.findOne({ email });
+    if (!user) return res.status(404).json({ error: 'User not found' });
+
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    user.resetOtp = otp;
+    user.resetOtpExpiry = new Date(Date.now() + 15 * 60 * 1000); // 15 mins
+    await user.save();
+
+    console.log(`\n\n======================================================`);
+    console.log(`🔐 PASSWORD RESET OTP FOR ${email}: ${otp}`);
+    console.log(`======================================================\n\n`);
+
+    res.json({ message: 'OTP sent to email (check server console)' });
+  } catch (error) {
+    console.error('Forgot Password Error:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.post('/api/auth/reset-password', async (req, res) => {
+  try {
+    const { email, otp, newPassword } = req.body;
+    const user = await User.findOne({ email });
+    
+    if (!user || user.resetOtp !== otp || user.resetOtpExpiry < new Date()) {
+      return res.status(400).json({ error: 'Invalid or expired OTP' });
+    }
+
+    user.password = newPassword;
+    user.resetOtp = undefined;
+    user.resetOtpExpiry = undefined;
+    await user.save();
+
+    res.json({ message: 'Password reset successful' });
+  } catch (error) {
+    console.error('Reset Password Error:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 // ------------------------------------------------------------------
 // SCORE ENDPOINTS
 // ------------------------------------------------------------------

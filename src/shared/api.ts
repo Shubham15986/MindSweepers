@@ -45,6 +45,32 @@ export async function register(payload: { email: string; phoneNumber: string; na
   return data;
 }
 
+export async function forgotPassword({ email }: { email: string }) {
+  const res = await fetch(`${API_BASE}/auth/forgot-password`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email })
+  });
+  if (!res.ok) {
+    const err = await res.json();
+    throw new Error(err.error || "Failed to send OTP");
+  }
+  return res.json();
+}
+
+export async function resetPassword({ email, otp, newPassword }: { email: string; otp: string; newPassword: string }) {
+  const res = await fetch(`${API_BASE}/auth/reset-password`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, otp, newPassword })
+  });
+  if (!res.ok) {
+    const err = await res.json();
+    throw new Error(err.error || "Failed to reset password");
+  }
+  return res.json();
+}
+
 export async function submitScore({ game, score, level }: { game: GameId; score: number; level: string }) {
   // If not logged in, we can't save to the backend. We'll skip or throw.
   if (!myUserId) {

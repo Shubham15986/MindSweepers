@@ -6,6 +6,8 @@ const userSchema = new mongoose.Schema({
   phoneNumber: { type: String, required: true },
   username: { type: String, required: true, unique: true },
   password: { type: String, required: true },
+  resetOtp: { type: String },
+  resetOtpExpiry: { type: Date },
   createdAt: { type: Date, default: Date.now }
 });
 
