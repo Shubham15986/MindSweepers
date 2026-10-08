@@ -1,6 +1,6 @@
 import type { BoardFilter, GameId, LeaderboardEntry, Range } from "./types";
 
-const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:3001/api";
+const API_BASE = import.meta.env.VITE_API_BASE || (import.meta.env.PROD ? "/api" : "http://localhost:3001/api");
 
 // Read initial auth state from localStorage to survive page reloads
 let myUserId: string | null = localStorage.getItem("mw_uid");
