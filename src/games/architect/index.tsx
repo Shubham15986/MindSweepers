@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { BookOpen, CheckCheck, Flag, LogOut, Eye, ChevronRight, RefreshCw } from "lucide-react";
+import { BookOpen, CheckCheck, Flag, LogOut, Eye, ChevronRight, RefreshCw, ArrowLeft, Play } from "lucide-react";
 import type { GameProps } from "../../shared/types";
 import { LEVELS, LEVEL_ORDER, MAX_HINTS, TUTORIAL_KEY, type LevelKey } from "./config";
 import { useArchitect, type Mode } from "./useArchitect";
@@ -44,6 +44,7 @@ export default function Architect({ onGameOver, onExit, seed }: GameProps & { se
   // Session-only memory: never persisted.
   const [best, setBest] = useState<Partial<Record<LevelKey, number>>>({});
   const [solvedCount, setSolvedCount] = useState(0);
+  const [startScreen, setStartScreen] = useState<"menu" | "levels">("menu");
   const [is3D, setIs3D] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
   const n = s.puzzle?.n ?? LEVELS[s.level].n;
@@ -120,33 +121,56 @@ export default function Architect({ onGameOver, onExit, seed }: GameProps & { se
 
       {/* Start */}
       {s.phase === "start" && (
-        <div className="relative z-10 flex-1 overflow-y-auto grid place-items-center px-6 py-8">
-          <div className="text-center max-w-md w-full ar-rise">
-            <p className="g-eyebrow">Logic puzzle · Towers</p>
-            <h1 className="text-(--fg) font-light text-6xl md:text-7xl tracking-tight mt-3">ARCHI<span className="font-semibold">TECT</span></h1>
-            <p className="text-(--dim) text-2xl mt-2">Build the city before it folds.</p>
+        <div className="relative z-10 flex-1 overflow-y-auto flex flex-col items-center justify-center px-4 py-2 select-none">
+          {startScreen === "menu" ? (
+            <div className="text-center max-w-md w-full ar-rise flex flex-col items-center justify-center">
+              <p className="g-eyebrow">Logic puzzle · Towers</p>
+              <h1 className="text-(--fg) font-light text-6xl md:text-7xl tracking-tight mt-3">ARCHI<span className="font-semibold">TECT</span></h1>
+              <p className="text-(--dim) text-2xl mt-2">Build the city before it folds.</p>
 
-            <div className="mt-9 flex flex-col items-center gap-4">
-              <div className="g-seg" role="radiogroup" aria-label="Level">
-                {LEVEL_ORDER.map((l) => (
-                  <button key={l} type="button" role="radio" aria-checked={s.level === l} onClick={() => g.setLevel(l)}>
-                    {l} <span className="tabular text-(--dim) ml-1">{LEVELS[l].n}×{LEVELS[l].n}</span>
-                  </button>
-                ))}
+              <div className="w-full mt-10 space-y-3 max-w-sm mx-auto">
+                <button onClick={() => setStartScreen("levels")} className="group w-full h-14 md:h-16 px-6 rounded-2xl bg-[var(--fg)] text-[var(--bg)] flex items-center justify-between hover:scale-[1.01] active:scale-[.99] transition">
+                  <span className="flex items-center gap-3 font-medium text-sm md:text-base"><Play size={18} fill="currentColor" />Start Game</span>
+                  <span className="font-mono text-[10px] md:text-xs opacity-60">Level Select</span>
+                </button>
               </div>
-              <p className="text-(--dim) text-lg -mt-1">{LEVELS[s.level].flavor}</p>
-            </div>
 
-            <button type="button" className="g-btn-primary mt-8 min-w-[200px]" onClick={() => begin()}>Begin</button>
-            <div className="mt-4 flex justify-center gap-2">
-              <button type="button" className="g-btn-ghost inline-flex items-center gap-2" onClick={() => setHelp("help")}><BookOpen size={15} />How to play</button>
+              <div className="mt-4 flex justify-center gap-2">
+                <button type="button" className="g-btn-ghost inline-flex items-center gap-2 text-xs !min-h-[38px] !px-4" onClick={() => setHelp("help")}><BookOpen size={14} />How to play</button>
+              </div>
+
+              {solvedCount > 0 && (
+                <p className="mt-6 text-xs text-(--dim) tabular font-medium bg-[var(--surface)] inline-block px-3 py-1 rounded-full border border-[var(--line)]">
+                  ⚡ Session Progress: {solvedCount} Solved
+                </p>
+              )}
             </div>
-            {solvedCount > 0 && (
-              <p className="mt-6 text-xs text-(--dim) tabular">
-                This session: {solvedCount} solved
-              </p>
-            )}
-          </div>
+          ) : (
+            <div className="mx-auto max-w-5xl px-5 py-6 ar-rise w-full flex flex-col h-full">
+              <header className="flex items-center gap-3 mb-8 shrink-0">
+                <button onClick={() => setStartScreen("menu")} aria-label="Back" className="w-11 h-11 grid place-items-center rounded-full hover:bg-[var(--muted)]"><ArrowLeft size={20} strokeWidth={1.6} /></button>
+                <div><h1 className="text-2xl font-semibold">Puzzle Levels</h1></div>
+              </header>
+              <div className="grid md:grid-cols-3 gap-5">
+                {LEVEL_ORDER.map((l) => {
+                  return (
+                    <button key={l} onClick={() => { g.setLevel(l); begin(l); }} className={"group relative rounded-3xl border p-5 text-left transition border-[var(--line)] bg-[var(--surface)] hover:-translate-y-1 hover:shadow-xl"}>
+                      <div className="flex items-center justify-between mb-4">
+                        <span className="font-mono text-[10px] tracking-[0.3em] text-[var(--dim)]">{l.toUpperCase()}</span>
+                      </div>
+                      <div className="grid mb-5 aspect-square bg-[var(--muted)] border border-[var(--line)] p-[2px] rounded-lg items-center justify-center group-hover:border-blue-500/30 transition-colors">
+                        <div className="text-4xl text-center font-black text-(--dim) group-hover:text-(--fg) transition-colors">{LEVELS[l].n}×{LEVELS[l].n}</div>
+                      </div>
+                      <div>
+                        <p className="text-[var(--fg)] font-medium text-lg leading-tight mb-1">{l}</p>
+                        <p className="text-[var(--dim)] text-xs font-medium leading-relaxed">{LEVELS[l].flavor}</p>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </div>
       )}
 

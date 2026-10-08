@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { BookOpen, Flag, LogOut, ChevronRight } from "lucide-react";
+import { BookOpen, Flag, LogOut, ChevronRight, ArrowLeft, Play } from "lucide-react";
 import type { GameProps } from "../../shared/types";
 import { LEVELS, LEVEL_ORDER, MAX_HINTS, TUTORIAL_KEY, type LevelKey } from "./config";
 import { usePolarity, type Action, type Mode } from "./usePolarity";
@@ -47,6 +47,7 @@ export default function Polarity({ onGameOver, onExit, seed }: GameProps & { see
   // Session-only memory: never persisted.
   const [best, setBest] = useState<Partial<Record<LevelKey, number>>>({});
   const [solvedCount, setSolvedCount] = useState(0);
+  const [startScreen, setStartScreen] = useState<"menu" | "levels">("menu");
 
   const playing = s.phase === "play";
   const lv = LEVELS[s.level];
@@ -123,58 +124,62 @@ export default function Polarity({ onGameOver, onExit, seed }: GameProps & { see
 
       {/* Start */}
       {s.phase === "start" && (
-        <div className="relative z-10 flex-1 h-full min-h-0 flex flex-col items-center justify-center px-4 py-2 overflow-hidden select-none">
-          <div className="text-center max-w-md w-full pl-rise flex flex-col items-center justify-center">
-            <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-tr from-[#ff4b2b] to-[#00b4db] p-0.5 shadow-lg shadow-cyan-500/20 mb-2 animate-pulse">
-              <div className="w-full h-full bg-[var(--surface)] rounded-[13px] flex items-center justify-center font-black text-xl text-[var(--fg)] tracking-tighter">
-                <span className="text-[#ff4b2b]">+</span><span className="text-[#00b4db]">-</span>
+        <div className="relative z-10 flex-1 h-full min-h-0 flex flex-col items-center justify-center px-4 py-2 overflow-y-auto select-none">
+          {startScreen === "menu" ? (
+            <div className="text-center max-w-md w-full pl-rise flex flex-col items-center justify-center">
+              <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-tr from-[#ff4b2b] to-[#00b4db] p-0.5 shadow-lg shadow-cyan-500/20 mb-2 animate-pulse">
+                <div className="w-full h-full bg-[var(--surface)] rounded-[13px] flex items-center justify-center font-black text-xl text-[var(--fg)] tracking-tighter">
+                  <span className="text-[#ff4b2b]">+</span><span className="text-[#00b4db]">-</span>
+                </div>
               </div>
+              <p className="g-eyebrow tracking-widest text-[10px] uppercase text-(--dim)">Electromagnetic Logic Puzzle</p>
+              <h1 className="font-extralight text-5xl md:text-6xl tracking-tight leading-none mt-1">POLA<span className="font-semibold bg-clip-text text-transparent bg-gradient-to-r from-[#ff4b2b] via-[var(--fg)] to-[#00b4db]">RITY</span></h1>
+              <p className="text-(--dim) text-base mt-1.5 font-light">Two OPPOSING poles. NO like contact.</p>
+              
+              <div className="w-full mt-10 space-y-3 max-w-sm mx-auto">
+                <button onClick={() => setStartScreen("levels")} className="group w-full h-14 md:h-16 px-6 rounded-2xl bg-[var(--fg)] text-[var(--bg)] flex items-center justify-between hover:scale-[1.01] active:scale-[.99] transition">
+                  <span className="flex items-center gap-3 font-medium text-sm md:text-base"><Play size={18} fill="currentColor" />Start Game</span>
+                  <span className="font-mono text-[10px] md:text-xs opacity-60">Level Select</span>
+                </button>
+              </div>
+
+              <div className="mt-4 flex justify-center gap-2">
+                <button type="button" className="g-btn-ghost inline-flex items-center gap-2 text-xs !min-h-[38px] !px-4" onClick={() => setHelp("help")}><BookOpen size={14} />How to Play</button>
+                <button type="button" className="g-btn-ghost text-xs !min-h-[38px] !px-4" onClick={() => setDemo(true)}>Interactive Demo</button>
+              </div>
+
+              {solvedCount > 0 && (
+                <p className="mt-3 text-[11px] text-(--dim) tabular font-medium bg-[var(--surface)] inline-block px-3 py-1 rounded-full border border-[var(--line)]">
+                  ⚡ Session Progress: {solvedCount} Solved
+                </p>
+              )}
             </div>
-            <p className="g-eyebrow tracking-widest text-[10px] uppercase text-(--dim)">Electromagnetic Logic Puzzle</p>
-            <h1 className="font-extralight text-5xl md:text-6xl tracking-tight leading-none mt-1">POLA<span className="font-semibold bg-clip-text text-transparent bg-gradient-to-r from-[#ff4b2b] via-[var(--fg)] to-[#00b4db]">RITY</span></h1>
-            <p className="text-(--dim) text-base mt-1.5 font-light">Two OPPOSING poles. NO like contact.</p>
-            
-            <div className="mt-4 w-full max-w-sm mx-auto">
-              <div className="flex items-center justify-center p-1.5 rounded-full bg-[var(--muted)] border border-[var(--line)] shadow-inner gap-1" role="radiogroup" aria-label="Level">
+          ) : (
+            <div className="mx-auto max-w-5xl px-5 py-6 pl-rise w-full flex flex-col h-full">
+              <header className="flex items-center gap-3 mb-8 shrink-0">
+                <button onClick={() => setStartScreen("menu")} aria-label="Back" className="w-11 h-11 grid place-items-center rounded-full hover:bg-[var(--muted)]"><ArrowLeft size={20} strokeWidth={1.6} /></button>
+                <div><h1 className="text-2xl font-semibold">Puzzle Levels</h1></div>
+              </header>
+              <div className="grid md:grid-cols-3 gap-5">
                 {LEVEL_ORDER.map((l) => {
-                  const isSelected = s.level === l;
                   return (
-                    <button
-                      key={l}
-                      type="button"
-                      role="radio"
-                      aria-checked={isSelected}
-                      onClick={() => g.setLevel(l)}
-                      className={`flex-1 py-1.5 px-3 rounded-full text-center transition-all duration-200 cursor-pointer flex flex-col items-center justify-center ${
-                        isSelected
-                          ? "bg-[var(--surface)] text-[var(--fg)] shadow-md font-bold scale-[1.02]"
-                          : "text-[var(--dim)] hover:text-[var(--fg)] font-medium"
-                      }`}
-                    >
-                      <span className="text-xs font-semibold leading-tight">{l}</span>
-                      <span className="text-[10px] opacity-70 leading-tight font-mono">{LEVELS[l].cols}×{LEVELS[l].rows}</span>
+                    <button key={l} onClick={() => { g.setLevel(l); begin(l); }} className={"group relative rounded-3xl border p-5 text-left transition border-[var(--line)] bg-[var(--surface)] hover:-translate-y-1 hover:shadow-xl"}>
+                      <div className="flex items-center justify-between mb-4">
+                        <span className="font-mono text-[10px] tracking-[0.3em] text-[var(--dim)]">{l.toUpperCase()}</span>
+                      </div>
+                      <div className="grid mb-5 aspect-square bg-[var(--muted)] border border-[var(--line)] p-[2px] rounded-lg items-center justify-center group-hover:border-cyan-500/30 transition-colors">
+                        <div className="text-4xl text-center font-black text-(--dim) group-hover:text-(--fg) transition-colors">{LEVELS[l].cols}×{LEVELS[l].rows}</div>
+                      </div>
+                      <div>
+                        <p className="text-[var(--fg)] font-medium text-lg leading-tight mb-1">{l}</p>
+                        <p className="text-[var(--dim)] text-xs font-medium leading-relaxed">{LEVELS[l].flavor}</p>
+                      </div>
                     </button>
                   );
                 })}
               </div>
-              <p className="text-(--dim) text-xs font-medium text-center mt-2">{lv.flavor}</p>
             </div>
-            
-            <button type="button" className="g-btn-primary mt-5 min-w-[200px] h-11 text-sm font-semibold shadow-lg shadow-amber/10 hover:scale-[1.02] active:scale-[0.98] transition-all" onClick={() => begin()}>
-              Begin Magnetic Challenge
-            </button>
-
-            <div className="mt-4 flex justify-center gap-2">
-              <button type="button" className="g-btn-ghost inline-flex items-center gap-2 text-xs !min-h-[38px] !px-4" onClick={() => setHelp("help")}><BookOpen size={14} />How to Play</button>
-              <button type="button" className="g-btn-ghost text-xs !min-h-[38px] !px-4" onClick={() => setDemo(true)}>Interactive Demo</button>
-            </div>
-
-            {solvedCount > 0 && (
-              <p className="mt-3 text-[11px] text-(--dim) tabular font-medium bg-[var(--surface)] inline-block px-3 py-1 rounded-full border border-[var(--line)]">
-                ⚡ Session Progress: {solvedCount} Solved
-              </p>
-            )}
-          </div>
+          )}
         </div>
       )}
 
