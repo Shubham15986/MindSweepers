@@ -214,26 +214,28 @@ export default function Architect({ onGameOver, onExit, seed }: GameProps & { se
 
       {/* Solved */}
       {s.phase === "solved" && (
-        <div className="g-overlay ar-fade-slow" role="dialog" aria-modal="true" aria-label="Solved">
-          <div className="relative text-center w-full max-w-sm ar-rise">
-            <p className="g-eyebrow">{s.level} · {LEVELS[s.level].flavor}</p>
-            <h2 className="text-(--fg) font-light text-7xl mt-2">Solved.</h2>
-            <div className="mt-6 grid grid-cols-2 gap-2">
-              <div className="g-card py-3"><p className="g-eyebrow !text-[10px]">Reveals</p><p className="text-(--fg) mt-1 tabular">{s.hints}</p></div>
-              <div className="g-card py-3"><p className="g-eyebrow !text-[10px]">Score</p><p className="text-(--accent-ink) mt-1 tabular font-semibold">{s.score?.toLocaleString()}</p></div>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-ink/70 backdrop-blur-md animate-in fade-in duration-500 p-4" role="dialog" aria-modal="true" aria-label="Solved">
+          <div className="relative text-center w-full max-w-sm bg-[var(--surface)] border border-[var(--line)] p-8 rounded-3xl shadow-2xl animate-in zoom-in-95 duration-500">
+            <p className="text-[var(--dim)] text-[10px] font-semibold uppercase tracking-[0.2em] mb-1">{s.level} · {LEVELS[s.level].flavor}</p>
+            <h2 className="text-[var(--fg)] font-light text-6xl mb-6">Solved.</h2>
+            <div className="mb-8 flex justify-center">
+              <div className="w-full bg-[var(--bg)] rounded-2xl py-4 border border-[var(--line)]">
+                <p className="text-[10px] text-[var(--dim)] uppercase tracking-widest font-semibold">Score</p>
+                <p className="text-amber mt-1 text-4xl tabular-nums font-semibold">{s.score?.toLocaleString()}</p>
+              </div>
             </div>
             
-            <div className="mt-7 flex flex-col gap-3 animate-in fade-in slide-in-from-bottom-4 duration-500">
-              <button type="button" className="w-full h-14 rounded-2xl bg-amber text-night font-bold text-lg flex items-center justify-center gap-2" onClick={() => begin(s.level, "free")}>
+            <div className="flex flex-col gap-3">
+              <button type="button" onClick={() => begin(s.level, "free")} className="w-full h-14 rounded-2xl bg-amber text-night font-bold text-lg flex items-center justify-center gap-2 hover:bg-amber/90 transition-colors">
                 New Grid <ChevronRight size={20} strokeWidth={2.5} />
               </button>
               <div className="grid grid-cols-2 gap-2">
                 {nextLevel ? (
-                  <button type="button" className="h-12 rounded-2xl border border-[var(--line)] font-medium text-[var(--fg)]" onClick={() => begin(nextLevel, s.mode)}>Next Level</button>
+                  <button type="button" onClick={() => begin(nextLevel, s.mode)} className="h-12 rounded-2xl border border-[var(--line)] font-medium text-[var(--fg)] hover:bg-[var(--line)] transition-colors">Next Level</button>
                 ) : (
-                  <button type="button" className="h-12 rounded-2xl border border-[var(--line)] font-medium text-[var(--fg)] opacity-50" disabled>Finish</button>
+                  <button type="button" className="h-12 rounded-2xl border border-[var(--line)] font-medium text-[var(--fg)] opacity-50 cursor-not-allowed">Finish</button>
                 )}
-                <button type="button" className="h-12 rounded-2xl border border-[var(--line)] font-medium text-[var(--fg)]" onClick={exit}>Menu</button>
+                <button type="button" onClick={exit} className="h-12 rounded-2xl border border-[var(--line)] font-medium text-[var(--fg)] hover:bg-[var(--line)] transition-colors">Menu</button>
               </div>
             </div>
           </div>

@@ -474,23 +474,26 @@ function Game({ level, saved, onBack, onMenu, onRules, onSettings, onSave, onSol
       )}
 
       {won && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-ink/70 backdrop-blur-md fade animate-in duration-500 p-4">
-          <div className="relative text-center w-full max-w-sm rise bg-[var(--surface)] border border-[var(--line)] p-8 rounded-3xl shadow-2xl">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-ink/70 backdrop-blur-md animate-in fade-in duration-500 p-4" role="dialog" aria-modal="true" aria-label="Solved">
+          <div className="relative text-center w-full max-w-sm bg-[var(--surface)] border border-[var(--line)] p-8 rounded-3xl shadow-2xl animate-in zoom-in-95 duration-500">
             <p className="text-[var(--dim)] text-[10px] font-semibold uppercase tracking-[0.2em] mb-1">Layer {level.index + 1} · {level.tier.name}</p>
             <h2 className="text-[var(--fg)] font-light text-6xl mb-6">Solved.</h2>
-            <div className="mb-8">
-              <div className="bg-ink rounded-2xl py-4 border border-[var(--line)]"><p className="text-[10px] text-[var(--dim)] uppercase tracking-widest font-semibold">Score</p><p className="text-amber mt-1 text-2xl tabular-nums font-semibold">{revealed ? 0 : level.tier.points}</p></div>
+            <div className="mb-8 flex justify-center">
+              <div className="w-full bg-[var(--bg)] rounded-2xl py-4 border border-[var(--line)]">
+                <p className="text-[10px] text-[var(--dim)] uppercase tracking-widest font-semibold">Score</p>
+                <p className="text-amber mt-1 text-4xl tabular-nums font-semibold">{revealed ? 0 : level.tier.points}</p>
+              </div>
             </div>
             
             <div className="flex flex-col gap-3">
-              <button onClick={onReplay} className="w-full h-14 rounded-2xl bg-amber text-night font-bold text-lg flex items-center justify-center gap-2">
+              <button type="button" onClick={onReplay} className="w-full h-14 rounded-2xl bg-amber text-night font-bold text-lg flex items-center justify-center gap-2 hover:bg-amber/90 transition-colors">
                 New Grid <ChevronRight size={20} strokeWidth={2.5} />
               </button>
               <div className="grid grid-cols-2 gap-2">
-                <button onClick={onNext} className="h-12 rounded-2xl border border-[var(--line)] font-medium text-[var(--fg)]">
+                <button type="button" onClick={onNext} className="h-12 rounded-2xl border border-[var(--line)] font-medium text-[var(--fg)] hover:bg-[var(--line)] transition-colors">
                   {level.index === LEVELS.length - 1 ? "Finish" : "Next Level"}
                 </button>
-                <button onClick={onMenu} className="h-12 rounded-2xl border border-[var(--line)] font-medium text-[var(--fg)]">Menu</button>
+                <button type="button" onClick={onMenu} className="h-12 rounded-2xl border border-[var(--line)] font-medium text-[var(--fg)] hover:bg-[var(--line)] transition-colors">Menu</button>
               </div>
             </div>
           </div>

@@ -226,28 +226,28 @@ export default function Polarity({ onGameOver, onExit, seed }: GameProps & { see
 
       {/* Solved */}
       {s.phase === "solved" && (
-        <div className="g-overlay pl-fade-slow" role="dialog" aria-modal="true" aria-label="Solved">
-          <div className="relative text-center w-full max-w-sm pl-rise p-6 rounded-3xl bg-[var(--surface)] border border-[var(--line)] shadow-2xl backdrop-blur-xl">
-            <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 mb-2">
-              <span className="text-2xl font-black">⚡</span>
-            </div>
-            <p className="g-eyebrow text-emerald-400 font-semibold">{s.level} · {lv.flavor}</p>
-            <h2 className="text-(--fg) font-light text-6xl mt-1">Solved!</h2>
-            <div className="mt-5 flex justify-center">
-              <div className="g-card py-3 px-8 rounded-2xl border border-[var(--line)] bg-[var(--bg)]"><p className="g-eyebrow !text-[10px] tracking-widest">FINAL SCORE</p><p className="text-emerald-400 text-3xl mt-0.5 tabular font-bold">{s.score?.toLocaleString()}</p></div>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-ink/70 backdrop-blur-md animate-in fade-in duration-500 p-4" role="dialog" aria-modal="true" aria-label="Solved">
+          <div className="relative text-center w-full max-w-sm bg-[var(--surface)] border border-[var(--line)] p-8 rounded-3xl shadow-2xl animate-in zoom-in-95 duration-500">
+            <p className="text-[var(--dim)] text-[10px] font-semibold uppercase tracking-[0.2em] mb-1">{s.level} · {lv.flavor}</p>
+            <h2 className="text-[var(--fg)] font-light text-6xl mb-6">Solved.</h2>
+            <div className="mb-8 flex justify-center">
+              <div className="w-full bg-[var(--bg)] rounded-2xl py-4 border border-[var(--line)]">
+                <p className="text-[10px] text-[var(--dim)] uppercase tracking-widest font-semibold">Score</p>
+                <p className="text-amber mt-1 text-4xl tabular-nums font-semibold">{s.score?.toLocaleString()}</p>
+              </div>
             </div>
             
-            <div className="mt-7 flex flex-col gap-3">
-              <button type="button" className="w-full h-13 rounded-2xl bg-gradient-to-r from-amber to-amber-500 text-night font-bold text-base flex items-center justify-center gap-2 shadow-lg hover:brightness-110 active:scale-[0.98] transition-all" onClick={() => begin(s.level, "free")}>
-                Next Magnetic Grid <ChevronRight size={18} strokeWidth={2.5} />
+            <div className="flex flex-col gap-3">
+              <button type="button" onClick={() => begin(s.level, "free")} className="w-full h-14 rounded-2xl bg-amber text-night font-bold text-lg flex items-center justify-center gap-2 hover:bg-amber/90 transition-colors">
+                New Grid <ChevronRight size={20} strokeWidth={2.5} />
               </button>
               <div className="grid grid-cols-2 gap-2">
                 {nextLevel ? (
-                  <button type="button" className="h-11 rounded-2xl border border-[var(--line)] font-semibold text-[var(--fg)] text-sm hover:bg-[var(--surface)] transition-all" onClick={() => begin(nextLevel, s.mode)}>Next Level</button>
+                  <button type="button" onClick={() => begin(nextLevel, s.mode)} className="h-12 rounded-2xl border border-[var(--line)] font-medium text-[var(--fg)] hover:bg-[var(--line)] transition-colors">Next Level</button>
                 ) : (
-                  <button type="button" className="h-11 rounded-2xl border border-[var(--line)] font-semibold text-[var(--fg)] text-sm opacity-40" disabled>Finish</button>
+                  <button type="button" className="h-12 rounded-2xl border border-[var(--line)] font-medium text-[var(--fg)] opacity-50 cursor-not-allowed">Finish</button>
                 )}
-                <button type="button" className="h-11 rounded-2xl border border-[var(--line)] font-semibold text-[var(--fg)] text-sm hover:bg-[var(--surface)] transition-all" onClick={exit}>Menu</button>
+                <button type="button" onClick={exit} className="h-12 rounded-2xl border border-[var(--line)] font-medium text-[var(--fg)] hover:bg-[var(--line)] transition-colors">Menu</button>
               </div>
             </div>
           </div>
