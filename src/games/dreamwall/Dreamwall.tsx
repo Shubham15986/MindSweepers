@@ -247,13 +247,9 @@ export default function Dreamwall({ onGameOver }: GameProps) {
               <h1 className="text-4xl sm:text-5xl md:text-6xl font-light leading-[0.95] tracking-tight mb-4 md:mb-5">Islands<br />in a <span className="font-semibold">dark sea.</span></h1>
               <p className="text-[var(--dim)] max-w-sm mx-auto md:mx-0 mb-6 md:mb-8 text-sm md:text-base leading-relaxed">Shade the sea, leave the islands. One number per island, one unbroken wall of water, never a pool.</p>
               <div className="space-y-3 max-w-sm mx-auto md:mx-0">
-                <button onClick={() => open(LEVELS.find((l) => l.id === lastId) ?? LEVELS[0])} className="group w-full h-14 md:h-16 px-6 rounded-2xl bg-[var(--fg)] text-[var(--bg)] flex items-center justify-between hover:scale-[1.01] active:scale-[.99] transition">
-                  <span className="flex items-center gap-3 font-medium text-sm md:text-base"><Play size={18} fill="currentColor" />Continue Journey</span>
-                  <span className="font-mono text-[10px] md:text-xs opacity-60">{(LEVELS.find((l) => l.id === lastId) ?? LEVELS[0]).tier.dream}</span>
-                </button>
-                <button onClick={() => setScreen("levels")} className="w-full h-12 md:h-14 px-6 rounded-2xl border border-[var(--line)] flex items-center justify-between hover:bg-[var(--muted)] transition">
-                  <span className="flex items-center gap-3 font-medium text-sm md:text-base"><LayoutGrid size={18} strokeWidth={1.6} />Level Select</span>
-                  <span className="font-mono text-[10px] md:text-xs text-[var(--dim)]">{solvedLevels.reduce((t, l) => t + l.tier.points, 0)} pts</span>
+                <button onClick={() => setScreen("levels")} className="group w-full h-14 md:h-16 px-6 rounded-2xl bg-[var(--fg)] text-[var(--bg)] flex items-center justify-between hover:scale-[1.01] active:scale-[.99] transition">
+                  <span className="flex items-center gap-3 font-medium text-sm md:text-base"><Play size={18} fill="currentColor" />Start Game</span>
+                  <span className="font-mono text-[10px] md:text-xs opacity-60">Level Select</span>
                 </button>
               </div>
             </div>
