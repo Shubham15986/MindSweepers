@@ -25,20 +25,20 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-if (!MONGO_URI) {
-  console.warn("⚠️ MONGO_URI is not set. Starting in-memory MongoDB for development...");
-  import("mongodb-memory-server").then(({ MongoMemoryServer }) => {
-    MongoMemoryServer.create().then((mongoServer) => {
-      mongoose.connect(mongoServer.getUri())
-        .then(() => console.log('✅ Connected to In-Memory MongoDB'))
-        .catch(err => console.error('❌ In-Memory MongoDB connection error:', err));
-    });
-  }).catch(err => console.error('Failed to load mongodb-memory-server:', err));
-} else {
-  mongoose.connect(MONGO_URI)
-    .then(() => console.log('✅ Connected to MongoDB'))
-    .catch(err => console.error('❌ MongoDB connection error:', err));
-}
+let isConnected = false;
+const connectDB = async () => {
+  if (isConnected) return;
+  if (!MONGO_URI) throw new Error("MONGO_URI is missing in environment variables!");
+  
+  try {
+    await mongoose.connect(MONGO_URI, { serverSelectionTimeoutMS: 5000 });
+    isConnected = true;
+    console.log('✅ Connected to MongoDB');
+  } catch (err) {
+    console.error('❌ MongoDB connection error:', err);
+    throw new Error('Database connection failed: ' + err.message);
+  }
+};
 
 // ------------------------------------------------------------------
 // AUTH ENDPOINTS
@@ -46,6 +46,7 @@ if (!MONGO_URI) {
 
 app.post('/api/auth/register', async (req, res) => {
   try {
+    await connectDB();
     const { name, email, phoneNumber, username, password } = req.body;
     
     if (!password) return res.status(400).json({ error: 'Password is required' });
@@ -67,6 +68,7 @@ app.post('/api/auth/register', async (req, res) => {
 
 app.post('/api/auth/login', async (req, res) => {
   try {
+    await connectDB();
     const { email, password } = req.body;
     const user = await User.findOne({ email });
     if (!user || user.password !== password) {
@@ -82,6 +84,7 @@ app.post('/api/auth/login', async (req, res) => {
 
 app.post('/api/auth/forgot-password', async (req, res) => {
   try {
+    await connectDB();
     const { email } = req.body;
     const user = await User.findOne({ email });
     if (!user) return res.status(404).json({ error: 'This email is not registered yet! Please click "Register" below to create an account.' });
@@ -115,6 +118,7 @@ app.post('/api/auth/forgot-password', async (req, res) => {
 
 app.post('/api/auth/reset-password', async (req, res) => {
   try {
+    await connectDB();
     const { email, otp, newPassword } = req.body;
     const user = await User.findOne({ email });
     
@@ -140,6 +144,7 @@ app.post('/api/auth/reset-password', async (req, res) => {
 
 app.post('/api/scores/submit', async (req, res) => {
   try {
+    await connectDB();
     const { userId, gameId, difficulty, score: rawScore } = req.body;
 
     if (!userId || !gameId || rawScore === undefined) {
@@ -169,6 +174,7 @@ app.post('/api/scores/submit', async (req, res) => {
 
 app.get('/api/scores/:userId', async (req, res) => {
   try {
+    await connectDB();
     const { userId } = req.params;
     const { gameId } = req.query;
     
@@ -194,6 +200,7 @@ app.get('/api/scores/:userId', async (req, res) => {
 
 app.get('/api/leaderboard', async (req, res) => {
   try {
+    await connectDB();
     const leaderboard = await Score.aggregate([
       {
         $group: {
