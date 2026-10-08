@@ -25,14 +25,15 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-let isConnected = false;
 const connectDB = async () => {
-  if (isConnected) return;
+  if (mongoose.connection.readyState >= 1) return;
   if (!MONGO_URI) throw new Error("MONGO_URI is missing in environment variables!");
   
   try {
-    await mongoose.connect(MONGO_URI, { serverSelectionTimeoutMS: 5000 });
-    isConnected = true;
+    await mongoose.connect(MONGO_URI, { 
+      serverSelectionTimeoutMS: 5000,
+      maxPoolSize: 10 // Prevent connection limits on Vercel
+    });
     console.log('✅ Connected to MongoDB');
   } catch (err) {
     console.error('❌ MongoDB connection error:', err);

@@ -5,23 +5,21 @@ type Props = {
   canUndo: boolean;
   canRedo: boolean;
   disabled: boolean;
-  onNumber: (v: number) => void;
+  onChangeHeight: (delta: number) => void;
   onErase: () => void;
   onUndo: () => void;
   onRedo: () => void;
   onReveal: () => void;
 };
 
-export default function NumberPad({ n, canUndo, canRedo, disabled, onNumber, onErase, onUndo, onRedo, onReveal }: Props) {
+export default function NumberPad({ canUndo, canRedo, disabled, onChangeHeight, onErase, onUndo, onRedo, onReveal }: Props) {
   return (
     <div className="w-full max-w-[420px] mx-auto" aria-label="Number pad">
-      <div className="grid gap-2" style={{ gridTemplateColumns: "repeat(" + (n + 1) + ", minmax(0, 1fr))" }}>
-        {Array.from({ length: n }, (_, k) => (
-          <button key={k} type="button" disabled={disabled} onClick={() => onNumber(k + 1)} className="ar-pad-num"
-            aria-label={"Place " + (k + 1)}>{k + 1}</button>
-        ))}
-        <button type="button" onClick={onReveal} disabled={disabled} className="ar-pad-num grid place-items-center" aria-label="View Ans" title="View Answer">
-          <Eye size={20} strokeWidth={1.6} className="text-[var(--dim)]" />
+      <div className="flex gap-2 justify-center">
+        <button type="button" disabled={disabled} onClick={() => onChangeHeight(-1)} className="ar-pad-num w-16 text-3xl pb-1" aria-label="Decrease height">-</button>
+        <button type="button" disabled={disabled} onClick={() => onChangeHeight(1)} className="ar-pad-num w-16 text-3xl pb-1" aria-label="Increase height">+</button>
+        <button type="button" onClick={onReveal} disabled={disabled} className="ar-pad-num w-16 grid place-items-center" aria-label="View Ans" title="View Answer">
+          <Eye size={22} strokeWidth={1.6} className="text-[var(--dim)]" />
         </button>
       </div>
       <div className="grid grid-cols-3 gap-2 mt-2 max-w-[300px] mx-auto">

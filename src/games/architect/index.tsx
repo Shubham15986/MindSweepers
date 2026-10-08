@@ -101,10 +101,13 @@ export default function Architect({ onGameOver, onExit, seed }: GameProps & { se
     const k = e.key;
     const map: Record<string, [number, number]> = { ArrowUp: [-1, 0], ArrowDown: [1, 0], ArrowLeft: [0, -1], ArrowRight: [0, 1] };
     if (map[k]) { e.preventDefault(); g.move(...map[k]); return; }
+    
+    if (k === "+" || k === "=") { e.preventDefault(); g.changeHeight(1); return; }
+    if (k === "-" || k === "_") { e.preventDefault(); g.changeHeight(-1); return; }
+    
     const d = Number(k);
     if (d >= 1 && d <= n) { e.preventDefault(); g.input(d); return; }
     if (k === "Backspace" || k === "Delete" || k === "0") { e.preventDefault(); g.erase(); return; }
-    if (k === "n" || k === "N") { e.preventDefault(); g.togglePencil(); return; }
     if ((k === "z" || k === "Z") && e.shiftKey) { g.redo(); return; }
     if (k === "z" || k === "Z") { g.undo(); return; }
   };
@@ -192,7 +195,7 @@ export default function Architect({ onGameOver, onExit, seed }: GameProps & { se
               </p>
             </div>
             <NumberPad n={n} canUndo={s.past.length > 0} canRedo={s.future.length > 0} disabled={!playing}
-              onNumber={g.input} onErase={g.erase} onUndo={g.undo} onRedo={g.redo} onReveal={g.reveal} />
+              onChangeHeight={g.changeHeight} onErase={g.erase} onUndo={g.undo} onRedo={g.redo} onReveal={g.reveal} />
             <div className="flex flex-wrap items-center justify-between gap-2 max-w-[420px] w-full mx-auto">
               <button type="button" className="g-btn-ghost !px-4 inline-flex items-center gap-2" onClick={g.check} disabled={!playing}><CheckCheck size={15} />Check</button>
               <label className="flex items-center gap-2 text-xs text-(--dim) cursor-pointer min-h-11">

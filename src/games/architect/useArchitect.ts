@@ -147,6 +147,26 @@ export function useArchitect(seedProp?: string) {
     commit(cells, notes, { message: null });
   }, [commit, set]);
 
+  const changeHeight = useCallback((delta: number) => {
+    const st = ref.current;
+    if (st.phase !== "play" || !st.puzzle) return;
+    const i = st.selected, n = st.puzzle.n;
+    if (isLocked(i)) return set({ message: "That tower is locked." });
+    
+    let val = st.cells[i] + delta;
+    if (val < 0) val = n; // loop around
+    if (val > n) val = 0; // loop around
+    
+    const cells = st.cells.slice(), notes = st.notes.slice();
+    cells[i] = val;
+    notes[i] = 0;
+    if (cells[i]) {
+      const r = Math.floor(i / n), c = i % n;
+      for (let k = 0; k < n; k++) { notes[r * n + k] &= ~(1 << val); notes[k * n + c] &= ~(1 << val); }
+    }
+    commit(cells, notes, { message: null });
+  }, [commit, set]);
+
   const erase = useCallback(() => {
     const st = ref.current;
     if (st.phase !== "play" || isLocked(st.selected)) return;
@@ -238,5 +258,5 @@ export function useArchitect(seedProp?: string) {
   const setMode = useCallback((mode: Mode) => set({ mode }), [set]);
   const setLevel = useCallback((level: LevelKey) => set({ level }), [set]);
 
-  return { s, start, input, erase, undo, redo, select, move, togglePencil, toggleDim, check, reveal, toStart, setMode, setLevel, stop };
+  return { s, start, input, changeHeight, erase, undo, redo, select, move, togglePencil, toggleDim, check, reveal, toStart, setMode, setLevel, stop };
 }
