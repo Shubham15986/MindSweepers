@@ -160,7 +160,7 @@ function Modal({ title, onClose, children }: { title: string; onClose: () => voi
 function Rules() {
   const items = [
     ["Every number is an island", "A numbered cell belongs to an island with exactly that many white cells."],
-    ["One number per island", "Islands never touch each other horizontally or vertically."],
+    ["One number per island", "Islands never touch each other horizontally or vertically, but they may touch diagonally."],
     ["One continuous sea", "All dark cells must connect into a single wall."],
     ["No pools", "The sea can never form a 2×2 block."],
   ];

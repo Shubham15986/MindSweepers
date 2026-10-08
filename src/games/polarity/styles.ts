@@ -6,7 +6,7 @@ export const POL_CSS = baseCss(".polarity-root") + `
 .polarity-root .tabular { font-variant-numeric: tabular-nums; }
 
 /* Board Container & Grid */
-.polarity-root .pl-box { width: 100%; min-width: 0; overflow: auto; overscroll-behavior: contain; display: grid; padding: 4px; }
+.polarity-root .pl-box { width: 100%; min-width: 0; overflow: auto; overscroll-behavior-x: contain; display: grid; padding: 4px; }
 .polarity-root .pl-grid { 
   display: grid; 
   margin: auto; 
