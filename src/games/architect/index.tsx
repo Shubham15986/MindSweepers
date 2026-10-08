@@ -118,7 +118,7 @@ export default function Architect({ onGameOver, onExit, seed }: GameProps & { se
   );
 
   return (
-    <div ref={rootRef} className="architect-root" style={theme.vars} onKeyDown={onKey}>
+    <div ref={rootRef} className="architect-root flex flex-col flex-1 w-full" style={theme.vars} onKeyDown={onKey}>
       <style>{ARCH_CSS}</style>
 
       {/* Top bar */}

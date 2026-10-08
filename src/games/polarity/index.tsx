@@ -106,7 +106,7 @@ export default function Polarity({ onGameOver, onExit, seed }: GameProps & { see
   const nextLevel = LEVEL_ORDER[LEVEL_ORDER.indexOf(s.level) + 1] as LevelKey | undefined;
 
   return (
-    <div className="polarity-root" style={theme.vars} onKeyDown={onKey}>
+    <div className="polarity-root flex flex-col flex-1 w-full" style={theme.vars} onKeyDown={onKey}>
       <style>{POL_CSS}</style>
 
       {/* Top bar */}
