@@ -8,8 +8,10 @@ import SpinningTop from "./SpinningTop";
 import AuthModal from "./AuthModal";
 import { eyebrow } from "./ui";
 
-const Leaderboard = lazy(() => import("./Leaderboard"));
-const Final = lazy(() => import("./Final"));
+import { lazyWithRetry } from '../utils/lazyWithRetry';
+
+const Leaderboard = lazyWithRetry(() => import("./Leaderboard"));
+const Final = lazyWithRetry(() => import("./Final"));
 
 // Mounts children only once they approach the viewport.
 function WhenNear({ children, minH }: { children: React.ReactNode; minH: number }) {

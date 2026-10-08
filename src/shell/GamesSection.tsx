@@ -4,11 +4,12 @@ import type { GameId, GameProps, GameResult, User } from "../shared/types";
 import { submitScore } from "../shared/api";
 import SpinningTop from "./SpinningTop";
 import { btnGhost, btnPrimary, card } from "./ui";
+import { lazyWithRetry } from '../utils/lazyWithRetry';
 
 const GAMES: Record<GameId, React.LazyExoticComponent<(p: GameProps) => React.ReactElement>> = {
-  dreamwall: lazy(() => import("../games/dreamwall")),
-  polarity: lazy(() => import("../games/polarity")),
-  architect: lazy(() => import("../games/architect")),
+  dreamwall: lazyWithRetry(() => import("../games/dreamwall")),
+  polarity: lazyWithRetry(() => import("../games/polarity")),
+  architect: lazyWithRetry(() => import("../games/architect")),
 };
 
 const TABS: { id: GameId; label: string; locked: boolean; title: string; desc: React.ReactNode; tag: string }[] = [
