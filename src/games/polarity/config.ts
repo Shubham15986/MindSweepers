@@ -49,7 +49,7 @@ export const BOARD = {
   /** clue ring thickness relative to a cell */
   clueRatio: 0.75,
   /** largest cell on wide screens */
-  maxCellPx: 58,
+  maxCellPx: 68,
   gap: 3,
   pad: 6,
   longPressMs: 480,

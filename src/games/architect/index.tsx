@@ -174,7 +174,7 @@ export default function Architect({ onGameOver, onExit, seed }: GameProps & { se
       {/* Play / solved / revealed */}
       {s.puzzle && (s.phase === "play" || s.phase === "solved" || s.phase === "revealed") && (
         <div className="relative z-10 flex-1 min-h-0 overflow-y-auto md:overflow-hidden w-full">
-          <div className="min-h-full md:h-full flex flex-col md:flex-row md:items-center justify-center max-w-[960px] mx-auto gap-4 md:gap-10 px-4 md:px-8 py-4">
+          <div className="min-h-full md:h-full flex flex-col md:flex-row md:items-center justify-center max-w-[1080px] mx-auto gap-4 md:gap-10 px-4 md:px-8 py-4">
           <div className="flex-1 min-h-0 h-full flex flex-col items-center w-full">
             <div className="text-center mb-3 shrink-0">
               <p className="text-(--fg) text-2xl font-light leading-none">{s.level}</p>
@@ -183,7 +183,7 @@ export default function Architect({ onGameOver, onExit, seed }: GameProps & { se
             <Board puzzle={s.puzzle} cells={s.cells} notes={s.notes} selected={s.selected} wrong={s.wrong} dim={s.dim} interactive={playing} onSelect={g.select} onViewChange={setIs3D} className="flex-1 min-h-0 w-full" />
           </div>
 
-          <div className="md:w-[320px] shrink-0 flex flex-col justify-center gap-4 pb-2">
+          <div className="md:w-[360px] shrink-0 flex flex-col justify-center gap-4 pb-2">
             <div className="p-3 md:p-4 rounded-2xl bg-[var(--surface)] border border-[var(--line)] text-center shadow-sm">
               <p className="text-xs md:text-sm font-medium text-(--fg) leading-relaxed" aria-live="polite">
                 {s.phase === "revealed" ? "The solution, revealed. No score recorded." : s.message ?? "Tap a cell, then use + and - to set its height."}

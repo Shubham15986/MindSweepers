@@ -43,7 +43,7 @@ export const BOARD = {
   clueRatio: 0.72,
   /** smallest playable cell (tap target) and largest on wide screens */
   minCell: 40,
-  maxCell: 72,
+  maxCell: 80,
   gap: 4,
   /** tallest tower bar as a fraction of cell height */
   towerMax: 0.82,
