@@ -167,8 +167,8 @@ export default function Polarity({ onGameOver, onExit, seed }: GameProps & { see
                       <div className="flex items-center justify-between mb-4">
                         <span className="font-mono text-[10px] tracking-[0.3em] text-[var(--dim)]">{l.toUpperCase()}</span>
                       </div>
-                      <div className="grid mb-5 aspect-square bg-[var(--muted)] border border-[var(--line)] p-[2px] rounded-lg items-center justify-center group-hover:border-cyan-500/30 transition-colors">
-                        <div className="text-4xl text-center font-black text-(--dim) group-hover:text-(--fg) transition-colors">{LEVELS[l].cols}×{LEVELS[l].rows}</div>
+                      <div className="grid mb-5 aspect-square bg-[var(--muted)] border border-[var(--line)] p-[2px] rounded-lg items-center justify-center group-hover:border-cyan-500/30 transition-colors overflow-hidden">
+                        <img src={`/assets/polarity-${l.toLowerCase()}.jpg`} alt={`${l} level preview`} className="w-full h-full object-contain rounded-md opacity-90 group-hover:opacity-100 transition-opacity" />
                       </div>
                       <div>
                         <p className="text-[var(--fg)] font-medium text-lg leading-tight mb-1">{l}</p>
