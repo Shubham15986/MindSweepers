@@ -1,4 +1,4 @@
-import { Info, Moon, Sun } from "lucide-react";
+import { Info, Moon, Sun, Trophy } from "lucide-react";
 
 type Props = {
   name: string;
@@ -22,11 +22,11 @@ export default function GameNav({ name, glyph, dark, onToggleDark, onDemo, onHel
       </div>
       {children && <div className="order-3 w-full md:order-none md:w-auto flex items-center gap-3 md:gap-4 pt-2 md:pt-0">{children}</div>}
       <div className="flex items-center gap-1">
+        <a href="#leaderboard" aria-label="Leaderboard" className="g-icon mr-1"><Trophy size={19} strokeWidth={1.6} /></a>
         <button type="button" onClick={onDemo} className="g-demo mr-1">
           <span className="g-spinner" aria-hidden /> <span className="font-bold tracking-widest">DEMO</span>
         </button>
         <button type="button" onClick={onHelp} aria-label="How to play" className="g-icon"><Info size={19} strokeWidth={1.6} /></button>
-        
       </div>
     </header>
   );
