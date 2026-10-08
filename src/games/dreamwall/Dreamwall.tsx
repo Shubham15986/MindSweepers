@@ -433,10 +433,6 @@ function Game({ level, saved, onBack, onMenu, onRules, onSettings, onSave, onSol
             <span className="w-16 h-1 rounded-full bg-[var(--muted)] overflow-hidden"><span className="block h-full bg-mint transition-all" style={{ width: (filled / total) * 100 + "%" }} /></span></div>
         </div>
         {a.err.size > 0 && <span className="fade text-xs text-coral font-medium flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-coral" />{a.pools ? "Pool in the sea" : "Island out of shape"}</span>}
-        <div className="text-right">
-          <p className="font-mono text-[10px] tracking-widest text-[var(--dim)]">TIME</p>
-          <p className="text-2xl font-mono tabular-nums">{fmt(time)}</p>
-        </div>
       </div>
 
       <div className="flex-1 grid place-items-center py-2">
@@ -474,7 +470,7 @@ function Game({ level, saved, onBack, onMenu, onRules, onSettings, onSave, onSol
       {paused && (
         <div className="fixed inset-0 z-40 grid place-items-center bg-[var(--bg)]/80 backdrop-blur-md fade">
           <div className="rise text-center space-y-3 w-64">
-            <p className="font-mono text-xs tracking-[0.3em] text-[var(--dim)] mb-4">PAUSED · {fmt(time)}</p>
+            <p className="font-mono text-xs tracking-[0.3em] text-[var(--dim)] mb-4">PAUSED</p>
             <button onClick={() => setPaused(false)} className="w-full h-14 rounded-2xl bg-[var(--fg)] text-[var(--bg)] font-medium">Resume</button>
             <button onClick={() => { setPaused(false); onSettings(); }} className="w-full h-12 rounded-2xl border border-[var(--line)]">Settings</button>
             <button onClick={onMenu} className="w-full h-12 rounded-2xl text-[var(--dim)]">Main menu</button>

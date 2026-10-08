@@ -125,8 +125,6 @@ export default function Architect({ onGameOver, onExit, seed }: GameProps & { se
         {s.phase !== "start" && (
           <div className="flex items-center gap-3">
             {levelSelect}
-            <span className="flex items-center gap-1.5 text-(--dim)"><TimerIcon size={14} aria-hidden />
-              <Timer startedAt={s.startedAt} running={playing} frozen={s.phase === "loading" ? 0 : s.timeMs} /></span>
             <span className="text-xs text-(--dim) tabular whitespace-nowrap" aria-label={MAX_HINTS - s.hints + " hints left"}>Reveals <span className="text-(--fg) font-semibold">{s.hints}</span></span>
           </div>
         )}
@@ -155,9 +153,9 @@ export default function Architect({ onGameOver, onExit, seed }: GameProps & { se
             <div className="mt-4 flex justify-center gap-2">
               <button type="button" className="g-btn-ghost inline-flex items-center gap-2" onClick={() => setHelp("help")}><BookOpen size={15} />How to play</button>
             </div>
-            {(solvedCount > 0 || best[s.level] != null) && (
+            {solvedCount > 0 && (
               <p className="mt-6 text-xs text-(--dim) tabular">
-                This session: {solvedCount} solved{best[s.level] != null && <> · best {s.level} {fmt(best[s.level]!)}</>}
+                This session: {solvedCount} solved
               </p>
             )}
           </div>
@@ -218,8 +216,7 @@ export default function Architect({ onGameOver, onExit, seed }: GameProps & { se
           <div className="relative text-center w-full max-w-sm ar-rise">
             <p className="g-eyebrow">{s.level} · {LEVELS[s.level].flavor}</p>
             <h2 className="text-(--fg) font-light text-7xl mt-2">Solved.</h2>
-            <div className="mt-6 grid grid-cols-3 gap-2">
-              <div className="g-card py-3"><p className="g-eyebrow !text-[10px]">Time</p><p className="text-(--fg) mt-1 tabular">{fmt(s.timeMs)}</p></div>
+            <div className="mt-6 grid grid-cols-2 gap-2">
               <div className="g-card py-3"><p className="g-eyebrow !text-[10px]">Reveals</p><p className="text-(--fg) mt-1 tabular">{s.hints}</p></div>
               <div className="g-card py-3"><p className="g-eyebrow !text-[10px]">Score</p><p className="text-(--accent-ink) mt-1 tabular font-semibold">{s.score?.toLocaleString()}</p></div>
             </div>
