@@ -99,9 +99,19 @@ export default function GamesSection({ user, playing, setPlaying, onRequireAuth,
             </div>
             <h3 className="font-display text-fog text-3xl font-light mt-4">{t.title}</h3>
             <p className="text-mist mt-3 text-sm leading-relaxed flex-1">{t.desc}</p>
-            {t.locked
-              ? <div className="mt-6 inline-flex items-center justify-center gap-2 h-12 px-6 rounded-full border border-fog/12 text-mist text-sm font-semibold uppercase tracking-[0.08em] w-full"><SpinningTop size={16} /> Coming soon</div>
-              : <button onClick={() => { if (!user) onRequireAuth(); else setPlaying(t.id); }} className={btnPrimary + " mt-6 w-full"}><Play size={15} fill="currentColor" /> Play</button>}
+            <div className="mt-6 flex flex-col gap-2">
+              {t.locked
+                ? <div className="inline-flex items-center justify-center gap-2 h-[52px] px-6 rounded-full border border-fog/12 text-mist text-sm font-semibold uppercase tracking-[0.08em] w-full"><SpinningTop size={16} /> Coming soon</div>
+                : <button onClick={() => { if (!user) onRequireAuth(); else setPlaying(t.id); }} className={btnPrimary + " w-full"}><Play size={15} fill="currentColor" /> Play</button>}
+              
+              <a 
+                href="#leaderboard" 
+                onClick={() => onSubmitted(t.id)} 
+                className="h-10 rounded-full bg-slate/30 border border-fog/5 text-mist text-[11px] font-semibold uppercase tracking-[0.1em] flex items-center justify-center hover:bg-slate/50 hover:text-amber transition-colors w-full"
+              >
+                View Leaderboard
+              </a>
+            </div>
           </div>
         </div>
       ))}
