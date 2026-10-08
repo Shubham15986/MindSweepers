@@ -1,7 +1,5 @@
 import express from 'express';
 import mongoose from 'mongoose';
-import { MongoMemoryServer } from "mongodb-memory-server";
-
 import cors from 'cors';
 import dotenv from 'dotenv';
 import nodemailer from 'nodemailer';
@@ -29,11 +27,13 @@ const transporter = nodemailer.createTransport({
 
 if (!MONGO_URI) {
   console.warn("⚠️ MONGO_URI is not set. Starting in-memory MongoDB for development...");
-  MongoMemoryServer.create().then((mongoServer) => {
-    mongoose.connect(mongoServer.getUri())
-      .then(() => console.log('✅ Connected to In-Memory MongoDB'))
-      .catch(err => console.error('❌ In-Memory MongoDB connection error:', err));
-  });
+  import("mongodb-memory-server").then(({ MongoMemoryServer }) => {
+    MongoMemoryServer.create().then((mongoServer) => {
+      mongoose.connect(mongoServer.getUri())
+        .then(() => console.log('✅ Connected to In-Memory MongoDB'))
+        .catch(err => console.error('❌ In-Memory MongoDB connection error:', err));
+    });
+  }).catch(err => console.error('Failed to load mongodb-memory-server:', err));
 } else {
   mongoose.connect(MONGO_URI)
     .then(() => console.log('✅ Connected to MongoDB'))
