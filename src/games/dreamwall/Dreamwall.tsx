@@ -39,9 +39,9 @@ function useDreamwallWorker() {
 type Cell = 0 | 1 | 2; // empty, sea, island
 type Tier = { key: string; name: string; size: number; blurb: string; dream: string; points: number };
 const TIERS: Tier[] = [
-  { key: "4", name: "Easy", size: 4, dream: "The Dream", blurb: "First layer. Gravity still works.", points: 20 },
-  { key: "6", name: "Medium", size: 6, dream: "The Hotel", blurb: "Second layer. Corridors bend.", points: 30 },
-  { key: "8", name: "Hard", size: 8, dream: "Limbo", blurb: "Raw subconscious. Don't get lost.", points: 50 },
+  { key: "4", name: "Easy", size: 4, dream: "Stage 1", blurb: "A small grid to warm up.", points: 20 },
+  { key: "6", name: "Medium", size: 6, dream: "Stage 2", blurb: "More complex island shapes.", points: 30 },
+  { key: "8", name: "Hard", size: 8, dream: "Stage 3", blurb: "A sprawling puzzle to test your logic.", points: 50 },
 ];
 type Level = { id: string; tier: Tier; index: number; n: number; seed: string };
 const randomSeed = () => Math.random().toString(36).slice(2, 10);
@@ -268,7 +268,7 @@ export default function Dreamwall({ onGameOver }: GameProps) {
         <main className="mx-auto max-w-5xl px-5 py-6 rise">
           <header className="flex items-center gap-3 mb-8">
             <button onClick={() => setScreen("menu")} aria-label="Back" className="w-11 h-11 grid place-items-center rounded-full hover:bg-[var(--muted)]"><ArrowLeft size={20} strokeWidth={1.6} /></button>
-            <div><h1 className="text-2xl font-semibold">Puzzle Levels</h1><p className="text-sm text-[var(--dim)]">Go deeper. Each layer unlocks the next.</p></div>
+            <div><h1 className="text-2xl font-semibold">Puzzle Levels</h1><p className="text-sm text-[var(--dim)]">Complete each level to unlock the next.</p></div>
           </header>
           <div className="grid md:grid-cols-3 gap-5">
             {LEVELS.map((l) => {
@@ -487,7 +487,7 @@ function Game({ level, saved, onBack, onMenu, onRules, onSettings, onSave, onSol
       {won && (
         <div className="mt-6 flex flex-col gap-3 animate-in fade-in slide-in-from-bottom-4 duration-500">
           <button onClick={onNext} className="w-full h-14 rounded-2xl bg-amber text-night font-bold text-lg flex items-center justify-center gap-2">
-            {level.index === 2 ? "Wake up" : "Go deeper"} <ChevronRight size={20} strokeWidth={2.5} />
+            {level.index === LEVELS.length - 1 ? "Finish" : "Next Level"} <ChevronRight size={20} strokeWidth={2.5} />
           </button>
           <div className="grid grid-cols-2 gap-2">
             <button onClick={onReplay} className="h-12 rounded-2xl border border-[var(--line)] font-medium">New Grid</button>
