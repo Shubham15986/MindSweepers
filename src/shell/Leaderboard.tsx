@@ -68,6 +68,17 @@ export default function Leaderboard({ refreshKey, initialFilter = "dreamwall" }:
             })}
           </ol>
         )}
+
+        {rows && !rows.some(r => r.isYou) && me.score != null && me.score > 0 && (
+          <div className="sticky bottom-0 bg-night/95 backdrop-blur-md border-t border-fog/20 grid grid-cols-[40px_1fr_auto] gap-3 items-center h-14 px-4 md:px-5">
+            <span className="text-sm font-semibold text-mist tabular-nums">-</span>
+            <span className="flex items-center gap-3 min-w-0">
+              <span className="w-8 h-8 shrink-0 rounded-full grid place-items-center text-[11px] font-semibold bg-amber/20 text-amber">YOU</span>
+              <span className="truncate text-sm text-amber font-semibold">Your Score</span>
+            </span>
+            <span className="text-right text-sm font-bold text-amber tabular-nums">{me.score.toLocaleString()}</span>
+          </div>
+        )}
         
       </div>
     </div>
