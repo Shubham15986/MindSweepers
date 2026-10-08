@@ -35,18 +35,25 @@ export default function Shell() {
   const [showProfile, setShowProfile] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [playing, setPlayingState] = useState<GameId | null>(null);
+  const [route, setRoute] = useState<"home" | "lobby" | "game">("home");
   const setPlaying = (g: GameId | null) => { window.location.hash = g ? "#/game/" + g : "#/"; };
-  
   const handleLogout = () => {
     localStorage.clear();
     window.location.replace("/"); // Forces a full reload and clears the hash completely
   };
-
   useEffect(() => {
     const handleHash = () => {
       const h = window.location.hash;
-      if (h.startsWith("#/game/")) setPlayingState(h.replace("#/game/", "") as GameId);
-      else setPlayingState(null);
+      if (h.startsWith("#/game/")) {
+        setRoute("game");
+        setPlayingState(h.replace("#/game/", "") as GameId);
+      } else if (h === "#/lobby" || h.startsWith("#/lobby")) {
+        setRoute("lobby");
+        setPlayingState(null);
+      } else {
+        setRoute("home");
+        setPlayingState(null);
+      }
     };
     handleHash();
     window.addEventListener("hashchange", handleHash);
@@ -71,8 +78,8 @@ export default function Shell() {
               <a href="#/" className="font-semibold tracking-[0.25em] text-fog text-sm hover:text-amber transition-colors">MINDSWEEPERS</a>
             </div>
             <div className="flex items-center gap-6 text-xs font-semibold uppercase tracking-[0.12em] text-mist">
-              <a href="#games" className="hidden sm:inline hover:text-fog transition-colors">Games</a>
-              <a href="#leaderboard" className="hidden sm:inline hover:text-fog transition-colors">Leaderboard</a>
+              <a href="#/lobby" className="hidden sm:inline hover:text-fog transition-colors">Games</a>
+              <button onClick={() => { window.location.hash = "#/lobby"; setTimeout(() => document.getElementById("leaderboard")?.scrollIntoView({ behavior: "smooth" }), 100); }} className="hidden sm:inline hover:text-fog transition-colors">Leaderboard</button>
               {user ? (
                 <div className="hidden sm:flex items-center gap-3">
                   <span className="text-amber truncate max-w-[100px] sm:max-w-none">{user.name.split("@")[0].split(" ")[0]}</span>
@@ -94,8 +101,8 @@ export default function Shell() {
         {showMobileMenu && (
           <div className="fixed inset-0 z-50 bg-night/95 backdrop-blur-md flex flex-col items-center justify-center gap-8 text-lg font-semibold uppercase tracking-[0.12em] text-mist">
             <button className="absolute top-5 right-6 text-fog" onClick={() => setShowMobileMenu(false)}><X size={28} /></button>
-            <a href="#games" onClick={() => { setShowMobileMenu(false); setPlaying(null); }} className="hover:text-amber transition-colors">Games</a>
-            <a href="#leaderboard" onClick={() => { setShowMobileMenu(false); setPlaying(null); }} className="hover:text-amber transition-colors">Leaderboard</a>
+            <a href="#/lobby" onClick={() => { setShowMobileMenu(false); setPlaying(null); }} className="hover:text-amber transition-colors">Games</a>
+            <button onClick={() => { window.location.hash = "#/lobby"; setShowMobileMenu(false); setPlaying(null); setTimeout(() => document.getElementById("leaderboard")?.scrollIntoView({ behavior: "smooth" }), 100); }} className="hover:text-amber transition-colors">Leaderboard</button>
             {user ? (
               <div className="flex flex-col items-center gap-4 mt-8">
                 <span className="text-amber capitalize text-sm tracking-widest">Player: {user.name.split("@")[0]}</span>
@@ -121,8 +128,8 @@ export default function Shell() {
             <span className="text-sm font-semibold tracking-[0.3em]">{BRAND.name}</span>
           </a>
           <div className="flex items-center gap-6 text-xs font-semibold uppercase tracking-[0.12em] text-mist">
-            <a href="#games" className="hidden sm:inline hover:text-fog transition-colors">Games</a>
-            <a href="#leaderboard" className="hidden sm:inline hover:text-fog transition-colors">Leaderboard</a>
+            <a href="#/lobby" className="hidden sm:inline hover:text-fog transition-colors">Games</a>
+            <button onClick={() => { window.location.hash = "#/lobby"; setTimeout(() => document.getElementById("leaderboard")?.scrollIntoView({ behavior: "smooth" }), 100); }} className="hidden sm:inline hover:text-fog transition-colors">Leaderboard</button>
             {user ? (
               <div className="hidden sm:flex items-center gap-2 relative">
                 <button onClick={() => setShowProfile(!showProfile)} className="w-8 h-8 rounded-full border border-fog/15 text-fog grid place-items-center hover:border-amber hover:text-amber transition-colors" aria-label="Profile">
@@ -147,34 +154,37 @@ export default function Shell() {
       </header>
 
       <div id="top" />
-      <Hero user={user} onRequireAuth={() => setShowAuth(true)} />
-
-      <section id="games" className="relative scroll-mt-16">
-        <div className="max-w-[1200px] mx-auto px-3 sm:px-6 pt-16 pb-24 md:pt-24">
-          <p className={eyebrow}>The games</p>
-          <h2 className="font-display text-fog text-5xl md:text-6xl font-light mt-3">Choose Your Game</h2>
-          <div className="mt-10 flex flex-col gap-16">
-            <GamesSection user={user} playing={playing} setPlaying={setPlaying}
-              onRequireAuth={() => setShowAuth(true)}
-              onSubmitted={(g) => { setBoardFilter(g); setRefreshKey((k) => k + 1); }} />
-            <div id="leaderboard" className="scroll-mt-20 max-w-2xl mx-auto w-full">
-              <div className="flex items-end justify-between mb-4">
-                <h2 className="font-display text-fog text-3xl md:text-4xl font-light">Hall of Fame</h2>
-                <span className={eyebrow}>Higher is better</span>
+      {route === "home" ? (
+        <Hero user={user} onRequireAuth={() => setShowAuth(true)} />
+      ) : (
+        <>
+          <section id="games" className="relative scroll-mt-16">
+            <div className="max-w-[1200px] mx-auto px-3 sm:px-6 pt-16 pb-24 md:pt-24">
+              <p className={eyebrow}>The games</p>
+              <h2 className="font-display text-fog text-5xl md:text-6xl font-light mt-3">Choose Your Game</h2>
+              <div className="mt-10 flex flex-col gap-16">
+                <GamesSection user={user} playing={playing} setPlaying={setPlaying}
+                  onRequireAuth={() => setShowAuth(true)}
+                  onSubmitted={(g) => { setBoardFilter(g); setRefreshKey((k) => k + 1); }} />
+                <div id="leaderboard" className="scroll-mt-20 max-w-2xl mx-auto w-full">
+                  <div className="flex items-end justify-between mb-4">
+                    <h2 className="font-display text-fog text-3xl md:text-4xl font-light">Hall of Fame</h2>
+                    <span className={eyebrow}>Higher is better</span>
+                  </div>
+                  <WhenNear minH={640}><Leaderboard refreshKey={refreshKey} initialFilter={boardFilter} /></WhenNear>
+                </div>
               </div>
-              <WhenNear minH={640}><Leaderboard refreshKey={refreshKey} initialFilter={boardFilter} /></WhenNear>
             </div>
-          </div>
-        </div>
-      </section>
-
-      <WhenNear minH={600}><Final /></WhenNear>
+          </section>
+          <WhenNear minH={600}><Final /></WhenNear>
+        </>
+      )}
 
       {showMobileMenu && (
         <div className="fixed inset-0 z-50 bg-night/95 backdrop-blur-md flex flex-col items-center justify-center gap-8 text-lg font-semibold uppercase tracking-[0.12em] text-mist">
           <button className="absolute top-5 right-6 text-fog" onClick={() => setShowMobileMenu(false)}><X size={28} /></button>
-          <a href="#games" onClick={() => { setShowMobileMenu(false); setPlaying(null); }} className="hover:text-amber transition-colors">Games</a>
-          <a href="#leaderboard" onClick={() => { setShowMobileMenu(false); setPlaying(null); }} className="hover:text-amber transition-colors">Leaderboard</a>
+          <a href="#/lobby" onClick={() => { setShowMobileMenu(false); setPlaying(null); }} className="hover:text-amber transition-colors">Games</a>
+          <button onClick={() => { window.location.hash = "#/lobby"; setShowMobileMenu(false); setPlaying(null); setTimeout(() => document.getElementById("leaderboard")?.scrollIntoView({ behavior: "smooth" }), 100); }} className="hover:text-amber transition-colors">Leaderboard</button>
           {user ? (
             <div className="flex flex-col items-center gap-4 mt-8">
               <span className="text-amber capitalize text-sm tracking-widest">Player: {user.name.split("@")[0]}</span>

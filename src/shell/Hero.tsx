@@ -19,11 +19,11 @@ export default function Hero({ user, onRequireAuth }: { user: any; onRequireAuth
         </p>
         <div className="mt-10 flex flex-col items-center gap-4">
           {user ? (
-            <a href="#games" className={btnPrimary + " text-base px-8 py-4 rounded-full shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all"}>Play Game</a>
+            <a href="#/lobby" className={btnPrimary + " text-base px-8 py-4 rounded-full shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all"}>Play Game</a>
           ) : (
             <button onClick={onRequireAuth} className={btnPrimary + " text-base px-8 py-4 rounded-full shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all"}>Play Game</button>
           )}
-          <a href="#leaderboard" className="h-10 px-6 rounded-full bg-night/40 border border-fog/10 text-fog text-[11px] font-semibold uppercase tracking-[0.1em] flex items-center justify-center hover:bg-night/60 hover:text-amber transition-colors backdrop-blur-sm shadow-sm">
+          <a href="#/lobby#leaderboard" className="h-10 px-6 rounded-full bg-night/40 border border-fog/10 text-fog text-[11px] font-semibold uppercase tracking-[0.1em] flex items-center justify-center hover:bg-night/60 hover:text-amber transition-colors backdrop-blur-sm shadow-sm">
             View Leaderboard
           </a>
         </div>
