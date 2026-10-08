@@ -4,6 +4,7 @@ import { MongoMemoryServer } from "mongodb-memory-server";
 
 import cors from 'cors';
 import dotenv from 'dotenv';
+import nodemailer from 'nodemailer';
 import { User, Score } from './models.js';
 
 dotenv.config();
@@ -17,6 +18,14 @@ app.get('/', (req, res) => res.send('Backend is running!'));
 
 const PORT = process.env.PORT || 3001;
 const MONGO_URI = process.env.MONGO_URI;
+
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.EMAIL_USER, // Your Gmail address
+    pass: process.env.EMAIL_PASS  // Your Gmail App Password
+  }
+});
 
 if (!MONGO_URI) {
   console.warn("⚠️ MONGO_URI is not set. Starting in-memory MongoDB for development...");
@@ -86,7 +95,18 @@ app.post('/api/auth/forgot-password', async (req, res) => {
     console.log(`🔐 PASSWORD RESET OTP FOR ${email}: ${otp}`);
     console.log(`======================================================\n\n`);
 
-    res.json({ message: 'OTP sent to email (check server console)' });
+    if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
+      await transporter.sendMail({
+        from: `"MindSweepers" <${process.env.EMAIL_USER}>`,
+        to: email,
+        subject: 'Password Reset OTP - MindSweepers',
+        text: `Your password reset OTP is: ${otp}\nIt is valid for 15 minutes.`
+      });
+      res.json({ message: 'OTP sent to your email successfully.' });
+    } else {
+      console.warn("⚠️ EMAIL_USER or EMAIL_PASS not set. Falling back to console only.");
+      res.json({ message: 'OTP generated (check server console, email not configured)' });
+    }
   } catch (error) {
     console.error('Forgot Password Error:', error);
     res.status(500).json({ error: 'Internal server error' });
