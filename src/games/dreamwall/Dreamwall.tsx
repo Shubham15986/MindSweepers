@@ -509,14 +509,14 @@ function Spinner() {
 // Demo puzzle: unique solution. Clue 4 at 0, 2 at 6, 1 at 15.
 const DEMO_CLUES: (number | null)[] = [4, null, null, null, null, null, 2, null, null, null, null, null, null, null, null, 1];
 const DEMO_STEPS: { title: string; text: string; sea: number[]; island: number[]; focus: number[] }[] = [
-  { title: "Start Puzzle", text: "A 4x4 grid. Three numbers means three islands. Everything else will become a dark sea.", sea: [], island: [], focus: [0, 6, 15] },
-  { title: "The 1 is complete", text: "A '1' island is just a single tile. All tiles touching it (up, down, left, right) must be the dark sea!", sea: [11, 14], island: [], focus: [15] },
-  { title: "Keep islands apart", text: "Islands cannot touch! The '2' and the '4' must be kept apart by filling the tiles between them with sea.", sea: [2, 5], island: [], focus: [6] },
-  { title: "Connect the sea", text: "The sea must be one single connected shape. We connect the sea around the '1' to the rest of the board.", sea: [3, 7], island: [], focus: [11] },
-  { title: "Only one way out", text: "The '2' needs one more island tile. Only the tile directly below it is still open.", sea: [], island: [10], focus: [6, 10] },
-  { title: "Close the island", text: "Now that the '2' island is complete, we surround the rest of it with sea.", sea: [9, 13], island: [], focus: [10] },
-  { title: "No other path", text: "The '4' needs three more island tiles. The left column is the only open path left!", sea: [], island: [4, 8, 12], focus: [0, 4, 8, 12] },
-  { title: "The final tile", text: "The last tile must be sea because the '4' is already full. The puzzle is solved!", sea: [1], island: [], focus: [1] },
+  { title: "Welcome to Dreamwall", text: "Every number is a separate island. The number tells you exactly how many tiles make up that island. Everything else becomes the dark sea.", sea: [], island: [], focus: [0, 6, 15] },
+  { title: "The 1 is complete", text: "An island with a '1' is already full! We must surround it with sea (dark tiles) so it doesn't accidentally touch any other islands.", sea: [11, 14], island: [], focus: [15] },
+  { title: "Keep islands apart", text: "Islands can NEVER touch each other horizontally or vertically. We place sea between the '4' and '2' to keep them separated.", sea: [2, 5], island: [], focus: [6] },
+  { title: "Connect the sea", text: "The entire dark sea must form ONE continuous connected shape. We add sea here so the water around the '1' connects to the rest.", sea: [3, 7], island: [], focus: [11] },
+  { title: "Grow the 2", text: "The '2' island needs exactly one more tile to reach its size. With sea blocking the other sides, it is forced to grow downwards.", sea: [], island: [10], focus: [6, 10] },
+  { title: "Seal the island", text: "The '2' island is now the correct size! We surround its new tile with sea so it stops growing.", sea: [9, 13], island: [], focus: [10] },
+  { title: "Grow the 4", text: "The '4' island needs three more tiles. The only path left without touching another island is straight down the left edge.", sea: [], island: [4, 8, 12], focus: [0, 4, 8, 12] },
+  { title: "No 2x2 pools", text: "The last tile must be sea since the '4' is full. Notice the sea never forms a 2x2 square anywhere—that's the final rule! Puzzle solved.", sea: [1], island: [], focus: [1] },
 ];
 
 function Demo({ onClose, onPlay }: { onClose: () => void; onPlay: () => void }) {
