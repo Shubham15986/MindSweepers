@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { BookOpen, Flag, LogOut, Timer as TimerIcon } from "lucide-react";
+import { BookOpen, Flag, LogOut, Timer as TimerIcon, ChevronRight } from "lucide-react";
 import type { GameProps } from "../../shared/types";
 import { LEVELS, LEVEL_ORDER, MAX_HINTS, TUTORIAL_KEY, type LevelKey } from "./config";
 import { usePolarity, type Action, type Mode } from "./usePolarity";
@@ -213,12 +213,18 @@ export default function Polarity({ onGameOver, onExit, seed }: GameProps & { see
               <div className="g-card py-3 px-6"><p className="g-eyebrow !text-[10px]">Score</p><p className="text-(--accent-ink) mt-1 tabular font-semibold">{s.score?.toLocaleString()}</p></div>
             </div>
             
-            <div className="mt-7 flex flex-col gap-3">
-              <div className="flex gap-3">
-                {!ranked && <button type="button" className="g-btn-primary flex-1 !px-3" onClick={() => begin(s.level, "free")}>Next puzzle</button>}
-                {nextLevel && <button type="button" className="g-btn-ghost flex-1 !px-3" onClick={() => begin(nextLevel, s.mode)}>Harder level</button>}
+            <div className="mt-7 flex flex-col gap-3 animate-in fade-in slide-in-from-bottom-4 duration-500">
+              <button type="button" className="w-full h-14 rounded-2xl bg-amber text-night font-bold text-lg flex items-center justify-center gap-2" onClick={() => begin(s.level, "free")}>
+                New Grid <ChevronRight size={20} strokeWidth={2.5} />
+              </button>
+              <div className="grid grid-cols-2 gap-2">
+                {nextLevel ? (
+                  <button type="button" className="h-12 rounded-2xl border border-[var(--line)] font-medium text-[var(--fg)]" onClick={() => begin(nextLevel, s.mode)}>Next Level</button>
+                ) : (
+                  <button type="button" className="h-12 rounded-2xl border border-[var(--line)] font-medium text-[var(--fg)] opacity-50" disabled>Finish</button>
+                )}
+                <button type="button" className="h-12 rounded-2xl border border-[var(--line)] font-medium text-[var(--fg)]" onClick={exit}>Menu</button>
               </div>
-              <button type="button" className="g-btn-ghost inline-flex items-center justify-center gap-2" onClick={exit}><LogOut size={15} />Exit</button>
             </div>
           </div>
         </div>
