@@ -28,30 +28,30 @@ export default function DemoOverlay({ onClose, onStart }: { onClose: () => void;
   const done = step === last;
 
   return (
-    <div className="fixed inset-0 z-50 bg-(--bg)/80 backdrop-blur-md grid place-items-center p-4 pl-fade" style={{ background: "color-mix(in srgb, var(--bg) 80%, transparent)" }}>
+    <div className="fixed inset-0 z-50 bg-(--bg)/80 backdrop-blur-md flex items-center justify-center p-2 sm:p-4 pl-fade" style={{ background: "color-mix(in srgb, var(--bg) 80%, transparent)" }}>
       <style>{POL_DEMO_CSS}</style>
-      <div className="pl-rise relative w-full max-w-3xl rounded-3xl bg-(--surface) text-(--fg) overflow-hidden shadow-2xl grid md:grid-cols-[1.1fr_1fr]">
-        <div className="relative bg-[#2b3e45] p-8 sm:p-10 grid place-items-center overflow-hidden">
-          <div className="pointer-events-none mx-auto w-full max-w-[300px]" aria-hidden>
-            <Board layout={layout} states={cur.states} wrong={cur.wrong} interactive={false} minCell={30} fitHeight={false}
+      <div className="pl-rise relative w-full max-w-3xl max-h-full rounded-2xl sm:rounded-3xl bg-(--surface) text-(--fg) shadow-2xl flex flex-col md:grid md:grid-cols-[1.1fr_1fr] overflow-y-auto">
+        <div className="relative bg-[#2b3e45] p-6 sm:p-10 grid place-items-center min-h-[240px] sm:min-h-0 shrink-0">
+          <div className="pointer-events-none mx-auto w-full max-w-[220px] sm:max-w-[300px]" aria-hidden>
+            <Board layout={layout} states={cur.states} wrong={cur.wrong} interactive={false} minCell={24} fitHeight={false}
               className={"pl-demo-board transition-all duration-700 " + (cur.showClues ? " pl-demo-clues" : "")} />
           </div>
-          <span className="absolute bottom-4 left-0 right-0 text-center font-mono text-[10px] tracking-[0.3em] text-(--dim)">STEP {step + 1} / {DEMO_STEPS.length}</span>
+          <span className="absolute bottom-3 left-0 right-0 text-center font-mono text-[9px] sm:text-[10px] tracking-[0.3em] text-(--dim)">STEP {step + 1} / {DEMO_STEPS.length}</span>
         </div>
-        <div className="p-7 sm:p-8 flex flex-col">
-          <div className="flex items-center justify-between mb-6">
-            <span className="font-mono font-bold text-[10px] tracking-[0.3em] text-(--dim)">GUIDED DEMO</span>
-            <button onClick={onClose} aria-label="Close" className="w-9 h-9 grid place-items-center rounded-full hover:bg-(--line)"><X size={17} /></button>
+        <div className="p-5 sm:p-8 flex flex-col shrink-0">
+          <div className="flex items-center justify-between mb-4 sm:mb-6">
+            <span className="font-mono font-bold text-[9px] sm:text-[10px] tracking-[0.3em] text-(--dim)">GUIDED DEMO</span>
+            <button onClick={onClose} aria-label="Close" className="w-8 h-8 sm:w-9 sm:h-9 grid place-items-center rounded-full hover:bg-(--line)"><X size={17} /></button>
           </div>
           <div key={step} className="pl-rise flex-1">
-            <p className="font-mono text-xs text-(--plus) mb-2">Step {String(step + 1).padStart(2, "0")}</p>
-            <h3 className="text-2xl font-semibold tracking-tight mb-3">{cur.title}</h3>
-            <p className="text-(--dim) leading-relaxed">{cur.text}</p>
+            <p className="font-mono text-xs text-(--plus) mb-1 sm:mb-2">Step {String(step + 1).padStart(2, "0")}</p>
+            <h3 className="text-xl sm:text-2xl font-semibold tracking-tight mb-2 sm:mb-3">{cur.title}</h3>
+            <p className="text-(--dim) leading-snug sm:leading-relaxed text-sm sm:text-base">{cur.text}</p>
           </div>
-          <div className="flex gap-1.5 my-6">
+          <div className="flex gap-1.5 my-5 sm:my-6 shrink-0">
             {DEMO_STEPS.map((_, i) => <button key={i} onClick={() => setStep(i)} aria-label={"Step " + (i + 1)} className={"h-1.5 rounded-full transition-all " + (i === step ? "w-8 bg-(--fg)" : i < step ? "w-3 bg-(--plus)" : "w-3 bg-(--line)")} />)}
           </div>
-          <div className="flex gap-2">
+          <div className="flex gap-2 shrink-0 pb-2">
             <button onClick={() => setStep((s) => Math.max(0, s - 1))} disabled={step === 0} className="h-12 w-12 grid place-items-center rounded-2xl border border-(--line) disabled:opacity-30"><ArrowLeft size={18} /></button>
             {done
               ? <button onClick={onStart} className="flex-1 h-12 rounded-2xl bg-(--plus) text-(--bg) font-semibold flex items-center justify-center gap-2">Start Puzzle <ChevronRight size={18} /></button>
