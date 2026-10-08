@@ -68,8 +68,10 @@ export default function GamesSection({ user, playing, setPlaying, onRequireAuth,
       await submitScore({ game: playing, score: r.score, level: r.level });
       onSubmitted(playing);
     }
-    clearTimeout(timer.current);
-    timer.current = window.setTimeout(() => setResult(r), 1400);
+    if (playing !== "dreamwall") {
+      clearTimeout(timer.current);
+      timer.current = window.setTimeout(() => setResult(r), 1400);
+    }
   };
   const exit = () => { setResult(null); setPlaying(null); };
 
