@@ -19,49 +19,25 @@ const TABS: { id: GameId; label: string; locked: boolean; title: string; desc: R
 ];
 
 function DreamwallPreview() {
-  const g = "2.##.##3.#.#.##.";
   return (
-    <div className="relative aspect-[16/10] rounded-xl overflow-hidden bg-[radial-gradient(circle_at_50%_40%,#2B3E45_0%,#0E1A1F_75%)] grid place-items-center">
-      <div className="grid grid-cols-4 gap-[3px] p-[3px] bg-night rounded-md w-[42%] rotate-[-4deg]">
-        {g.split("").map((c, i) => (
-          <span key={i} className={"aspect-square rounded-[2px] grid place-items-center font-display text-xl text-night " + (c === "#" ? "bg-night" : "bg-fog")}>
-            {/\d/.test(c) ? c : c === "." && i % 3 === 0 ? <span className="w-1.5 h-1.5 rounded-full bg-night" /> : null}
-          </span>
-        ))}
-      </div>
-      <span className="absolute bottom-3 left-4 text-[10px] font-semibold uppercase tracking-[0.24em] text-mist">4×4 · 6×6 · 8×8</span>
+    <div className="relative aspect-[16/10] rounded-xl overflow-hidden bg-night grid place-items-center border border-fog/10">
+      <img src="/assets/cover-dreamwall.png" alt="Dreamwall" className="absolute inset-0 w-full h-full object-cover opacity-90 hover:opacity-100 transition-opacity" />
     </div>
   );
 }
 
 function PolarityPreview() {
-  // 4x3 sample: horizontal / vertical dominoes with mint (+) and coral (-) ends.
-  const cells = ["+", "-", "", "+", "", "", "", "-", "-", "", "+", "+"];
   return (
-    <div className="relative aspect-[16/10] rounded-xl overflow-hidden bg-[radial-gradient(circle_at_50%_40%,#2B3E45_0%,#0E1A1F_75%)] grid place-items-center">
-      <div className="grid grid-cols-4 gap-[3px] p-[3px] bg-night rounded-md w-[44%]">
-        {cells.map((v, i) => (
-          <div key={i} className={"aspect-square rounded-[4px] grid place-items-center " + (v ? "bg-[#16262C]" : "bg-slate")}>
-            {v && <span className={"w-[52%] aspect-square rounded-full " + (v === "+" ? "bg-[#2fd3a6]" : "bg-[#ef6a5b]")} />}
-          </div>
-        ))}
-      </div>
-      <span className="absolute bottom-3 left-4 text-[10px] font-semibold uppercase tracking-[0.24em] text-mist">4×3 · 4×5 · 6×5</span>
+    <div className="relative aspect-[16/10] rounded-xl overflow-hidden bg-night grid place-items-center border border-fog/10">
+      <img src="/assets/cover-polarity.jpg" alt="Polarity" className="absolute inset-0 w-full h-full object-cover opacity-90 hover:opacity-100 transition-opacity" />
     </div>
   );
 }
 
 function ArchitectPreview() {
-  const h = [2, 1, 4, 3, 3, 4, 1, 2, 4, 3, 2, 1, 1, 2, 3, 4];
   return (
-    <div className="relative aspect-[16/10] rounded-xl overflow-hidden bg-[radial-gradient(circle_at_50%_40%,#2B3E45_0%,#0E1A1F_75%)] grid place-items-center">
-      <div className="grid grid-cols-4 gap-[3px] p-[3px] bg-night rounded-md w-[40%]">
-        {h.map((v, i) => (
-          <div key={i} className="relative aspect-square rounded-[3px] bg-[#16262C] overflow-hidden">
-            <span className="absolute inset-x-[18%] bottom-0 bg-fog/10 border-t-2 border-amber" style={{ height: v * 20 + "%" }} />
-          </div>
-        ))}
-      </div>
+    <div className="relative aspect-[16/10] rounded-xl overflow-hidden bg-night grid place-items-center border border-fog/10">
+      <img src="/assets/cover-architect.jpg" alt="Architect" className="absolute inset-0 w-full h-full object-cover opacity-90 hover:opacity-100 transition-opacity" />
     </div>
   );
 }
