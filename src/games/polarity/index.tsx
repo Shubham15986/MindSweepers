@@ -189,7 +189,7 @@ export default function Polarity({ onGameOver, onExit, seed }: GameProps & { see
       )}
 
       {s.puzzle && (playing || s.phase === "solved" || s.phase === "revealed") && (
-        <div className="relative z-10 flex-1 min-h-0 overflow-y-auto w-full">
+        <div className="relative z-10 flex-1 min-h-0 w-full">
           <div className="min-h-full flex flex-col items-center justify-start max-w-2xl mx-auto gap-6 px-3 md:px-6 py-4 md:py-8">
             <div className="flex-1 min-h-0 flex flex-col items-center w-full max-h-[60vh]">
               <div className="text-center mb-3 shrink-0 flex items-center justify-center gap-3">
