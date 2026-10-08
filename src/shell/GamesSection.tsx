@@ -21,7 +21,7 @@ const TABS: { id: GameId; label: string; locked: boolean; title: string; desc: R
 function DreamwallPreview() {
   return (
     <div className="relative aspect-[16/10] rounded-xl overflow-hidden bg-night grid place-items-center border border-fog/10">
-      <img src="/assets/cover-dreamwall.png" alt="Dreamwall" className="absolute inset-0 w-full h-full object-cover opacity-90 hover:opacity-100 transition-opacity" />
+      <img src="/assets/cover-dreamwall.jpg" alt="Dreamwall" className="absolute inset-0 w-full h-full object-cover opacity-90 hover:opacity-100 transition-opacity" />
     </div>
   );
 }
