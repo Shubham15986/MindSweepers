@@ -7,11 +7,11 @@ import Board from "./Board";
 import { POL_DEMO_CSS } from "./styles";
 
 const DEMO_STEPS = [
-  { title: "The Grid", text: "A 4×3 grid of dominoes hidden in silhouettes. Every domino is either a magnet (mint +, coral -) or completely blank.", states: [-1, -1, -1, -1, -1, -1], showClues: false, wrong: [] },
-  { title: "The Clues", text: "Numbers around the grid count the poles. Mint (+) clues are top and left. Coral (-) clues are bottom and right.", states: [-1, -1, -1, -1, -1, -1], showClues: true, wrong: [] },
-  { title: "Zero Clues", text: "Look at the middle row. It has 0 mint (+) poles. Any domino passing through here can only have coral (-) or be blank.", states: [-1, 0, -1, -1, 0, -1], showClues: true, wrong: [] },
-  { title: "Repulsion", text: "Magnets obey physics. Like poles (+ next to + or - next to -) repel and must never touch. Let's see what happens if they do...", states: [-1, -1, 1, -1, -1, 1], showClues: true, wrong: [2, 5] },
-  { title: "Stabilization", text: "When flipped correctly, they attract! Fill every domino correctly and match the clues to solve the puzzle.", states: [1, 0, 1, 2, 0, 2], showClues: true, wrong: [] }
+  { title: "The Grid", text: "A grid of dominoes. Every domino is either a magnet (one + pole, one - pole) or entirely blank.", states: [-1, -1, -1, -1, -1, -1], showClues: false, wrong: [] },
+  { title: "The Clues", text: "The numbers outside count the poles in that row or column. + clues are top and left. - clues are bottom and right.", states: [-1, -1, -1, -1, -1, -1], showClues: true, wrong: [] },
+  { title: "Zero Clues", text: "Look for '0' clues! A line with a '0' means absolutely none of those poles can be placed there.", states: [-1, 0, -1, -1, 0, -1], showClues: true, wrong: [] },
+  { title: "Repulsion", text: "Like poles repel! You can never have a + touching a +, or a - touching a -. Let's see what happens if they do...", states: [-1, -1, 1, -1, -1, 1], showClues: true, wrong: [2, 5] },
+  { title: "Stabilization", text: "When placed correctly, opposite poles attract! Match all the clues to solve the puzzle.", states: [1, 0, 1, 2, 0, 2], showClues: true, wrong: [] }
 ];
 
 export default function DemoOverlay({ onClose, onStart }: { onClose: () => void; onStart: () => void }) {

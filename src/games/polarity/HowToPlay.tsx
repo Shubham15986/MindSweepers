@@ -2,21 +2,20 @@ import { useEffect, useRef } from "react";
 import { X } from "lucide-react";
 
 const RULES = [
-  "Every domino is either a magnet (one crimson + end, one cyan − end) or blank (neutral on both ends).",
-  "Numbers around the grid count the crimson + and cyan − poles in that row or column. + clues are on the top and left, − clues on the bottom and right.",
-  "No two identical poles may touch up, down, left or right: + next to + or − next to − repel. Neutral ends can touch anything.",
-  "The puzzle is solved when every domino is decided, every shown clue matches, and no like poles touch.",
-  "If the grid has an odd number of squares, one square is left empty and unused (a small dark gap).",
+  "Every tile is either a magnet (one + pole, one − pole) or entirely blank.",
+  "The numbers outside the grid tell you exactly how many + and − poles are in that row or column.",
+  "Identical poles repel! You cannot have + next to +, or − next to −. Blank tiles can touch anything.",
+  "The puzzle is solved when you fill the board, match all the numbers, and no identical poles are touching.",
+  "Sometimes there is a completely unused square in the grid (shown as a dark gap).",
 ];
 const TIPS = [
-  "Clue 0 means the line has no poles of that type, so those cells must be blank or the other pole.",
-  "A domino whose both halves lie in a row with a 0 + clue can only be blank or have its + in another row.",
-  "When a row or column already meets its pole counts, the remaining dominoes there must be blank."
+  "If a number is 0, there are absolutely no poles of that type in that line. That's a great place to start!",
+  "Once a line has all the poles it needs, fill the rest of the line with blanks."
 ];
 const CONTROLS = [
-  "Tap with no tool: + here, + there, blank, empty. Long press toggles blank.",
-  "Right-click toggles blank. Arrows move, Enter places or flips a magnet, Space toggles blank.",
-  "Tap a clue to grey it out when you're done with it."
+  "Just tap a domino repeatedly to cycle between its different pole states.",
+  "On desktop, you can use Right-Click to quickly make a tile blank.",
+  "Tap on a number clue to cross it out once you have finished it."
 ];
 
 export default function HowToPlay({ onClose, firstRun }: { onClose: () => void; firstRun?: boolean }) {

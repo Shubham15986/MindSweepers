@@ -2,17 +2,17 @@ import { useEffect, useRef } from "react";
 import { X } from "lucide-react";
 
 const RULES = [
-  "Fill each row and column with towers of height 1 to N, each height exactly once.",
-  "Each clue outside the grid counts the towers visible from that side.",
-  "Taller towers hide every shorter tower behind them.",
-  "Shaded towers are given and can't be changed.",
-  "The city is built when every clue matches.",
+  "Fill the grid with towers of heights 1 to N. No two towers of the same height can be in the same row or column.",
+  "The numbers outside the grid tell you how many towers you can see from that side.",
+  "A taller tower completely hides any shorter towers behind it.",
+  "Darkened towers are already built and cannot be moved.",
+  "The puzzle is solved when every outside number is satisfied."
 ];
 const TIPS = [
-  "A clue of 1 puts the tallest tower right next to the clue.",
-  "A clue of N means the line runs 1 to N in order from that side.",
-  "Two clues of 2 on opposite sides often put N near the middle.",
-  "Use pencil notes (press N) to track what a cell could be.",
+  "If an outside number is 1, the tallest possible tower must be right on the edge.",
+  "If a number is the maximum height, the towers must be arranged from shortest to tallest.",
+  "If opposite sides both have a '2', the tallest tower is usually in the middle.",
+  "Use the 'N' tool to jot down notes for possible tower heights in a cell.",
 ];
 
 function Line({ label, row, clue, reverse }: { label: string; row: number[]; clue: number; reverse?: boolean }) {

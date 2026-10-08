@@ -159,10 +159,10 @@ function Modal({ title, onClose, children }: { title: string; onClose: () => voi
 
 function Rules() {
   const items = [
-    ["Every number is an island", "A numbered cell belongs to an island with exactly that many white cells."],
-    ["One number per island", "Islands never touch each other horizontally or vertically, but they may touch diagonally."],
-    ["One continuous sea", "All dark cells must connect into a single wall."],
-    ["No pools", "The sea can never form a 2×2 block."],
+    ["Every number is an island", "A number tells you exactly how many white tiles make up that island."],
+    ["One number per island", "Each island contains exactly one number. Islands cannot touch each other (except diagonally)."],
+    ["One continuous sea", "All dark tiles must connect together to form one continuous shape."],
+    ["No pools", "You cannot have a 2×2 square of dark tiles."],
   ];
   return (
     <ol className="space-y-4">
@@ -454,13 +454,23 @@ function Game({ level, saved, onBack, onMenu, onRules, onSettings, onSave, onSol
       </div>
 
       
-      <div className="grid grid-cols-4 mt-3 mb-2">
-        {([[Undo2, "Undo", undo, !past.length], [Redo2, "Redo", redo, !future.length], [RotateCcw, "Reset", reset, false], [Lightbulb, "View Ans", reveal, false]] as const).map(([I, l, fn, dis]) => (
-          <button key={l} onClick={fn} disabled={dis || won} className="h-14 flex flex-col items-center justify-center gap-1 rounded-xl hover:bg-[var(--muted)] disabled:opacity-30 transition">
-            <I size={19} strokeWidth={1.6} /><span className="text-[11px] text-[var(--dim)]">{l}</span>
-          </button>
-        ))}
-      </div>
+      {revealed ? (
+        <div className="flex flex-col gap-2 mt-3 mb-2 px-1">
+          <p className="text-center text-xs text-[var(--dim)] mb-2 font-medium">The solution, revealed. No score recorded.</p>
+          <div className="flex gap-2">
+            <button type="button" onClick={onReplay} className="flex-1 h-12 rounded-xl bg-[var(--surface)] border border-[var(--line)] font-medium text-[var(--fg)] hover:bg-[var(--line)] transition-colors">New Grid</button>
+            <button type="button" onClick={onNext} className="flex-1 h-12 rounded-xl bg-[var(--fg)] text-[var(--bg)] font-medium hover:opacity-90 transition-opacity">{level.index === LEVELS.length - 1 ? "Finish" : "Next Level"}</button>
+          </div>
+        </div>
+      ) : (
+        <div className="grid grid-cols-4 mt-3 mb-2">
+          {([[Undo2, "Undo", undo, !past.length], [Redo2, "Redo", redo, !future.length], [RotateCcw, "Reset", reset, false], [Lightbulb, "View Ans", reveal, false]] as const).map(([I, l, fn, dis]) => (
+            <button key={l} onClick={fn} disabled={dis || won} className="h-14 flex flex-col items-center justify-center gap-1 rounded-xl hover:bg-[var(--muted)] disabled:opacity-30 transition">
+              <I size={19} strokeWidth={1.6} /><span className="text-[11px] text-[var(--dim)]">{l}</span>
+            </button>
+          ))}
+        </div>
+      )}
 
       {paused && (
         <div className="fixed inset-0 z-40 grid place-items-center bg-[var(--bg)]/80 backdrop-blur-md fade">
@@ -473,7 +483,7 @@ function Game({ level, saved, onBack, onMenu, onRules, onSettings, onSave, onSol
         </div>
       )}
 
-      {won && (
+      {won && !revealed && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-ink/70 backdrop-blur-md animate-in fade-in duration-500 p-4" role="dialog" aria-modal="true" aria-label="Solved">
           <div className="relative text-center w-full max-w-sm bg-[var(--surface)] border border-[var(--line)] p-8 rounded-3xl shadow-2xl animate-in zoom-in-95 duration-500">
             <p className="text-[var(--dim)] text-[10px] font-semibold uppercase tracking-[0.2em] mb-1">Layer {level.index + 1} · {level.tier.name}</p>
@@ -510,14 +520,14 @@ function Spinner() {
 // Demo puzzle: unique solution. Clue 4 at 0, 2 at 6, 1 at 15.
 const DEMO_CLUES: (number | null)[] = [4, null, null, null, null, null, 2, null, null, null, null, null, null, null, null, 1];
 const DEMO_STEPS: { title: string; text: string; sea: number[]; island: number[]; focus: number[] }[] = [
-  { title: "Start Puzzle", text: "A 4×4 grid. Three numbers: three islands. Everything else will become one connected sea. Let's plant the idea, one layer at a time.", sea: [], island: [], focus: [0, 6, 15] },
-  { title: "The 1 is already complete", text: "An island of size 1 is just its own cell. Every neighbour must be sea, so we wall it in.", sea: [11, 14], island: [], focus: [15] },
-  { title: "Keep the islands apart", text: "Cells touching the 2 sit right on the 4's path. If they were land, the two islands would merge. Seal them with sea.", sea: [2, 5], island: [], focus: [6] },
-  { title: "Connect the sea", text: "The wall around the 1 can't be cut off. The only way out is up the right edge, so these cells become sea.", sea: [3, 7], island: [], focus: [11] },
-  { title: "Only one way out", text: "The 2 needs one more cell. Up, left and right are all sea now. Only the cell below is left, so it's island.", sea: [], island: [10], focus: [6, 10] },
-  { title: "Close the island", text: "The 2 is complete. Wall it in. The new sea also joins the bottom of the wall to the right edge.", sea: [9, 13], island: [], focus: [10] },
-  { title: "Gravity pulls it down", text: "The 4 needs three more cells. The left column is the only open path, so the island runs straight down.", sea: [], island: [4, 8, 12], focus: [0, 4, 8, 12] },
-  { title: "The kick", text: "One cell is left. The 4 is full, so it's sea. One connected wall, no 2×2 pools, every island the right size. Wake up!", sea: [1], island: [], focus: [1] },
+  { title: "Start Puzzle", text: "A 4x4 grid. Three numbers means three islands. Everything else will become a dark sea.", sea: [], island: [], focus: [0, 6, 15] },
+  { title: "The 1 is complete", text: "A '1' island is just a single tile. All tiles touching it (up, down, left, right) must be the dark sea!", sea: [11, 14], island: [], focus: [15] },
+  { title: "Keep islands apart", text: "Islands cannot touch! The '2' and the '4' must be kept apart by filling the tiles between them with sea.", sea: [2, 5], island: [], focus: [6] },
+  { title: "Connect the sea", text: "The sea must be one single connected shape. We connect the sea around the '1' to the rest of the board.", sea: [3, 7], island: [], focus: [11] },
+  { title: "Only one way out", text: "The '2' needs one more island tile. Only the tile directly below it is still open.", sea: [], island: [10], focus: [6, 10] },
+  { title: "Close the island", text: "Now that the '2' island is complete, we surround the rest of it with sea.", sea: [9, 13], island: [], focus: [10] },
+  { title: "No other path", text: "The '4' needs three more island tiles. The left column is the only open path left!", sea: [], island: [4, 8, 12], focus: [0, 4, 8, 12] },
+  { title: "The final tile", text: "The last tile must be sea because the '4' is already full. The puzzle is solved!", sea: [1], island: [], focus: [1] },
 ];
 
 function Demo({ onClose, onPlay }: { onClose: () => void; onPlay: () => void }) {

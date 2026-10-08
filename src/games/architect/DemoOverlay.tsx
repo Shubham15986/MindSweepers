@@ -4,7 +4,7 @@ import { DEMO } from "./config";
 import { computeClues, SIDES, type Side } from "./solver";
 import { lineIndex } from "./useArchitect";
 
-const CAPTIONS = ["Clues count visible towers", "Taller towers hide shorter ones", "Fill every row and column once", "Match every clue to solve it"];
+const CAPTIONS = ["Numbers outside count how many towers you can see.", "Taller towers hide shorter ones behind them.", "Place heights 1 to 4 in each row and column.", "Match all outside numbers to build the city!"];
 const N = 4;
 const CLUES = computeClues(DEMO.grid, N);
 // Scenes 1–2 focus on row 0 seen from the left: 2 1 4 3 -> towers 2 and 4 visible.
