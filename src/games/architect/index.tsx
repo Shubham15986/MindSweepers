@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { BookOpen, CheckCheck, Flag, LogOut, Timer as TimerIcon, Eye } from "lucide-react";
+import { BookOpen, CheckCheck, Flag, LogOut, Timer as TimerIcon, Eye, ChevronRight } from "lucide-react";
 import type { GameProps } from "../../shared/types";
 import { LEVELS, LEVEL_ORDER, MAX_HINTS, TUTORIAL_KEY, type LevelKey } from "./config";
 import { useArchitect, type Mode } from "./useArchitect";
