@@ -43,7 +43,7 @@ export default function AuthModal({ onClose, onAuthSuccess }: { onClose: () => v
         <button onClick={onClose} className="absolute top-4 right-4 text-mist hover:text-fog transition-colors">
           <X size={20} />
         </button>
-        <p className={eyebrow}>{mode === "login" ? "Welcome back" : "Join the dreamers"}</p>
+        <p className={eyebrow}>{mode === "login" ? "Welcome back" : "Create an account"}</p>
         <h2 className="font-display text-fog text-4xl font-light mt-2 mb-6">
           {mode === "login" ? "Login" : "Register"}
         </h2>
@@ -55,21 +55,21 @@ export default function AuthModal({ onClose, onAuthSuccess }: { onClose: () => v
             <>
               <div>
                 <label className="block text-xs font-semibold text-mist uppercase tracking-wider mb-1.5">Name</label>
-                <input required type="text" value={name} onChange={e => setName(e.target.value)} className={inputClass} placeholder="Cobb" />
+                <input required type="text" value={name} onChange={e => setName(e.target.value)} className={inputClass} placeholder="John Doe" />
               </div>
               <div>
                 <label className="block text-xs font-semibold text-mist uppercase tracking-wider mb-1.5">Username</label>
-                <input required type="text" value={username} onChange={e => setUsername(e.target.value)} className={inputClass} placeholder="dream_architect" />
+                <input required type="text" value={username} onChange={e => setUsername(e.target.value)} className={inputClass} placeholder="johndoe" />
               </div>
               <div>
                 <label className="block text-xs font-semibold text-mist uppercase tracking-wider mb-1.5">Phone Number</label>
-                <input required type="tel" value={phone} onChange={e => setPhone(e.target.value)} className={inputClass} placeholder="+1 234 567 8900" />
+                <input required type="tel" value={phone} onChange={e => setPhone(e.target.value)} className={inputClass} placeholder="1234567890" />
               </div>
             </>
           )}
           <div>
             <label className="block text-xs font-semibold text-mist uppercase tracking-wider mb-1.5">Email</label>
-            <input required type="email" value={email} onChange={e => setEmail(e.target.value)} className={inputClass} placeholder="@email" />
+            <input required type="email" value={email} onChange={e => setEmail(e.target.value)} className={inputClass} placeholder="johndoe@gmail.com" />
           </div>
           <div>
             <label className="block text-xs font-semibold text-mist uppercase tracking-wider mb-1.5">Password</label>
