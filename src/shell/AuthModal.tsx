@@ -82,7 +82,7 @@ export default function AuthModal({ onClose, onAuthSuccess }: { onClose: () => v
           {getTitle()}
         </h2>
         
-        {error && <p className="text-red-400 text-sm mb-4">{error}</p>}
+        {error && <p className="text-amber text-sm text-center mb-4">{error}</p>}
         {msg && <p className="text-mint text-sm mb-4">{msg}</p>}
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4 text-left">
