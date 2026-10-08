@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { BookOpen, CheckCheck, Flag, LogOut, Timer as TimerIcon, Eye, ChevronRight } from "lucide-react";
+import { BookOpen, CheckCheck, Flag, LogOut, Timer as TimerIcon, Eye, ChevronRight, RefreshCw } from "lucide-react";
 import type { GameProps } from "../../shared/types";
 import { LEVELS, LEVEL_ORDER, MAX_HINTS, TUTORIAL_KEY, type LevelKey } from "./config";
 import { useArchitect, type Mode } from "./useArchitect";
@@ -182,31 +182,49 @@ export default function Architect({ onGameOver, onExit, seed }: GameProps & { se
             <Board puzzle={s.puzzle} cells={s.cells} notes={s.notes} selected={s.selected} wrong={s.wrong} dim={s.dim} interactive={playing} onSelect={g.select} onViewChange={setIs3D} className="flex-1 min-h-0 w-full" />
           </div>
 
-          <div className="md:w-[300px] md:self-center shrink-0 flex flex-col gap-3 pb-2">
-            <div>
-              <p className="text-center md:text-left text-sm text-(--fg) min-h-10" aria-live="polite">
-                {s.phase === "revealed" ? "The solution, revealed. No score this time." : s.message ?? "Tap a cell, then use + and - to set its height."}
-              </p>
-              <p className="flex items-center justify-center md:justify-start gap-2 text-center md:text-left text-sm text-(--dim) mt-3 leading-relaxed font-medium">
-                <Eye size={18} />
-                <span>{is3D ? "Press the eye again to return to 2D view." : "Press an eye to view that row or column in 3D."}</span>
+          <div className="md:w-[310px] shrink-0 flex flex-col justify-center gap-4 pb-2">
+            <div className="p-3 rounded-2xl bg-[var(--surface)] border border-[var(--line)] text-center md:text-left shadow-sm">
+              <p className="text-xs font-medium text-(--fg) leading-relaxed" aria-live="polite">
+                {s.phase === "revealed" ? "The solution, revealed. No score recorded." : s.message ?? "Tap a cell, then use + and - to set its height."}
               </p>
             </div>
+            
             <NumberPad n={n} canUndo={s.past.length > 0} canRedo={s.future.length > 0} disabled={!playing}
               onChangeHeight={g.changeHeight} onErase={g.erase} onUndo={g.undo} onRedo={g.redo} />
-            <div className="flex flex-wrap items-center justify-between gap-2 max-w-[420px] w-full mx-auto">
-              <button type="button" className="g-btn-ghost !px-4 inline-flex items-center gap-2" onClick={g.check} disabled={!playing}><CheckCheck size={15} />Check</button>
-              <label className="flex items-center gap-2 text-xs text-(--dim) cursor-pointer min-h-11">
-                <input type="checkbox" checked={s.dim} onChange={g.toggleDim} className="accent-[#2fd3a6] w-4 h-4" />Dim satisfied clues
-              </label>
-              {s.phase === "revealed" ? (
-                <div className="flex gap-2 w-full mt-1">
-                  <button type="button" className="g-btn-ghost flex-1" onClick={g.toStart}>Back</button>
-                  <button type="button" className="g-btn-primary flex-1" onClick={() => begin(s.level, "free")}>New puzzle</button>
-                </div>
-              ) : (
-                <button type="button" className="g-btn-ghost !px-4 inline-flex items-center gap-2 !text-(--bad)" onClick={() => setConfirm({ kind: "giveup" })} disabled={!playing}><Flag size={15} />View Ans</button>
-              )}
+
+            <div className="w-full max-w-[440px] mx-auto space-y-2" role="toolbar" aria-label="Tools">
+              <div className="grid grid-cols-3 gap-3">
+                <button type="button" className="ar-tool bg-[var(--surface)] border border-[var(--line)] !flex-col gap-1 font-semibold text-xs" disabled={!playing} onClick={g.check} title="Check solution">
+                  <CheckCheck size={17} strokeWidth={1.8} className="text-(--fg)" />
+                  <span>Check</span>
+                </button>
+                <button type="button" className="ar-tool bg-[var(--surface)] border border-[var(--line)] !flex-col gap-1 font-semibold text-xs" disabled={!playing} onClick={() => setConfirm({ kind: "giveup" })} title="Give up & view solution">
+                  <Flag size={17} strokeWidth={1.8} className="text-(--fg)" />
+                  <span>Solution</span>
+                </button>
+                <button type="button" className="ar-tool !bg-(--fg) !text-(--bg) !border-(--fg) !flex-col gap-1 font-semibold text-xs" onClick={() => begin(s.level, "free")} title="Generate new puzzle">
+                  <RefreshCw size={17} strokeWidth={1.8} className="text-(--bg)" />
+                  <span className="!text-(--bg)">New Puzzle</span>
+                </button>
+              </div>
+              <div className="flex flex-col items-center gap-2 pt-2">
+                <label className="flex items-center gap-2 text-[11px] text-(--dim) cursor-pointer">
+                  <input type="checkbox" checked={s.dim} onChange={g.toggleDim} className="accent-[var(--fg)] w-3.5 h-3.5" />Dim satisfied clues
+                </label>
+                <p className="flex items-center justify-center gap-1.5 text-center text-[11px] text-(--dim)">
+                  <Eye size={14} />
+                  <span>{is3D ? "Press the eye again to return to 2D view." : "Press an eye to view that row or column in 3D."}</span>
+                </p>
+              </div>
+              
+              <div className="flex gap-2 max-w-[440px] w-full mx-auto mt-2">
+                {s.phase === "revealed" && (
+                  <>
+                    <button type="button" className="g-btn-ghost flex-1" onClick={g.toStart}>Back to Start</button>
+                    <button type="button" className="g-btn-primary flex-1" onClick={() => begin(s.level, "free")}>New Puzzle</button>
+                  </>
+                )}
+              </div>
             </div>
           </div>
         </div>
