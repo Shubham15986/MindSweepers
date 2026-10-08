@@ -36,7 +36,7 @@ export default function Shell() {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [playing, setPlayingState] = useState<GameId | null>(null);
   const [route, setRoute] = useState<"home" | "lobby" | "game" | "leaderboard">("home");
-  const setPlaying = (g: GameId | null) => { window.location.hash = g ? "#/game/" + g : "#/"; };
+  const setPlaying = (g: GameId | null) => { window.location.hash = g ? "#/game/" + g : "#/lobby"; };
   const handleLogout = () => {
     localStorage.clear();
     window.location.replace("/"); // Forces a full reload and clears the hash completely
