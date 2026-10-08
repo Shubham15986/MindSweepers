@@ -478,8 +478,7 @@ function Game({ level, saved, onBack, onMenu, onRules, onSettings, onSave, onSol
           <div className="relative text-center w-full max-w-sm rise bg-[var(--surface)] border border-[var(--line)] p-8 rounded-3xl shadow-2xl">
             <p className="text-[var(--dim)] text-[10px] font-semibold uppercase tracking-[0.2em] mb-1">Layer {level.index + 1} · {level.tier.name}</p>
             <h2 className="text-[var(--fg)] font-light text-6xl mb-6">Solved.</h2>
-            <div className="grid grid-cols-2 gap-3 mb-8">
-              <div className="bg-ink rounded-2xl py-4 border border-[var(--line)]"><p className="text-[10px] text-[var(--dim)] uppercase tracking-widest font-semibold">Reveals</p><p className="text-[var(--fg)] mt-1 text-2xl tabular-nums font-light">{stats.hints}</p></div>
+            <div className="mb-8">
               <div className="bg-ink rounded-2xl py-4 border border-[var(--line)]"><p className="text-[10px] text-[var(--dim)] uppercase tracking-widest font-semibold">Score</p><p className="text-amber mt-1 text-2xl tabular-nums font-semibold">{revealed ? 0 : level.tier.points}</p></div>
             </div>
             
