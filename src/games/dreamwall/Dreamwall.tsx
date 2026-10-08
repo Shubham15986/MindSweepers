@@ -261,7 +261,7 @@ export default function Dreamwall({ onGameOver }: GameProps) {
         <main className="mx-auto max-w-5xl px-5 py-6 rise">
           <header className="flex items-center gap-3 mb-8">
             <button onClick={() => setScreen("menu")} aria-label="Back" className="w-11 h-11 grid place-items-center rounded-full hover:bg-[var(--muted)]"><ArrowLeft size={20} strokeWidth={1.6} /></button>
-            <div><h1 className="text-2xl font-semibold">Puzzle Levels</h1><p className="text-sm text-[var(--dim)]">Complete each level to unlock the next.</p></div>
+            <div><h1 className="text-2xl font-semibold">Puzzle Levels</h1></div>
           </header>
           <div className="grid md:grid-cols-3 gap-5">
             {LEVELS.map((l) => {
