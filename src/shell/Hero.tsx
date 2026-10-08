@@ -4,7 +4,7 @@ import { btnPrimary } from "./ui";
 
 export default function Hero({ user, onRequireAuth }: { user: any; onRequireAuth: () => void }) {
   return (
-    <section className="relative h-dvh w-full overflow-hidden bg-night flex flex-col items-center justify-center" aria-label="Intro">
+    <section className="relative h-[100svh] w-full overflow-hidden bg-night flex flex-col items-center justify-center" aria-label="Intro">
       <div className="absolute inset-0">
         <img src={heroImg} alt="A classical puzzle setting" className="w-full h-full object-cover object-center" fetchPriority="high" />
       </div>
