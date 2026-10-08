@@ -77,14 +77,15 @@ export default function Polarity({ onGameOver, onExit, seed }: GameProps & { see
 
   const exit = () => { g.stop(); onExit(); };
 
-  const submit = () => {
-    if (!ranked || s.phase !== "solved" || s.score == null || !s.puzzle || submitted) return;
-    setSubmitted(true);
-    onGameOver({
-      score: s.score, level: s.level,
-      meta: { seed: s.puzzle.seed, mode: s.mode, timeMs: s.timeMs, hintsUsed: s.hints, boardState: s.states.join("") },
-    });
-  };
+  useEffect(() => {
+    if (s.phase === "solved" && !submitted && s.score != null && ranked && s.puzzle) {
+      setSubmitted(true);
+      onGameOver({
+        score: s.score, level: s.level,
+        meta: { seed: s.puzzle.seed, mode: s.mode, timeMs: s.timeMs, hintsUsed: s.hints, boardState: s.states.join("") },
+      });
+    }
+  }, [s.phase, submitted, s.score, ranked, s.puzzle, s.level, s.mode, s.timeMs, s.hints, s.states, onGameOver]);
 
   const changeLevel = (level: LevelKey) => {
     if (level === s.level) return;
@@ -213,7 +214,6 @@ export default function Polarity({ onGameOver, onExit, seed }: GameProps & { see
             </div>
             
             <div className="mt-7 flex flex-col gap-3">
-              {ranked && <button type="button" className="g-btn-primary" onClick={submit} disabled={submitted}>{submitted ? "Submitted" : "Submit to leaderboard"}</button>}
               <div className="flex gap-3">
                 {!ranked && <button type="button" className="g-btn-primary flex-1 !px-3" onClick={() => begin(s.level, "free")}>Next puzzle</button>}
                 {nextLevel && <button type="button" className="g-btn-ghost flex-1 !px-3" onClick={() => begin(nextLevel, s.mode)}>Harder level</button>}
