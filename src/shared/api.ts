@@ -97,13 +97,25 @@ export async function getLeaderboard({ game, range, page = 1, pageSize = 25 }: {
     const res = await fetch(`${API_BASE}/leaderboard?page=${page}&pageSize=${pageSize}`);
     if (!res.ok) return { entries: [], total: 0, page, pageSize };
     
-    // The backend returns an array of { userId, name, username, score }
     const data = await res.json();
-    
-    return { ...data, entries: data.entries.map((d: any, index: number) => ({
+
+    // Support both the paginated API response and older deployments returning an array.
+    const sourceEntries = Array.isArray(data) ? data : data.entries;
+    if (!Array.isArray(sourceEntries)) {
+      throw new Error("Invalid leaderboard response");
+    }
+    const responsePage = Array.isArray(data) ? page : data.page ?? page;
+    const responsePageSize = Array.isArray(data) ? pageSize : data.pageSize ?? pageSize;
+
+    return {
+      entries: sourceEntries.map((d: any, index: number) => ({
       id: d.userId, name: d.username || d.name, score: d.score, level: "Hard",
-      isYou: d.userId === myUserId, rank: (data.page - 1) * data.pageSize + index + 1
-    })) };
+      isYou: d.userId === myUserId, rank: (responsePage - 1) * responsePageSize + index + 1
+      })),
+      total: Array.isArray(data) ? data.length : data.total ?? sourceEntries.length,
+      page: responsePage,
+      pageSize: responsePageSize
+    };
   } catch (err) {
     console.error("Failed to fetch leaderboard:", err);
     return { entries: [], total: 0, page, pageSize };
