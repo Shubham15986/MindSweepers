@@ -83,7 +83,6 @@ export default function Polarity({ onGameOver, onExit, seed }: GameProps & { see
         score: s.score, level: s.level,
         meta: { seed: s.puzzle.seed, mode: s.mode, timeMs: s.timeMs, hintsUsed: s.hints, boardState: s.states.join("") },
       });
-      setTimeout(() => begin(s.level, "free"), 1500);
     }
   }, [s.phase, submitted, s.score, s.puzzle, s.level, s.mode, s.timeMs, s.hints, s.states, onGameOver, begin]);
 
