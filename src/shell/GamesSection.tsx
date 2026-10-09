@@ -2,7 +2,7 @@ import { lazy, Suspense } from "react";
 import { ArrowLeft, Lock, Play } from "lucide-react";
 import type { GameId, GameProps, GameResult, User } from "../shared/types";
 import { submitScore } from "../shared/api";
-import SpinningTop from "./SpinningTop";
+import { Loader2 } from "lucide-react";
 import { btnGhost, btnPrimary, card } from "./ui";
 import { lazyWithRetry } from '../utils/lazyWithRetry';
 
@@ -49,7 +49,7 @@ function LockedPreview() {
   return (
     <div className="aspect-[16/10] rounded-xl bg-night/70 border border-dashed border-fog/12 grid place-items-center text-center">
       <div>
-        <SpinningTop size={28} className="mx-auto text-mist" />
+        <Loader2 size={28} className="mx-auto text-mist animate-spin" />
         <p className="mt-3 text-xs font-semibold uppercase tracking-[0.24em] text-mist">Coming soon</p>
       </div>
     </div>
@@ -80,7 +80,7 @@ export default function GamesSection({ user, playing, setPlaying, onRequireAuth,
         </div>
         {/* The game is now fully inline, edge-to-edge */}
         <div className="w-full flex-1 flex flex-col min-h-[75dvh]">
-          <Suspense fallback={<div className="flex-1 grid place-items-center"><SpinningTop size={28} className="text-amber" /></div>}>
+          <Suspense fallback={<div className="flex-1 grid place-items-center"><Loader2 size={28} className="text-amber animate-spin" /></div>}>
             <Game user={user} onGameOver={handleGameOver} onExit={exit} />
           </Suspense>
         </div>
@@ -103,7 +103,7 @@ export default function GamesSection({ user, playing, setPlaying, onRequireAuth,
             <h3 className="font-display text-fog text-3xl font-medium mt-4 tracking-wide">{t.title}</h3>
             <p className="text-mist mt-3 text-sm leading-relaxed flex-1">{t.desc}</p>
             {t.locked
-              ? <div className="mt-6 inline-flex items-center justify-center gap-2 h-12 px-6 rounded-full border border-fog/12 text-mist text-sm font-semibold uppercase tracking-[0.08em] w-full"><SpinningTop size={16} /> Coming soon</div>
+              ? <div className="mt-6 inline-flex items-center justify-center gap-2 h-12 px-6 rounded-full border border-fog/12 text-mist text-sm font-semibold uppercase tracking-[0.08em] w-full">Coming soon</div>
               : <button onClick={() => { if (!user) onRequireAuth(); else setPlaying(t.id); }} className={btnPrimary + " mt-6 w-full"}><Play size={15} fill="currentColor" /> Play</button>}
           </div>
         </div>

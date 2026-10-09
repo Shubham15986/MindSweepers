@@ -5,7 +5,6 @@ import { BRAND } from "../shared/theme";
 import Hero from "./Hero";
 import Footer from "./Footer";
 import GamesSection from "./GamesSection";
-import SpinningTop from "./SpinningTop";
 import AuthModal from "./AuthModal";
 import { eyebrow } from "./ui";
 
@@ -128,7 +127,6 @@ export default function Shell() {
       <header className={"fixed top-0 inset-x-0 z-40 transition-all duration-300 " + (scrolled ? "bg-night/95 backdrop-blur-md border-b border-fog/10" : "bg-gradient-to-b from-night/90 to-transparent")}>
         <nav className="max-w-[1200px] mx-auto px-6 h-16 flex items-center justify-between">
           <a href="#top" className="flex items-center gap-2.5 text-fog">
-            <SpinningTop size={18} className="text-amber" />
             <span className="text-sm font-semibold tracking-[0.3em]">{BRAND.name}</span>
           </a>
           <div className="flex items-center gap-6 text-xs font-semibold uppercase tracking-[0.12em] text-mist">
