@@ -8,7 +8,7 @@ export default function Footer() {
           <p className="text-gray-300 text-sm"><strong className="text-white font-semibold">Email:</strong> recursion.nit@gmail.com</p>
           <div className="text-gray-300 text-sm">
             <strong className="text-white font-semibold block mb-1">Phones:</strong>
-            <p>Koustav Bhaiya: +91 82501 51205</p>
+            <p>Koustav Das: +91 82501 51205</p>
           </div>
         </div>
 
