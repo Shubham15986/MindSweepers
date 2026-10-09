@@ -368,8 +368,11 @@ function Game({ level, saved, onBack, onMenu, onRules, onSettings, onSave, onSol
   useEffect(() => { if (a.pools > prevPools.current) setStats((s) => ({ ...s, errors: s.errors + 1 })); prevPools.current = a.pools; }, [a.pools]);
   useEffect(() => {
     if (a.solved && !won) {
-      setWon(true);
-      onSolve(time, level.tier.points);
+      const t = setTimeout(() => {
+        setWon(true);
+        onSolve(time, level.tier.points);
+      }, 600);
+      return () => clearTimeout(t);
     }
   }, [a.solved]); // eslint-disable-line
 
