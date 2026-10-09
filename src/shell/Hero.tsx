@@ -28,7 +28,7 @@ function Countdown({ target }: { target: number }) {
   
   return (
     <div className="flex flex-col items-center justify-center bg-night/80 backdrop-blur-md p-6 sm:p-8 rounded-[2rem] border border-amber/30 shadow-[0_0_50px_-12px_rgba(232,162,74,0.3)] mt-6">
-      <div className="text-amber text-[11px] font-bold uppercase tracking-[0.3em] mb-4">Time Left</div>
+      <div className="text-amber text-[11px] font-bold uppercase tracking-[0.3em] mb-4">Game ends in</div>
       <div className="font-mono text-6xl sm:text-7xl text-fog font-black tracking-tight flex items-center gap-1 sm:gap-2">
         <span className="w-20 sm:w-28 text-center">{h.toString().padStart(2, '0')}</span><span className="text-amber/50 pb-2 sm:pb-3">:</span>
         <span className="w-20 sm:w-28 text-center">{m.toString().padStart(2, '0')}</span><span className="text-amber/50 pb-2 sm:pb-3">:</span>
