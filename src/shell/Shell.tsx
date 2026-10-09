@@ -3,6 +3,7 @@ import { User as UserIcon, LogOut, Menu, X } from "lucide-react";
 import type { BoardFilter, GameId, User } from "../shared/types";
 import { BRAND } from "../shared/theme";
 import Hero from "./Hero";
+import Footer from "./Footer";
 import GamesSection from "./GamesSection";
 import SpinningTop from "./SpinningTop";
 import AuthModal from "./AuthModal";
@@ -123,7 +124,7 @@ export default function Shell() {
   }
 
   return (
-    <div className="bg-night min-h-dvh">
+    <div className="bg-night min-h-dvh flex flex-col">
       <header className={"fixed top-0 inset-x-0 z-40 transition-all duration-300 " + (scrolled ? "bg-night/95 backdrop-blur-md border-b border-fog/10" : "bg-gradient-to-b from-night/90 to-transparent")}>
         <nav className="max-w-[1200px] mx-auto px-6 h-16 flex items-center justify-between">
           <a href="#top" className="flex items-center gap-2.5 text-fog">
@@ -187,6 +188,8 @@ export default function Shell() {
           <WhenNear minH={600}><Final /></WhenNear>
         </>
       )}
+
+      <Footer />
 
       {showMobileMenu && (
         <div className="fixed inset-0 z-50 bg-night/95 backdrop-blur-md flex flex-col items-center justify-center gap-8 text-lg font-semibold uppercase tracking-[0.12em] text-mist">
