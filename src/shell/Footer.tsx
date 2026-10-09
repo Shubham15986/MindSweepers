@@ -6,6 +6,7 @@ export default function Footer() {
           <h3 className="font-display font-bold text-xl tracking-wide text-amber">About</h3>
           <p className="text-mist text-sm">NIT Durgapur, Durgapur, West Bengal</p>
           <p className="text-mist text-sm"><strong className="text-fog font-semibold">Email:</strong> recursion.nit@gmail.com</p>
+          <p className="text-mist text-sm"><strong className="text-fog font-semibold">Website:</strong> <a href="https://www.recursionnitd.in/" target="_blank" rel="noopener noreferrer" className="hover:text-amber transition-colors underline underline-offset-4">recursionnitd.in</a></p>
           <div className="text-mist text-sm">
             <strong className="text-fog font-semibold block mb-1">Phones:</strong>
             <p>Koustav Das: +91 82501 51205</p>
