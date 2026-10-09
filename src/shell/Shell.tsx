@@ -160,12 +160,12 @@ export default function Shell() {
       {route === "home" ? (
         <Hero user={user} onRequireAuth={() => setShowAuth(true)} />
       ) : route === "leaderboard" ? (
-        <section id="leaderboard" className="relative scroll-mt-16 bg-[#f4f6f8] min-h-dvh">
-          <div className="max-w-[1200px] mx-auto px-3 sm:px-6 pt-24 pb-24 md:pt-32 flex justify-center">
+        <section id="leaderboard" className="relative scroll-mt-16">
+          <div className="max-w-[1200px] mx-auto px-3 sm:px-6 pt-16 pb-24 md:pt-24 flex justify-center">
             <div className="max-w-2xl w-full">
-              <div className="flex items-end justify-between mb-4 px-2">
-                <h2 className="font-display text-slate-900 text-3xl md:text-4xl font-semibold">Hall of Fame</h2>
-                <span className="text-[11px] font-semibold uppercase tracking-[0.24em] text-slate-500">Higher is better</span>
+              <div className="flex items-end justify-between mb-4">
+                <h2 className="font-display text-fog text-3xl md:text-4xl font-light">Hall of Fame</h2>
+                <span className={eyebrow}>Higher is better</span>
               </div>
               <WhenNear minH={640}><Leaderboard refreshKey={refreshKey} initialFilter={boardFilter} /></WhenNear>
             </div>
