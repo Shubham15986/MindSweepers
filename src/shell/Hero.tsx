@@ -4,7 +4,7 @@ import { btnPrimary } from "./ui";
 import { useEffect, useState } from "react";
 
 
-function Countdown({ target }: { target: number }) {
+export function Countdown({ target }: { target: number }) {
   const [left, setLeft] = useState(Math.max(0, target - Date.now()));
   useEffect(() => {
     if (left <= 0) return;

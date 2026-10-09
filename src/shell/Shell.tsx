@@ -2,7 +2,7 @@ import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import { User as UserIcon, LogOut, Menu, X } from "lucide-react";
 import type { BoardFilter, GameId, User } from "../shared/types";
 import { BRAND } from "../shared/theme";
-import Hero from "./Hero";
+import Hero, { Countdown } from "./Hero";
 import Footer from "./Footer";
 import GamesSection from "./GamesSection";
 import AuthModal from "./AuthModal";
@@ -213,9 +213,16 @@ export default function Shell() {
               <p className={eyebrow}>The games</p>
               <h2 className="font-display text-fog text-5xl md:text-6xl font-light mt-3">{locked ? "Games Are Locked" : "Choose Your Game"}</h2>
               <div className="mt-10">
-                {!locked && <GamesSection user={user} playing={playing} setPlaying={setPlaying}
-                  onRequireAuth={() => setShowAuth(true)}
-                  onSubmitted={(g) => { setBoardFilter(g); setRefreshKey((k) => k + 1); }} />}
+                {!locked && (
+                  <>
+                    <Countdown target={TARGET_TIME} />
+                    <div className="mt-10">
+                      <GamesSection user={user} playing={playing} setPlaying={setPlaying}
+                        onRequireAuth={() => setShowAuth(true)}
+                        onSubmitted={(g) => { setBoardFilter(g); setRefreshKey((k) => k + 1); }} />
+                    </div>
+                  </>
+                )}
               </div>
             </div>
           </section>
