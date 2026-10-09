@@ -32,8 +32,23 @@ export default function Shell() {
     return uid && uname ? { id: uid, name: uname } : null;
   });
   const [showAuth, setShowAuth] = useState(false);
+
   const [showProfile, setShowProfile] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
+  
+  const TARGET_TIME = 1791516600000; // 9:00:00 AM IST on Oct 9 2026
+  const [locked, setLocked] = useState(Date.now() < TARGET_TIME);
+  useEffect(() => {
+    if (!locked) return;
+    const t = setInterval(() => {
+      if (Date.now() >= TARGET_TIME) {
+        setLocked(false);
+        clearInterval(t);
+      }
+    }, 1000);
+    return () => clearInterval(t);
+  }, [locked]);
+
   const [playing, setPlayingState] = useState<GameId | null>(null);
   const [route, setRoute] = useState<"home" | "lobby" | "game" | "leaderboard">("home");
   const setPlaying = (g: GameId | null) => { window.location.hash = g ? "#/game/" + g : "#/lobby"; };
@@ -78,7 +93,7 @@ export default function Shell() {
         <header className="flex-none h-16 bg-night/95 backdrop-blur-md border-b border-fog/10">
           <nav className="h-full max-w-[1200px] mx-auto px-6 flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <a href="#/" className="font-semibold tracking-[0.25em] text-fog text-sm hover:text-amber transition-colors">MINDSWEEPERS</a>
+              <a href="#/" className="font-black tracking-[0.25em] text-fog text-sm hover:text-amber transition-colors">MINDSWEEPERS</a>
             </div>
             <div className="flex items-center gap-6 text-xs font-semibold uppercase tracking-[0.12em] text-mist">
               <a href="#/lobby" className="hidden sm:inline hover:text-fog transition-colors">Games</a>
@@ -96,9 +111,9 @@ export default function Shell() {
           </nav>
         </header>
         <main className="flex-1 w-full flex flex-col">
-          <GamesSection user={user} playing={playing} setPlaying={setPlaying}
+          {!locked && <GamesSection user={user} playing={playing} setPlaying={setPlaying}
             onRequireAuth={() => setShowAuth(true)}
-            onSubmitted={(g) => { setBoardFilter(g); setRefreshKey((k) => k + 1); }} />
+            onSubmitted={(g) => { setBoardFilter(g); setRefreshKey((k) => k + 1); }} />}
         </main>
         
         {showMobileMenu && (
@@ -127,7 +142,7 @@ export default function Shell() {
       <header className={"fixed top-0 inset-x-0 z-40 transition-all duration-300 " + (scrolled ? "bg-night/95 backdrop-blur-md border-b border-fog/10" : "bg-gradient-to-b from-night/90 to-transparent")}>
         <nav className="max-w-[1200px] mx-auto px-6 h-16 flex items-center justify-between">
           <a href="#top" className="flex items-center gap-2.5 text-fog">
-            <span className="text-sm font-semibold tracking-[0.3em]">{BRAND.name}</span>
+            <span className="text-sm font-black tracking-[0.3em]">{BRAND.name}</span>
           </a>
           <div className="flex items-center gap-6 text-xs font-semibold uppercase tracking-[0.12em] text-mist">
             <a href="#/lobby" className="hidden sm:inline hover:text-fog transition-colors">Games</a>
@@ -157,7 +172,7 @@ export default function Shell() {
 
       <div id="top" />
       {route === "home" ? (
-        <Hero user={user} onRequireAuth={() => setShowAuth(true)} />
+        <Hero user={user} onRequireAuth={() => setShowAuth(true)} locked={locked} targetTime={TARGET_TIME} />
       ) : route === "leaderboard" ? (
         <section id="leaderboard" className="relative scroll-mt-16">
           <div className="max-w-[1200px] mx-auto px-3 sm:px-6 pt-16 pb-24 md:pt-24 flex justify-center">
@@ -175,11 +190,11 @@ export default function Shell() {
           <section id="games" className="relative scroll-mt-16">
             <div className="max-w-[1200px] mx-auto px-3 sm:px-6 pt-16 pb-24 md:pt-24">
               <p className={eyebrow}>The games</p>
-              <h2 className="font-display text-fog text-5xl md:text-6xl font-light mt-3">Choose Your Game</h2>
+              <h2 className="font-display text-fog text-5xl md:text-6xl font-light mt-3">{locked ? "Games Unlock Soon" : "Choose Your Game"}</h2>
               <div className="mt-10">
-                <GamesSection user={user} playing={playing} setPlaying={setPlaying}
+                {!locked && <GamesSection user={user} playing={playing} setPlaying={setPlaying}
                   onRequireAuth={() => setShowAuth(true)}
-                  onSubmitted={(g) => { setBoardFilter(g); setRefreshKey((k) => k + 1); }} />
+                  onSubmitted={(g) => { setBoardFilter(g); setRefreshKey((k) => k + 1); }} />}
               </div>
             </div>
           </section>
