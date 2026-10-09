@@ -220,9 +220,6 @@ app.post('/api/scores/submit', async (req, res) => {
   }
 });
 
-// Only count scores submitted after this time (9:00 AM IST, Oct 9 2026)
-const SCORE_CUTOFF = new Date('2026-10-09T03:30:00.000Z'); // 9:00 AM IST = 3:30 AM UTC
-
 app.get('/api/scores/:userId', async (req, res) => {
   try {
     await connectDB();
@@ -231,7 +228,7 @@ app.get('/api/scores/:userId', async (req, res) => {
     
     // In mongoose 7+, you can usually just pass the string to match, or use new mongoose.Types.ObjectId(userId)
     // We'll just pass the string if it works, or require ObjectId.
-    const match = { userId: new mongoose.Types.ObjectId(userId), playedAt: { $gte: SCORE_CUTOFF } };
+    const match = { userId: new mongoose.Types.ObjectId(userId) };
     if (gameId && gameId !== 'overall') {
       match.gameId = gameId;
     }
@@ -253,7 +250,6 @@ app.get('/api/leaderboard', async (req, res) => {
   try {
     await connectDB();
     const leaderboard = await Score.aggregate([
-      { $match: { playedAt: { $gte: SCORE_CUTOFF } } },
       {
         $group: {
           _id: '$userId',
