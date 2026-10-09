@@ -4,4 +4,5 @@ export type GameProps = { user: User | null; onGameOver: (r: GameResult) => void
 export type GameId = "dreamwall" | "polarity" | "architect";
 export type BoardFilter = GameId | "overall";
 export type Range = "today" | "week" | "all";
-export type LeaderboardEntry = { id: string; name: string; score: number; level: string; isYou?: boolean };
+export type LeaderboardEntry = { id: string; name: string; score: number; level: string; isYou?: boolean; rank?: number };
+export type LeaderboardPage = { entries: LeaderboardEntry[]; total: number; page: number; pageSize: number };

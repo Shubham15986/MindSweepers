@@ -249,36 +249,27 @@ app.get('/api/scores/:userId', async (req, res) => {
 app.get('/api/leaderboard', async (req, res) => {
   try {
     await connectDB();
-    const leaderboard = await Score.aggregate([
+    const page = Math.max(Number.parseInt(req.query.page, 10) || 1, 1);
+    const pageSize = Math.min(Math.max(Number.parseInt(req.query.pageSize, 10) || 25, 1), 100);
+    const skip = (page - 1) * pageSize;
+    const [result] = await Score.aggregate([
       {
-        $group: {
-          _id: '$userId',
-          totalScore: { $sum: '$points' }
+        $facet: {
+          entries: [
+            { $group: { _id: '$userId', totalScore: { $sum: '$points' } } },
+            { $lookup: { from: 'users', localField: '_id', foreignField: '_id', as: 'user' } },
+            { $unwind: '$user' },
+            { $project: { _id: 0, userId: '$_id', name: '$user.name', username: '$user.username', score: '$totalScore' } },
+            { $sort: { score: -1, userId: 1 } },
+            { $skip: skip },
+            { $limit: pageSize }
+          ],
+          total: [{ $group: { _id: '$userId' } }, { $count: 'value' }]
         }
-      },
-      {
-        $lookup: {
-          from: 'users',
-          localField: '_id',
-          foreignField: '_id',
-          as: 'user'
-        }
-      },
-      { $unwind: '$user' },
-      {
-        $project: {
-          _id: 0,
-          userId: '$_id',
-          name: '$user.name',
-          username: '$user.username',
-          score: '$totalScore'
-        }
-      },
-      { $sort: { score: -1 } },
-      { $limit: 10 }
+      }
     ]);
 
-    res.json(leaderboard);
+    res.json({ entries: result.entries, total: result.total[0]?.value ?? 0, page, pageSize });
   } catch (error) {
     console.error('Leaderboard Fetch Error:', error);
     res.status(500).json({ error: 'Internal server error' });

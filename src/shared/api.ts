@@ -1,4 +1,4 @@
-import type { BoardFilter, GameId, LeaderboardEntry, Range } from "./types";
+import type { BoardFilter, GameId, LeaderboardEntry, LeaderboardPage, Range } from "./types";
 
 const API_BASE = import.meta.env.VITE_API_BASE || (import.meta.env.PROD ? "/api" : "http://localhost:3001/api");
 
@@ -92,34 +92,30 @@ export async function submitScore({ game, score, level }: { game: GameId; score:
   return { ok: true, entry: { id: myUserId, name: myUsername || "You", score: data.pointsAwarded, level, isYou: true, game } };
 }
 
-export async function getLeaderboard({ game, range }: { game: BoardFilter; range: Range }): Promise<LeaderboardEntry[]> {
+export async function getLeaderboard({ game, range, page = 1, pageSize = 25 }: { game: BoardFilter; range: Range; page?: number; pageSize?: number }): Promise<LeaderboardPage> {
   try {
-    const res = await fetch(`${API_BASE}/leaderboard`);
-    if (!res.ok) return [];
+    const res = await fetch(`${API_BASE}/leaderboard?page=${page}&pageSize=${pageSize}`);
+    if (!res.ok) return { entries: [], total: 0, page, pageSize };
     
     // The backend returns an array of { userId, name, username, score }
     const data = await res.json();
     
-    return data.map((d: any) => ({
-      id: d.userId,
-      name: d.username || d.name,
-      score: d.score,
-      level: "Hard", // We don't track highest difficulty in the simple API yet
-      isYou: d.userId === myUserId,
-      game: "overall"
-    }));
+    return { ...data, entries: data.entries.map((d: any, index: number) => ({
+      id: d.userId, name: d.username || d.name, score: d.score, level: "Hard",
+      isYou: d.userId === myUserId, rank: (data.page - 1) * data.pageSize + index + 1
+    })) };
   } catch (err) {
     console.error("Failed to fetch leaderboard:", err);
-    return [];
+    return { entries: [], total: 0, page, pageSize };
   }
 }
 
 export async function getMyRank({ game }: { game: BoardFilter }): Promise<{ rank: number | null; score: number | null; level: string | null }> {
   if (!myUserId) return { rank: null, score: null, level: null };
-  const rows = await getLeaderboard({ game, range: "all" });
-  const i = rows.findIndex((r) => r.isYou);
+  const rows = await getLeaderboard({ game, range: "all", pageSize: 100 });
+  const i = rows.entries.findIndex((r) => r.isYou);
   if (i >= 0) {
-    return { rank: i + 1, score: rows[i].score, level: rows[i].level };
+    return { rank: rows.entries[i].rank ?? null, score: rows.entries[i].score, level: rows.entries[i].level };
   }
   try {
     const res = await fetch(`${API_BASE}/scores/${myUserId}?gameId=${game}`);

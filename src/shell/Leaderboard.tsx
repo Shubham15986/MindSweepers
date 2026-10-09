@@ -14,15 +14,22 @@ export default function Leaderboard({ refreshKey, initialFilter = "dreamwall" }:
   const [filter, setFilter] = useState<BoardFilter>(initialFilter);
   const range: Range = "all";
   const [rows, setRows] = useState<LeaderboardEntry[] | null>(null);
+  const [page, setPage] = useState(1);
+  const [total, setTotal] = useState(0);
+  const pageSize = 25;
   const [me, setMe] = useState<{ rank: number | null; score: number | null; level: string | null }>({ rank: null, score: null, level: null });
 
-  useEffect(() => { setFilter(initialFilter); }, [initialFilter, refreshKey]);
+  useEffect(() => { setFilter(initialFilter); setPage(1); }, [initialFilter, refreshKey]);
   useEffect(() => {
     let live = true;
     setRows(null);
-    Promise.all([getLeaderboard({ game: filter, range }), getMyRank({ game: filter })]).then(([r, m]) => { if (live) { setRows(r); setMe(m); } });
+    getLeaderboard({ game: filter, range, page, pageSize }).then((result) => {
+      if (live) { setRows(result.entries); setTotal(result.total); }
+    });
+    getMyRank({ game: filter }).then((m) => { if (live) setMe(m); });
     return () => { live = false; };
-  }, [filter, range, refreshKey]);
+  }, [filter, range, page, refreshKey]);
+  const pageCount = Math.ceil(total / pageSize);
 
   return (
     <div className={card + " overflow-hidden"}>
@@ -45,7 +52,7 @@ export default function Leaderboard({ refreshKey, initialFilter = "dreamwall" }:
               return (
                 <li key={r.id} className={"ll-stagger grid grid-cols-[40px_1fr_auto] gap-3 items-center h-14 px-4 md:px-5 border-b border-fog/6 " + (r.isYou ? "bg-amber/8" : "")} style={{ animationDelay: i * 50 + "ms" }}>
                   <span className="flex items-center gap-1 text-sm font-semibold tabular-nums" style={{ color: podium ?? undefined }}>
-                    {i + 1}
+                    {r.rank ?? (page - 1) * pageSize + i + 1}
                   </span>
                   <span className="flex items-center gap-3 min-w-0">
                     <span className="w-8 h-8 shrink-0 rounded-full grid place-items-center text-[11px] font-semibold bg-slate text-fog"
@@ -72,6 +79,15 @@ export default function Leaderboard({ refreshKey, initialFilter = "dreamwall" }:
         )}
         
       </div>
+      {rows && pageCount > 1 && (
+        <div className="flex items-center justify-between gap-3 px-4 md:px-5 h-14 border-t border-fog/8">
+          <button type="button" onClick={() => setPage((current) => current - 1)} disabled={page === 1}
+            className="px-3 py-1.5 rounded-full border border-fog/15 text-[10px] font-semibold uppercase tracking-[0.15em] text-mist transition-colors hover:border-fog/30 hover:text-fog disabled:cursor-not-allowed disabled:opacity-40">Previous</button>
+          <span className="text-[10px] font-semibold uppercase tracking-[0.15em] text-mist/70">Page {page} of {pageCount}</span>
+          <button type="button" onClick={() => setPage((current) => current + 1)} disabled={page === pageCount}
+            className="px-3 py-1.5 rounded-full border border-fog/15 text-[10px] font-semibold uppercase tracking-[0.15em] text-mist transition-colors hover:border-fog/30 hover:text-fog disabled:cursor-not-allowed disabled:opacity-40">Next</button>
+        </div>
+      )}
     </div>
   );
 }
