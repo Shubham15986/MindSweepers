@@ -2,7 +2,7 @@ import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import { User as UserIcon, LogOut, Menu, X } from "lucide-react";
 import type { BoardFilter, GameId, User } from "../shared/types";
 import { BRAND } from "../shared/theme";
-import Hero, { Countdown } from "./Hero";
+import Hero from "./Hero";
 import Footer from "./Footer";
 import GamesSection from "./GamesSection";
 import AuthModal from "./AuthModal";
@@ -12,12 +12,6 @@ import { lazyWithRetry } from '../utils/lazyWithRetry';
 
 const Leaderboard = lazyWithRetry(() => import("./Leaderboard"));
 const Final = lazyWithRetry(() => import("./Final"));
-
-function getTodayDeadline() {
-  const deadline = new Date();
-  deadline.setHours(10, 0, 0, 0);
-  return deadline.getTime();
-}
 
 // Mounts children only once they approach the viewport.
 function WhenNear({ children, minH }: { children: React.ReactNode; minH: number }) {
@@ -42,19 +36,6 @@ export default function Shell() {
   const [showProfile, setShowProfile] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   
-  const TARGET_TIME = getTodayDeadline();
-  const [locked, setLocked] = useState(Date.now() >= TARGET_TIME);
-  useEffect(() => {
-    if (locked) return;
-    const t = setInterval(() => {
-      if (Date.now() >= TARGET_TIME) {
-        setLocked(true);
-        clearInterval(t);
-      }
-    }, 1000);
-    return () => clearInterval(t);
-  }, [locked]);
-
   const [playing, setPlayingState] = useState<GameId | null>(null);
   const [route, setRoute] = useState<"home" | "lobby" | "game" | "leaderboard">("home");
   const setPlaying = (g: GameId | null) => { window.location.hash = g ? "#/game/" + g : "#/lobby"; };
@@ -117,17 +98,9 @@ export default function Shell() {
           </nav>
         </header>
         <main className="flex-1 w-full flex flex-col">
-          {locked ? (
-            <div className="flex-1 grid place-items-center text-center px-6">
-              <div>
-                <h1 className="font-display text-fog text-4xl md:text-5xl">Game time has ended</h1>
-                <p className="text-mist mt-3">The games are locked after 10:00 AM today.</p>
-                <a href="#/lobby" className="inline-flex mt-6 h-11 px-5 items-center rounded-full border border-fog/15 text-fog text-sm font-semibold uppercase tracking-[0.08em] hover:border-amber hover:text-amber transition-colors">Back to Games</a>
-              </div>
-            </div>
-          ) : <GamesSection user={user} playing={playing} setPlaying={setPlaying}
+          <GamesSection user={user} playing={playing} setPlaying={setPlaying}
             onRequireAuth={() => setShowAuth(true)}
-            onSubmitted={(g) => { setBoardFilter(g); setRefreshKey((k) => k + 1); }} />}
+            onSubmitted={(g) => { setBoardFilter(g); setRefreshKey((k) => k + 1); }} />
         </main>
         
         {showMobileMenu && (
@@ -186,7 +159,7 @@ export default function Shell() {
 
       <div id="top" />
       {route === "home" ? (
-        <Hero user={user} onRequireAuth={() => setShowAuth(true)} locked={locked} targetTime={TARGET_TIME} />
+        <Hero user={user} onRequireAuth={() => setShowAuth(true)} />
       ) : route === "leaderboard" ? (
         <section id="leaderboard" className="relative scroll-mt-16">
           <div className="max-w-[1200px] mx-auto px-3 sm:px-6 pt-16 pb-24 md:pt-24 flex justify-center">
@@ -204,18 +177,11 @@ export default function Shell() {
           <section id="games" className="relative scroll-mt-16">
             <div className="max-w-[1200px] mx-auto px-3 sm:px-6 pt-16 pb-24 md:pt-24">
               <p className={eyebrow}>The games</p>
-              <h2 className="font-display text-fog text-5xl md:text-6xl font-light mt-3">{locked ? "Games Are Locked" : "Choose Your Game"}</h2>
+              <h2 className="font-display text-fog text-5xl md:text-6xl font-light mt-3">Choose Your Game</h2>
               <div className="mt-10">
-                {!locked && (
-                  <>
-                    <Countdown target={TARGET_TIME} />
-                    <div className="mt-10">
-                      <GamesSection user={user} playing={playing} setPlaying={setPlaying}
-                        onRequireAuth={() => setShowAuth(true)}
-                        onSubmitted={(g) => { setBoardFilter(g); setRefreshKey((k) => k + 1); }} />
-                    </div>
-                  </>
-                )}
+                <GamesSection user={user} playing={playing} setPlaying={setPlaying}
+                  onRequireAuth={() => setShowAuth(true)}
+                  onSubmitted={(g) => { setBoardFilter(g); setRefreshKey((k) => k + 1); }} />
               </div>
             </div>
           </section>

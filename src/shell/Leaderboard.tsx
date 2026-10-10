@@ -15,7 +15,6 @@ export default function Leaderboard({ refreshKey, initialFilter = "dreamwall" }:
   const range: Range = "all";
   const [rows, setRows] = useState<LeaderboardEntry[] | null>(null);
   const [page, setPage] = useState(1);
-  const [total, setTotal] = useState(0);
   const pageSize = 25;
   const [me, setMe] = useState<{ rank: number | null; score: number | null; level: string | null }>({ rank: null, score: null, level: null });
 
@@ -24,12 +23,12 @@ export default function Leaderboard({ refreshKey, initialFilter = "dreamwall" }:
     let live = true;
     setRows(null);
     getLeaderboard({ game: filter, range, page, pageSize }).then((result) => {
-      if (live) { setRows(result.entries); setTotal(result.total); }
+      if (live) setRows(result.entries);
     });
     getMyRank({ game: filter }).then((m) => { if (live) setMe(m); });
     return () => { live = false; };
   }, [filter, range, page, refreshKey]);
-  const pageCount = Math.ceil(total / pageSize);
+  const visibleRows = rows?.filter((row) => row.isYou) ?? null;
 
   return (
     <div className={card + " overflow-hidden"}>
@@ -41,13 +40,13 @@ export default function Leaderboard({ refreshKey, initialFilter = "dreamwall" }:
       <div className="relative max-h-[560px] overflow-y-auto">
         {rows === null ? (
           <div className="h-[280px] grid place-items-center"><Loader2 size={24} className="text-mist animate-spin" /></div>
-        ) : rows.length === 0 ? (
+        ) : visibleRows.length === 0 && me.score == null ? (
           <div className="h-[280px] grid place-items-center text-center px-6">
-            <div><p className="font-display italic text-fog text-2xl mt-3">No dreamers yet. Be the first.</p></div>
+            <div><p className="font-display italic text-fog text-2xl mt-3">Your score will appear here.</p></div>
           </div>
         ) : (
           <ol>
-            {rows.map((r, i) => {
+            {visibleRows.map((r, i) => {
               const podium = i < 3 ? theme.podium[i] : null;
               return (
                 <li key={r.id} className={"ll-stagger grid grid-cols-[40px_1fr_auto] gap-3 items-center h-14 px-4 md:px-5 border-b border-fog/6 " + (r.isYou ? "bg-amber/8" : "")} style={{ animationDelay: i * 50 + "ms" }}>
@@ -67,7 +66,7 @@ export default function Leaderboard({ refreshKey, initialFilter = "dreamwall" }:
           </ol>
         )}
 
-        {rows && !rows.some(r => r.isYou) && me.score != null && (
+        {rows && visibleRows.length === 0 && me.score != null && (
           <div className="sticky bottom-0 bg-night/95 backdrop-blur-md border-t border-fog/20 grid grid-cols-[40px_1fr_auto] gap-3 items-center h-14 px-4 md:px-5">
             <span className="text-sm font-semibold text-mist tabular-nums">-</span>
             <span className="flex items-center gap-3 min-w-0">
@@ -79,15 +78,6 @@ export default function Leaderboard({ refreshKey, initialFilter = "dreamwall" }:
         )}
         
       </div>
-      {rows && pageCount > 1 && (
-        <div className="flex items-center justify-between gap-3 px-4 md:px-5 h-14 border-t border-fog/8">
-          <button type="button" onClick={() => setPage((current) => current - 1)} disabled={page === 1}
-            className="px-3 py-1.5 rounded-full border border-fog/15 text-[10px] font-semibold uppercase tracking-[0.15em] text-mist transition-colors hover:border-fog/30 hover:text-fog disabled:cursor-not-allowed disabled:opacity-40">Previous</button>
-          <span className="text-[10px] font-semibold uppercase tracking-[0.15em] text-mist/70">Page {page} of {pageCount}</span>
-          <button type="button" onClick={() => setPage((current) => current + 1)} disabled={page === pageCount}
-            className="px-3 py-1.5 rounded-full border border-fog/15 text-[10px] font-semibold uppercase tracking-[0.15em] text-mist transition-colors hover:border-fog/30 hover:text-fog disabled:cursor-not-allowed disabled:opacity-40">Next</button>
-        </div>
-      )}
     </div>
   );
 }
