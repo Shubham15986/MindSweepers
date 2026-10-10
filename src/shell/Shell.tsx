@@ -195,14 +195,7 @@ export default function Shell() {
                 <h2 className="font-display text-fog text-3xl md:text-4xl font-light">Hall of Fame</h2>
                 <span className={eyebrow}>Higher is better</span>
               </div>
-              {locked ? (
-                <div className="rounded-2xl border border-fog/12 bg-card/85 md:bg-card/60 md:backdrop-blur-md p-12 text-center">
-                  <p className="font-display text-fog text-2xl italic">Leaderboard is locked</p>
-                  <p className="text-mist mt-2 text-sm">The game window ended at 10:00 AM today.</p>
-                </div>
-              ) : (
-                <WhenNear minH={640}><Leaderboard refreshKey={refreshKey} initialFilter={boardFilter} /></WhenNear>
-              )}
+              <WhenNear minH={640}><Leaderboard refreshKey={refreshKey} initialFilter={boardFilter} /></WhenNear>
             </div>
           </div>
         </section>
